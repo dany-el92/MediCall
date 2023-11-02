@@ -2,9 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:medicall/constants/images.dart';
 import 'package:medicall/utilities/extensions.dart';
+import 'package:medicall/views/auth/login_screen.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  bool _isVisible = true;
+  double _buttonTop = 0.0;
+
+  void _toggleVisibility() {
+    setState(() {
+      _isVisible = !_isVisible;
+      _buttonTop = _isVisible ? 0.0 : -50.0;
+    });
+
+    if (!_isVisible) {
+      Future.delayed(const Duration(seconds: 1), () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        ).then((value) {
+          setState(() {
+            _isVisible = true;
+            _buttonTop = 0.0;
+          });
+        });
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +42,6 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          // padding:
-          //     const EdgeInsets.only(left: 15, right: 15, top: 240, bottom: 140),
           width: size.width,
           height: size.height,
           decoration: const BoxDecoration(
@@ -25,39 +53,48 @@ class SplashScreen extends StatelessWidget {
                 Color(0XFF002556),
                 Color(0XFF00204A)
               ])),
-          child: Column(children: [
-            const Spacer(flex: 2),
-            Image.asset(ImageConstant.imgLogo),
-            const Spacer(
-              flex: 2,
+          child: AnimatedOpacity(
+            duration: const Duration(seconds: 1),
+            opacity: _isVisible ? 1.0 : 0.0,
+            child: AnimatedContainer(
+              duration: const Duration(seconds: 1),
+              curve: Curves.ease,
+              transform: Matrix4.translationValues(0, _buttonTop, 0),
+              child: Column(children: [
+                const Spacer(flex: 2),
+                Image.asset(ImageConstant.imgLogo),
+                const Spacer(
+                  flex: 2,
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0XFFFBDB6B),
+                      fixedSize: Size(size.width * 0.85, size.height * 0.06),
+                      foregroundColor: Colors.black,
+                      textStyle: const TextStyle(
+                        fontSize: 25,
+                      )),
+                  onPressed: _toggleVisibility,
+                  child: const Text('ACCEDI'),
+                ),
+                SizedBox(height: size.height * 0.03),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0XFFFBDB6B),
+                      fixedSize: Size(size.width * 0.85, size.height * 0.06),
+                      foregroundColor: Colors.black,
+                      textStyle: const TextStyle(
+                        fontSize: 25,
+                      )),
+                  onPressed: () {},
+                  child: const Text('REGISTRATI'),
+                ),
+                SizedBox(height: size.height * 0.02),
+                SvgPicture.asset(ImageConstant.googleLogo),
+                const Spacer(),
+              ]),
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0XFFFBDB6B),
-                  minimumSize: const Size(350, 50),
-                  foregroundColor: Colors.black,
-                  textStyle: const TextStyle(
-                    fontSize: 25,
-                  )),
-              onPressed: () {},
-              child: const Text('ACCEDI'),
-            ),
-            SizedBox(height: size.height * 0.03),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0XFFFBDB6B),
-                  minimumSize: const Size(350, 50),
-                  foregroundColor: Colors.black,
-                  textStyle: const TextStyle(
-                    fontSize: 25,
-                  )),
-              onPressed: () {},
-              child: const Text('REGISTRATI'),
-            ),
-            SizedBox(height: size.height * 0.02),
-            SvgPicture.asset(ImageConstant.googleLogo),
-            const Spacer(),
-          ]),
+          ),
         ),
       ),
     );
