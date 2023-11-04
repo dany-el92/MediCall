@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:medicall/views/auth/login_screen.dart';
+import 'package:medicall/views/accedi_screen.dart';
+import 'package:medicall/views/main_screen.dart';
 import 'package:medicall/views/splash_screen.dart';
+import 'package:medicall/views/registrati_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
+
+// test
 
 class MyApp extends StatelessWidget {
   @override
@@ -17,7 +21,13 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: LoginScreen(),
+      initialRoute: '/',
+      routes: {
+        '/' :(context) =>const SplashScreen(),
+        '/accedi' :(context) => const AccediScreen(),
+        '/registrati':(context) => const RegistratiScreen(),
+        '/mainpage':(context)=> const MainScreen(),
+      }
     );
   }
 }
