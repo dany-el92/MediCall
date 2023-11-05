@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:medicall/constants/images.dart';
 import 'package:medicall/utilities/extensions.dart';
-import 'package:medicall/utilities/palette.dart';
+import 'package:medicall/constants/colors.dart';
 
 class AccediScreen extends StatelessWidget {
   const AccediScreen({super.key});
@@ -22,9 +22,9 @@ class AccediScreen extends StatelessWidget {
                   begin: Alignment(0.5, 0),
                   end: Alignment(0.5, 1),
                   colors: [
-                bluchiaro,
-                blumedio,
-                bluscuro
+                AppColors.bluChiaro,
+                AppColors.bluMedio,
+                AppColors.bluScuro,
               ])),
           child: Column(children: [
             const Spacer(flex: 2),
@@ -34,28 +34,28 @@ class AccediScreen extends StatelessWidget {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: oro,
+                  backgroundColor: AppColors.oro,
                   minimumSize: const Size(350, 50),
                   foregroundColor: Colors.black,
                   textStyle: const TextStyle(
                     fontSize: 25,
                   )),
               onPressed: () {
-                Navigator.pushReplacementNamed(context,'/mainpage');
+                Navigator.pushReplacementNamed(context, '/mainpage');
               },
               child: const Text('ACCEDI'),
             ),
             SizedBox(height: size.height * 0.03),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: oro,
+                  backgroundColor: AppColors.oro,
                   minimumSize: const Size(350, 50),
                   foregroundColor: Colors.black,
                   textStyle: const TextStyle(
                     fontSize: 25,
                   )),
               onPressed: () {
-              Navigator.pushNamed(context, '/registrati');
+                Navigator.pushNamed(context, '/registrati');
               },
               child: const Text('REGISTRATI'),
             ),

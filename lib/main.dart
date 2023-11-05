@@ -1,33 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:medicall/constants/routes.dart';
 import 'package:medicall/views/accedi_screen.dart';
-import 'package:medicall/views/main_screen.dart';
-import 'package:medicall/views/splash_screen.dart';
-import 'package:medicall/views/registrati_screen.dart';
+import 'package:medicall/views/auth/login_view.dart';
+import 'package:medicall/views/main_view.dart';
+import 'package:medicall/views/auth/register_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
-// test
-
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'MediCall',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      initialRoute: '/',
-      routes: {
-        '/' :(context) =>const SplashScreen(),
-        '/accedi' :(context) => const AccediScreen(),
-        '/registrati':(context) => const RegistratiScreen(),
-        '/mainpage':(context)=> const MainScreen(),
-      }
-    );
+        title: 'MediCall',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        initialRoute: Routes.splashScreen,
+        routes: {
+          Routes.loginView: (context) => const LoginView(),
+          Routes.registerView: (context) => const RegisterView(),
+          Routes.mainView: (context) => const MainView(),
+        });
   }
 }
