@@ -42,13 +42,20 @@ class CustomTextFormField extends StatelessWidget {
       obscuringCharacter: '*',
       onEditingComplete: onEditingComplete,
       decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 15,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
-          borderSide: const BorderSide(color: Colors.black, width: 2),
+          borderSide: const BorderSide(
+            color: Colors.black,
+            width: 2,
+          ),
         ),
         labelStyle: const TextStyle(
           color: Colors.blueGrey,
-          fontSize: 20,
+          fontSize: 15,
           fontWeight: FontWeight.w500,
         ),
         suffixIcon: suffixIcon,
@@ -57,7 +64,6 @@ class CustomTextFormField extends StatelessWidget {
         fillColor: Colors.white,
         filled: true,
       ),
-      onTapOutside: (event) => FocusScope.of(context).unfocus(),
     );
   }
 }

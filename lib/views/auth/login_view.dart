@@ -33,9 +33,9 @@ class _LoginViewState extends State<LoginView> {
                 begin: Alignment(0.5, 0),
                 end: Alignment(0.5, 1),
                 colors: [
-              Color(0XFF00306D),
-              Color(0XFF002556),
-              Color(0XFF00204A)
+              AppColors.bluChiaro,
+              AppColors.bluMedio,
+              AppColors.bluScuro,
             ])),
         child: SingleChildScrollView(
           child: Padding(
@@ -77,6 +77,7 @@ class _LoginViewState extends State<LoginView> {
                         keyboardType: TextInputType.visiblePassword,
                         obscureText: isObscure,
                         suffixIcon: IconButton(
+                          highlightColor: Colors.transparent,
                           onPressed: () {
                             setState(() {
                               isObscure = !isObscure;
@@ -111,6 +112,8 @@ class _LoginViewState extends State<LoginView> {
                       SizedBox(height: size.height * 0.02),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          shadowColor: Colors.black,
+                          elevation: 20,
                           backgroundColor: AppColors.oro,
                           foregroundColor: Colors.black,
                           fixedSize:
