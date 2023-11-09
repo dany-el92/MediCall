@@ -14,6 +14,7 @@ class CustomTextFormField extends StatelessWidget {
     this.onEditingComplete,
     this.autofocus,
     this.focusNode,
+    this.onTap,
   });
 
   final void Function(String)? onChanged;
@@ -27,6 +28,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool? autofocus;
   final FocusNode? focusNode;
   final void Function()? onEditingComplete;
+  final Future<void> Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +66,7 @@ class CustomTextFormField extends StatelessWidget {
         fillColor: Colors.white,
         filled: true,
       ),
+      onTap: onTap,
     );
   }
 }
