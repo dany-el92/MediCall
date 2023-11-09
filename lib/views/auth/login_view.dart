@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:medicall/components/custom_text_form_field.dart';
 import 'package:medicall/constants/colors.dart';
 import 'package:medicall/utilities/extensions.dart';
+import 'package:medicall/constants/routes.dart';
 
 import '../../constants/images.dart';
 
@@ -64,7 +65,7 @@ class _LoginViewState extends State<LoginView> {
                         controller: emailController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Inserire del testo';
+                            return 'Email non inserita';
                           }
                           return null;
                         },
@@ -128,6 +129,9 @@ class _LoginViewState extends State<LoginView> {
                             );
                             emailController.clear();
                             passwordController.clear();
+                            Future.delayed(const Duration(seconds: 5), () {
+                              Navigator.of(context).pushReplacementNamed(Routes.mainView);
+                            });
                           }
                         },
                         child: const Text(
@@ -192,7 +196,9 @@ class _LoginViewState extends State<LoginView> {
                             ),
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushNamed(context, Routes.registerView);
+                            },
                             child: const Text(
                               'Registrati',
                               style: TextStyle(

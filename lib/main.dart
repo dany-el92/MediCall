@@ -3,6 +3,7 @@ import 'package:medicall/constants/routes.dart';
 import 'package:medicall/views/auth/login_view.dart';
 import 'package:medicall/views/main_view.dart';
 import 'package:medicall/views/auth/register_view.dart';
+import 'package:medicall/views/splash_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,11 +22,12 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        initialRoute: Routes.mainView,
+        initialRoute: Routes.splashScreen,
         routes: {
           Routes.loginView: (context) => const LoginView(),
           Routes.registerView: (context) => const RegisterView(),
           Routes.mainView: (context) => const MainView(),
+          Routes.splashScreen: (context) => const SplashScreen()
         });
   }
 }

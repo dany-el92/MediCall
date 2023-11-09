@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:medicall/constants/colors.dart';
+import 'package:medicall/constants/routes.dart';
 import 'package:medicall/utilities/extensions.dart';
 import 'package:medicall/constants/images.dart';
 
@@ -20,7 +21,7 @@ class _AccediScreenState extends State<SplashScreen>
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 
     Future.delayed(const Duration(seconds: 1), () {
-      Navigator.of(context).pushReplacementNamed('/accedi');
+      Navigator.of(context).pushReplacementNamed(Routes.loginView);
     });
   }
 
