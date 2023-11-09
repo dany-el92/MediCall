@@ -280,6 +280,7 @@ class _RegisterViewState extends State<RegisterView> {
                             cognomeController.clear();
                             dataController.clear();
                             genereController.clear();
+                            Navigator.pop(context);
                           }
                         },
                         child: const Text(

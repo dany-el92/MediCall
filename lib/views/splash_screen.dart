@@ -21,7 +21,7 @@ class _AccediScreenState extends State<SplashScreen>
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 
     Future.delayed(const Duration(seconds: 1), () {
-      Navigator.of(context).pushReplacementNamed(Routes.registerView);
+      Navigator.of(context).pushReplacementNamed(Routes.loginView);
     });
   }
 
