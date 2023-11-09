@@ -8,4 +8,5 @@ class ImageConstant {
 
   static const String facebookLogo = '$_imagePath/facebook.svg';
 
+  static const String chatImage = '$_imagePath/chatImage.svg';
 }
