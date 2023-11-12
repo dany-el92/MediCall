@@ -39,7 +39,7 @@ class AppointmentCard extends StatelessWidget {
                     Row(
                       children: [
                         CircleAvatar(
-                          backgroundImage: AssetImage(''),
+                          //backgroundImage: AssetImage(''),
                         ),
                         SizedBox(
                           width: 10,
