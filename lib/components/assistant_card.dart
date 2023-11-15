@@ -42,7 +42,7 @@ class AssistantCard extends StatelessWidget {
             Text(
               'Ciao, come posso aiutarti?',
               style: TextStyle(
-                color: Colors.white,
+                color: AppColors.oro,
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
               ),
@@ -50,7 +50,7 @@ class AssistantCard extends StatelessWidget {
             Icon(
               Icons.mic,
               size: 30,
-              color: Colors.white,
+              color: AppColors.oro,
             ),
           ],
         ),
