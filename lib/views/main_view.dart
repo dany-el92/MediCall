@@ -28,11 +28,11 @@ void _navigateBottomBar(int index){
 }
 
 final List _pages = [
-  HomePageView(),
-  PrescriptionView(),
-  AssistentView(),
-  ReceiptView(),
-  ProfileView()
+  const HomePageView(),
+  const PrescriptionView(),
+  const AssistentView(),
+  const ReceiptView(),
+  const ProfileView()
 ];
 
 FloatingActionButton? _checkIndex(int index){
