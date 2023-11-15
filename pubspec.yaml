@@ -16,6 +16,21 @@ dependencies:
   flutter_svg: ^2.0.9
   curved_labeled_navigation_bar: ^2.0.2
   email_validator: ^2.1.17
+  flutter_native_splash: ^2.3.5
+
+flutter_native_splash:
+  background_image: assets/images/gradient.png
+  image: assets/images/iconaLogo.png
+  android: true
+  ios: true
+  web: false
+  fullscreen: true
+
+  android_12:
+    image: assets/images/logoInteroSplash.png
+    #image: assets/images/iconaLogo.png
+    #branding: assets/images/scrittaLogo.png
+    color: "#00204A"
 
 dev_dependencies:
   flutter_test:

@@ -1,0 +1,29 @@
+<changelist name="Uncommitted_changes_before_Update_at_10_11_2023_00_53_[Changes]" date="1699574017472" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_10_11_2023_00_53_[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 10/11/2023 00:53 [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="build/app/intermediates/compressed_assets/debug/out/assets/flutter_assets/AssetManifest.bin.jar" />
+    <option name="AFTER_PATH" value="build/app/intermediates/compressed_assets/debug/out/assets/flutter_assets/AssetManifest.bin.jar" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_10_11_2023_00_53_[Changes]/AssetManifest.bin.jar" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="build/app/intermediates/incremental/debug-mergeJavaRes/merge-state" />
+    <option name="AFTER_PATH" value="build/app/intermediates/incremental/debug-mergeJavaRes/merge-state" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_10_11_2023_00_53_[Changes]/merge-state" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="build/app/intermediates/assets/debug/flutter_assets/AssetManifest.bin" />
+    <option name="AFTER_PATH" value="build/app/intermediates/assets/debug/flutter_assets/AssetManifest.bin" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_10_11_2023_00_53_[Changes]/AssetManifest.bin" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="build/app/intermediates/compressed_assets/debug/out/assets/flutter_assets/AssetManifest.json.jar" />
+    <option name="AFTER_PATH" value="build/app/intermediates/compressed_assets/debug/out/assets/flutter_assets/AssetManifest.json.jar" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_10_11_2023_00_53_[Changes]/AssetManifest.json.jar" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="build/app/intermediates/flutter/debug/flutter_assets/AssetManifest.bin" />
+    <option name="AFTER_PATH" value="build/app/intermediates/flutter/debug/flutter_assets/AssetManifest.bin" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_10_11_2023_00_53_[Changes]/AssetManifest1.bin" />
+  </binary>
+</changelist>
