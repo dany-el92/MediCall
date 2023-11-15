@@ -5,9 +5,9 @@ import 'package:medicall/constants/images.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:medicall/utilities/extensions.dart';
+import 'package:medicall/views/account_view.dart';
 import 'package:medicall/views/homepage_view.dart';
 import 'package:medicall/views/prescription_view.dart';
-import 'package:medicall/views/profile_view.dart';
 import 'package:medicall/views/receipt_view.dart';
 import 'package:medicall/views/assistant_view.dart';
 
@@ -20,7 +20,7 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   //TODO: da cambiare con la pagina iniziale
-  int _selectedIndex = 3;
+  int _selectedIndex = 0;
 
   void _navigateBottomBar(int index) {
     setState(() {
@@ -33,7 +33,7 @@ class _MainViewState extends State<MainView> {
     const PrescriptionView(),
     const AssistantView(),
     const ReceiptView(),
-    const ProfileView()
+    const AccountView()
   ];
 
   // FloatingActionButton? _checkIndex(int index) {
@@ -67,7 +67,7 @@ class _MainViewState extends State<MainView> {
         curve: Curves.easeIn,
         elevation: 10,
         backgroundColor: AppColors.bluChiaro,
-        foregroundColor: Colors.white,
+        foregroundColor: AppColors.oro,
         children: [
           SpeedDialChild(
             child: const Icon(Icons.medical_information),
@@ -129,13 +129,13 @@ class _MainViewState extends State<MainView> {
             label: 'Ricette',
           ),
           CurvedNavigationBarItem(
-            child: Icon(Icons.person),
-            label: 'Profilo',
+            child: Icon(Icons.manage_accounts),
+            label: 'Account',
           )
         ],
         backgroundColor: AppColors.bluChiaro,
         color: const Color(0xfff9f9f9),
-        buttonBackgroundColor: const Color(0xfff9f9f9),
+        buttonBackgroundColor: AppColors.oro,
         animationCurve: Curves.easeInOut,
         animationDuration: const Duration(milliseconds: 500),
         onTap: _navigateBottomBar,
