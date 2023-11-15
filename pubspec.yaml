@@ -17,6 +17,7 @@ dependencies:
   curved_labeled_navigation_bar: ^2.0.2
   email_validator: ^2.1.17
   flutter_native_splash: ^2.3.5
+  flutter_speed_dial: ^7.0.0
 
 flutter_native_splash:
   background_image: assets/images/gradient.png
