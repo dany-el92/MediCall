@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:medicall/constants/colors.dart';
 import 'package:medicall/constants/images.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
@@ -8,7 +9,7 @@ import 'package:medicall/views/homepage_view.dart';
 import 'package:medicall/views/prescription_view.dart';
 import 'package:medicall/views/profile_view.dart';
 import 'package:medicall/views/receipt_view.dart';
-import 'package:medicall/views/assistent_view.dart';
+import 'package:medicall/views/assistant_view.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -18,45 +19,75 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
+  //TODO: da cambiare con la pagina iniziale
+  int _selectedIndex = 3;
 
-int _selectedIndex=0;
-
-void _navigateBottomBar(int index){
-  setState(() {
-    _selectedIndex=index;
-  });
-}
-
-final List _pages = [
-  const HomePageView(),
-  const PrescriptionView(),
-  const AssistentView(),
-  const ReceiptView(),
-  const ProfileView()
-];
-
-FloatingActionButton? _checkIndex(int index){
-  if(index==0){
-    return FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: AppColors.bluChiaro,
-        shape: const CircleBorder(),
-        enableFeedback: true,
-        elevation: 5,
-        tooltip: 'Riconoscimento medicinali',
-        //colore quando si clicca
-        splashColor: Colors.grey,
-        child: const Icon(
-          Icons.camera_alt_rounded,
-          color: Colors.white,
-          size: 30,
-        ),
-      ); 
+  void _navigateBottomBar(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
-  else{
+
+  final List _pages = [
+    const HomePageView(),
+    const PrescriptionView(),
+    const AssistantView(),
+    const ReceiptView(),
+    const ProfileView()
+  ];
+
+  // FloatingActionButton? _checkIndex(int index) {
+  //   if (index == 0) {
+  //     return FloatingActionButton(
+  //       onPressed: () {},
+  //       backgroundColor: AppColors.bluChiaro,
+  //       shape: const CircleBorder(),
+  //       enableFeedback: true,
+  //       elevation: 5,
+  //       tooltip: 'Riconoscimento medicinali',
+  //       //colore quando si clicca
+  //       splashColor: Colors.grey,
+  //       child: const Icon(
+  //         Icons.camera_alt_rounded,
+  //         color: Colors.white,
+  //         size: 30,
+  //       ),
+  //     );
+  //   }
+  //   return null;
+  // }
+
+  SpeedDial? _checkIndex(int index) {
+    if (index == 0) {
+      return SpeedDial(
+        animatedIcon: AnimatedIcons.menu_close,
+        //overlayColor: Colors.black,
+        //overlayOpacity: 0.5,
+        spacing: 10,
+        curve: Curves.easeIn,
+        elevation: 10,
+        backgroundColor: AppColors.bluChiaro,
+        foregroundColor: Colors.white,
+        children: [
+          SpeedDialChild(
+            child: const Icon(Icons.medical_information),
+            shape: const CircleBorder(),
+            elevation: 10,
+            label: 'Riconoscimento Medicinali',
+            onTap: () {},
+          ),
+          SpeedDialChild(
+            child: const Icon(Icons.receipt_rounded),
+            shape: const CircleBorder(),
+            elevation: 10,
+            label: 'Salva Ricetta',
+            onTap: () {},
+          ),
+        ],
+      );
+    }
     return null;
   }
-}
 
   @override
   Widget build(BuildContext context) {
