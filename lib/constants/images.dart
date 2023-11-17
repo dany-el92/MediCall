@@ -11,4 +11,6 @@ class ImageConstant {
   static const String chatImage = '$_imagePath/chatImage.svg';
 
   static const String prescriptionImage = '$_imagePath/medicalPrescription.svg';
+
+  static const String calendarImage = '$_imagePath/calendar.svg';
 }

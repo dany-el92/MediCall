@@ -4,7 +4,7 @@ import 'package:medicall/constants/routes.dart';
 import 'package:medicall/views/auth/login_view.dart';
 import 'package:medicall/views/main_view.dart';
 import 'package:medicall/views/auth/register_view.dart';
-import 'package:medicall/views/receipt_view.dart';
+import 'package:medicall/views/prescription_view.dart';
 import 'package:medicall/views/splash_screen.dart';
 
 void main() {
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
           Routes.registerView: (context) => const RegisterView(),
           Routes.mainView: (context) => const MainView(),
           Routes.splashScreen: (context) => const SplashScreen(),
-          Routes.receiptView: (context) => const ReceiptView(),
+          Routes.receiptView: (context) => const PrescriptionView(),
         });
   }
 }

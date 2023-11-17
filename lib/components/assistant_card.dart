@@ -7,21 +7,6 @@ class AssistantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //container per il gradiente al posto dell'elevatedButton
-    // return Container(
-    //   padding: const EdgeInsets.all(10),
-    //   width: double.infinity,
-    //   decoration: BoxDecoration(
-    //     borderRadius: BorderRadius.circular(10),
-    //     gradient: const LinearGradient(
-    //       colors: [
-    //         AppColors.oro,
-    //         AppColors.bluChiaro,
-    //       ],
-    //       begin: Alignment.centerLeft,
-    //       end: Alignment.centerRight,
-    //     ),
-    //   ),
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.bluChiaro,
@@ -42,7 +27,7 @@ class AssistantCard extends StatelessWidget {
             Text(
               'Ciao, come posso aiutarti?',
               style: TextStyle(
-                color: AppColors.oro,
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
               ),
@@ -50,7 +35,7 @@ class AssistantCard extends StatelessWidget {
             Icon(
               Icons.mic,
               size: 30,
-              color: AppColors.oro,
+              color: Colors.white,
             ),
           ],
         ),

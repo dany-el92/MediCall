@@ -6,10 +6,10 @@ import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:medicall/utilities/extensions.dart';
 import 'package:medicall/views/account_view.dart';
+import 'package:medicall/views/calendar_view.dart';
 import 'package:medicall/views/homepage_view.dart';
-import 'package:medicall/views/prescription_view.dart';
-import 'package:medicall/views/receipt_view.dart';
 import 'package:medicall/views/assistant_view.dart';
+import 'package:medicall/views/prescription_view.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -30,32 +30,11 @@ class _MainViewState extends State<MainView> {
 
   final List _pages = [
     const HomePageView(),
-    const PrescriptionView(),
+    const CalendarView(),
     const AssistantView(),
-    const ReceiptView(),
+    const PrescriptionView(),
     const AccountView()
   ];
-
-  // FloatingActionButton? _checkIndex(int index) {
-  //   if (index == 0) {
-  //     return FloatingActionButton(
-  //       onPressed: () {},
-  //       backgroundColor: AppColors.bluChiaro,
-  //       shape: const CircleBorder(),
-  //       enableFeedback: true,
-  //       elevation: 5,
-  //       tooltip: 'Riconoscimento medicinali',
-  //       //colore quando si clicca
-  //       splashColor: Colors.grey,
-  //       child: const Icon(
-  //         Icons.camera_alt_rounded,
-  //         color: Colors.white,
-  //         size: 30,
-  //       ),
-  //     );
-  //   }
-  //   return null;
-  // }
 
   SpeedDial? _checkIndex(int index) {
     if (index == 0) {
@@ -67,7 +46,7 @@ class _MainViewState extends State<MainView> {
         curve: Curves.easeIn,
         elevation: 10,
         backgroundColor: AppColors.bluChiaro,
-        foregroundColor: AppColors.oro,
+        foregroundColor: Colors.white,
         children: [
           SpeedDialChild(
             child: const Icon(Icons.medical_information),
@@ -96,7 +75,7 @@ class _MainViewState extends State<MainView> {
       backgroundColor: AppColors.bianco,
       appBar: AppBar(
         backgroundColor: AppColors.bluScuro,
-        elevation: 10,
+        elevation: 5,
         shadowColor: Colors.black,
         toolbarHeight: size.height * 0.08,
         title: Image.asset(
@@ -135,7 +114,7 @@ class _MainViewState extends State<MainView> {
         ],
         backgroundColor: AppColors.bluChiaro,
         color: const Color(0xfff9f9f9),
-        buttonBackgroundColor: AppColors.oro,
+        buttonBackgroundColor: Colors.white,
         animationCurve: Curves.easeInOut,
         animationDuration: const Duration(milliseconds: 500),
         onTap: _navigateBottomBar,
