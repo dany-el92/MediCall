@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:medicall/utilities/text_scanner.dart';
 import 'package:medicall/constants/colors.dart';
 import 'package:medicall/constants/images.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
@@ -60,7 +61,10 @@ class _MainViewState extends State<MainView> {
             shape: const CircleBorder(),
             elevation: 10,
             label: 'Salva Ricetta',
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const TextScanner()));
+            },
           ),
         ],
       );

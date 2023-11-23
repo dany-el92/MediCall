@@ -1,17 +1,17 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.medicall.app-mergeDebugResources-9:/values-night-v31/values-night-v31.xml",
+            "outputFile": "com.example.medicall.app-mergeDebugResources-11:/values-night-v31/values-night-v31.xml",
             "map": [
                 {
                     "source": "C:\\dev\\projects\\medicall\\android\\app\\src\\main\\res\\values-night-v31\\styles.xml",
                     "from": {
                         "startLines": "3,17",
                         "startColumns": "4,4",
-                        "startOffsets": "173,1045",
+                        "startOffsets": "176,1062",
                         "endLines": "10,19",
                         "endColumns": "12,12",
-                        "endOffsets": "694,1209"
+                        "endOffsets": "704,1228"
                     },
                     "to": {
                         "startLines": "2,10",
