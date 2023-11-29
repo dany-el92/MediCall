@@ -12,12 +12,21 @@ void main() {
   runApp(const MyApp());
 }
 
+class SnackBarService {
+  static final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
+
+  static void showSnackBar({required String content}) {
+    scaffoldKey.currentState?.showSnackBar(SnackBar(content: Text(content)));
+  }
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        scaffoldMessengerKey: SnackBarService.scaffoldKey,
         title: 'MediCall',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(

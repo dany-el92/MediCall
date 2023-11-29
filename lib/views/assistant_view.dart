@@ -21,8 +21,8 @@ class _AssistantViewState extends State<AssistantView> {
             child: Column(
               children: [
                 SizedBox(height: size.height * 0.01),
-                BubbleSpecialThree(
-                  textStyle: const TextStyle(
+                const BubbleSpecialThree(
+                  textStyle: TextStyle(
                     color:  AppColors.bianco,
                     fontSize: 16
                   ) ,
@@ -30,11 +30,11 @@ class _AssistantViewState extends State<AssistantView> {
                   color: AppColors.bluMedio,
                   tail:true,
                   isSender: false),
-                BubbleSpecialThree(
+                const BubbleSpecialThree(
                   text: "Vorrei prenotare per..." ,
                   color: AppColors.bluChiaro,
                   tail:true,
-                  textStyle: const TextStyle(
+                  textStyle: TextStyle(
                     color: AppColors.bianco,
                     fontSize: 16
                   ) 
@@ -48,7 +48,7 @@ class _AssistantViewState extends State<AssistantView> {
             replyIconColor: AppColors.bluChiaro,
             sendButtonColor: AppColors.bluChiaro,
             actions: [
-              InkWell(
+              const InkWell(
                 child: Icon(Icons.mic, color: AppColors.bluChiaro,),
               )
             ],
