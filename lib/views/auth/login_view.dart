@@ -34,10 +34,10 @@ class _LoginViewState extends State<LoginView> {
                 begin: Alignment(0.5, 0),
                 end: Alignment(0.5, 1),
                 colors: [
-              AppColors.bluChiaro,
-              AppColors.bluMedio,
-              AppColors.bluScuro,
-            ])),
+                  AppColors.bluChiaro,
+                  AppColors.bluMedio,
+                  AppColors.bluScuro,
+                ])),
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -118,7 +118,7 @@ class _LoginViewState extends State<LoginView> {
                           backgroundColor: AppColors.oro,
                           foregroundColor: Colors.black,
                           fixedSize:
-                              Size(size.width * 0.95, size.height * 0.06),
+                          Size(size.width * 0.95, size.height * 0.06),
                         ),
                         onPressed: () {
                           if (_formKey.currentState?.validate() ?? false) {
@@ -130,7 +130,8 @@ class _LoginViewState extends State<LoginView> {
                             emailController.clear();
                             passwordController.clear();
                             Future.delayed(const Duration(seconds: 5), () {
-                              Navigator.of(context).pushReplacementNamed(Routes.mainView);
+                              Navigator.of(context).pushReplacementNamed(
+                                  Routes.mainView);
                             });
                           }
                         },

@@ -1,15 +1,31 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:medicall/utilities/permission_request.dart';
+import 'package:medicall/utilities/request.dart';
 import 'package:medicall/views/scan_result_view.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ImagePickerService {
   Future<PickedFile> pickImage({required ImageSource source}) async {
     final xFileSource = await ImagePicker().pickImage(source: source);
     return PickedFile(xFileSource!.path);
+  }
+
+  Future<void> printTextFromUrl(BuildContext context) async {
+    //TODO: cambiare url del server
+    var data = await getData('http://10.0.2.2:5000/');
+    var decodedData = jsonDecode(data);
+    //chiave del JSON del server
+    var text = decodedData['url'];
+
+    final Uri url = Uri.parse(text);
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
   }
 
   Future<XFile?> chooseImageFile(BuildContext context) async {

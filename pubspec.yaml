@@ -22,6 +22,8 @@ dependencies:
   google_mlkit_text_recognition: ^0.11.0
   permission_handler: ^11.0.1
   image_picker: ^1.0.4
+  http: ^1.1.2
+  url_launcher: ^6.2.1
 
 flutter_native_splash:
   background_image: assets/images/gradient.png

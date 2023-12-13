@@ -54,7 +54,9 @@ class _MainViewState extends State<MainView> {
             shape: const CircleBorder(),
             elevation: 10,
             label: 'Riconoscimento Medicinali',
-            onTap: () {},
+            onTap: () async {
+              await ImagePickerService().printTextFromUrl(context);
+            },
           ),
           SpeedDialChild(
             child: const Icon(Icons.receipt_rounded),
