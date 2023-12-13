@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:medicall/authentication/auth_exceptions.dart';
+import 'package:medicall/authentication/auth_service.dart';
 import 'package:medicall/components/custom_text_form_field.dart';
 import 'package:medicall/constants/colors.dart';
+import 'package:medicall/constants/routes.dart';
 import 'package:medicall/utilities/extensions.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:medicall/utilities/show_dialogs.dart';
 import '../../constants/images.dart';
 
 final _formKey = GlobalKey<FormState>();
@@ -15,29 +19,49 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController CFController = TextEditingController();
-  TextEditingController nomeController = TextEditingController();
-  TextEditingController cognomeController = TextEditingController();
-  TextEditingController dataController = TextEditingController();
-  TextEditingController genereController = TextEditingController();
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
+  late final TextEditingController _CFController;
+  late final TextEditingController _nomeController;
+  late final TextEditingController _cognomeController;
+  late final TextEditingController _dataController;
+  late final TextEditingController _genereController;
   bool isObscure = true;
 
-  void _navigateToLoginView() {
-    Navigator.of(context).pop(); // Torna alla pagina precedente (LoginView)
+  @override
+  void initState() {
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    _CFController = TextEditingController();
+    _nomeController = TextEditingController();
+    _cognomeController = TextEditingController();
+    _dataController = TextEditingController();
+    _genereController = TextEditingController();
+    super.initState();
   }
 
-  Future<void> _selectDate() async{
-    DateTime? _picked = await showDatePicker
-      (context: context,
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _CFController.dispose();
+    _nomeController.dispose();
+    _cognomeController.dispose();
+    _dataController.dispose();
+    _genereController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _selectDate() async {
+    DateTime? _picked = await showDatePicker(
+        context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(1900),
         lastDate: DateTime(2100));
 
     if (_picked != null) {
       setState(() {
-        dataController.text = _picked.toString().split(" ")[0];
+        _dataController.text = _picked.toString().split(" ")[0];
       });
     }
   }
@@ -82,13 +106,15 @@ class _RegisterViewState extends State<RegisterView> {
                             textInputAction: TextInputAction.next,
                             labelText: 'Codice Fiscale',
                             keyboardType: TextInputType.text,
-                            controller: CFController,
+                            controller: _CFController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Codice Fiscale non inserito';
                               }
 
-                              if(!RegExp(r"^(?:[A-Z][AEIOU][AEIOUX]|[AEIOU]X{2}|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$").hasMatch(value)){
+                              if (!RegExp(
+                                      r"^(?:[A-Z][AEIOU][AEIOUX]|[AEIOU]X{2}|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$")
+                                  .hasMatch(value)) {
                                 return 'Codice Fiscale inserito non esistente';
                               }
 
@@ -102,7 +128,7 @@ class _RegisterViewState extends State<RegisterView> {
                             textInputAction: TextInputAction.next,
                             labelText: 'Nome',
                             keyboardType: TextInputType.name,
-                            controller: nomeController,
+                            controller: _nomeController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Nome non inserito';
@@ -117,7 +143,7 @@ class _RegisterViewState extends State<RegisterView> {
                             textInputAction: TextInputAction.next,
                             labelText: 'Cognome',
                             keyboardType: TextInputType.name,
-                            controller: cognomeController,
+                            controller: _cognomeController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Cognome non inserito';
@@ -139,7 +165,7 @@ class _RegisterViewState extends State<RegisterView> {
                                 color: AppColors.bluChiaro,
                               ),
                             ),
-                            controller: emailController,
+                            controller: _emailController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Email non inserita';
@@ -179,7 +205,7 @@ class _RegisterViewState extends State<RegisterView> {
                                 ),
                               ),
                             ),
-                            controller: passwordController,
+                            controller: _passwordController,
                             validator: null, // TODO: Add validator
                           ),
 
@@ -190,7 +216,7 @@ class _RegisterViewState extends State<RegisterView> {
                             textInputAction: TextInputAction.next,
                             labelText: 'Data di Nascita',
                             keyboardType: TextInputType.none,
-                            controller: dataController,
+                            controller: _dataController,
                             suffixIcon: const Padding(
                                 padding: EdgeInsets.only(right: 20.0),
                                 child: Icon(
@@ -222,8 +248,8 @@ class _RegisterViewState extends State<RegisterView> {
                           ),
                           */
                           DropdownButtonFormField<String>(
-                            items: <String>['Maschio','Femmina','Altro'].map<DropdownMenuItem<String>>((
-                                String value){
+                            items: <String>['Maschio', 'Femmina', 'Altro']
+                                .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: Text(value),
@@ -259,7 +285,8 @@ class _RegisterViewState extends State<RegisterView> {
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500,
                               ),
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
                               fillColor: Colors.white,
                               filled: true,
                               icon: null, // Rimuovi la freccia predefinita
@@ -279,52 +306,90 @@ class _RegisterViewState extends State<RegisterView> {
                               fixedSize:
                                   Size(size.width * 0.95, size.height * 0.06),
                             ),
-                            onPressed: () {
-                              if (_formKey.currentState?.validate() ?? false) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Registrazione avvenuta con successo'),
-                                  ),
+                            onPressed: () async {
+                              //Ultimo testo che l'utente ha digitato nei campi
+                              final email = _emailController.text;
+                              final password = _passwordController.text;
+
+                              try {
+                                await AuthService.firebase().createUser(
+                                  email: email,
+                                  password: password,
                                 );
-                                emailController.clear();
-                                passwordController.clear();
-                                CFController.clear();
-                                nomeController.clear();
-                                cognomeController.clear();
-                                dataController.clear();
-                                genereController.clear();
-                                Navigator.pop(context);
+
+                                AuthService.firebase().sendEmailVerification();
+                                //Non rimuove tutte le view precedenti, ma fa solo una push della nuova schermata su quelle già presenti
+                                Navigator.of(context)
+                                    .pushNamed(Routes.verifyMailView);
+                              } on WeakPasswordAuthException {
+                                await showErrorDialog(
+                                    context, 'Password debole');
+                              } on EmailAlreadyInUseAuthException {
+                                await showErrorDialog(
+                                    context, 'Email già in uso');
+                              } on InvalidEmailAuthException {
+                                await showErrorDialog(
+                                    context, 'Email non valida');
+                              } on GenericAuthException {
+                                await showErrorDialog(
+                                    context, 'Errore di registrazione');
                               }
+                              // if (_formKey.currentState?.validate() ?? false) {
+                              //   ScaffoldMessenger.of(context).showSnackBar(
+                              //     const SnackBar(
+                              //       content: Text(
+                              //           'Registrazione avvenuta con successo'),
+                              //     ),
+                              //   );
+                              //   emailController.clear();
+                              //   passwordController.clear();
+                              //   CFController.clear();
+                              //   nomeController.clear();
+                              //   cognomeController.clear();
+                              //   dataController.clear();
+                              //   genereController.clear();
+                              //   Navigator.pop(context);
+                              // }
                             },
                             child: const Text(
                               ' REGISTRATI',
                               style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.bluMedio
-                              ),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.bluMedio),
                             ),
                           ),
-                          SizedBox(height: size.height * 0.1),
                           // Spazio sotto il pulsante di registrazione
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Hai già un account?',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pushNamedAndRemoveUntil(context,
+                                      Routes.loginView, (route) => false);
+                                },
+                                child: const Text(
+                                  'Accedi',
+                                  style: TextStyle(
+                                    color: AppColors.oro,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
-          ),
-          Positioned(
-            top: MediaQuery.of(context).padding.top,
-            left: 8.0,
-            child: IconButton(
-              icon: const Icon(
-                Icons.close,
-                color: AppColors.oro,
-                size: 30,
-              ),
-              onPressed: _navigateToLoginView,
             ),
           ),
         ],

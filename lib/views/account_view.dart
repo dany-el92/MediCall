@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:medicall/authentication/auth_service.dart';
 import 'package:medicall/constants/colors.dart';
+import 'package:medicall/constants/routes.dart';
 import 'package:medicall/utilities/extensions.dart';
+import 'package:medicall/utilities/show_dialogs.dart';
 
 class AccountView extends StatelessWidget {
   const AccountView({super.key});
@@ -22,7 +25,15 @@ class AccountView extends StatelessWidget {
                   radius: 23,
                   backgroundColor: AppColors.bluChiaro,
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      final shouldLogout = await showLogOutDialog(context);
+                      //True se l'utente sceglie di uscire, false se annulla
+                      if (shouldLogout) {
+                        await AuthService.firebase().logOut();
+                        Navigator.of(context)
+                            .pushNamedAndRemoveUntil(Routes.loginView, (_) => false);
+                      }
+                    },
                     icon: const Icon(
                       Icons.exit_to_app,
                       size: 25,
