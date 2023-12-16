@@ -30,8 +30,8 @@ class AccountView extends StatelessWidget {
                       //True se l'utente sceglie di uscire, false se annulla
                       if (shouldLogout) {
                         await AuthService.firebase().logOut();
-                        Navigator.of(context)
-                            .pushNamedAndRemoveUntil(Routes.loginView, (_) => false);
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            Routes.loginView, (_) => false);
                       }
                     },
                     icon: const Icon(
@@ -229,7 +229,8 @@ class AccountView extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: size.height * 0.05), // Spazio sotto il pulsante elimina account
+            SizedBox(height: size.height * 0.05),
+            // Spazio sotto il pulsante elimina account
           ],
         ),
       ),

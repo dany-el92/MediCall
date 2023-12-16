@@ -1,6 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart'
-    show FirebaseAuth, FirebaseAuthException;
+    show
+        FacebookAuthProvider,
+        FirebaseAuth,
+        FirebaseAuthException,
+        GoogleAuthProvider,
+        OAuthCredential;
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:medicall/authentication/auth_exceptions.dart';
 import 'package:medicall/authentication/auth_provider.dart';
 import 'package:medicall/authentication/auth_user.dart';
@@ -79,7 +86,9 @@ class FirebaseAuthProvider implements AuthProvider {
   Future<void> logOut() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      await FirebaseAuth.instance.signOut();
+      await FacebookAuth.instance.logOut();
+      GoogleSignIn().signOut();
+      FirebaseAuth.instance.signOut();
     } else {
       throw UserNotLoggedInAuthException();
     }
@@ -100,5 +109,74 @@ class FirebaseAuthProvider implements AuthProvider {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+  }
+
+  @override
+  Future<AuthUser> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn(
+            clientId: (DefaultFirebaseOptions.currentPlatform ==
+                    DefaultFirebaseOptions.ios)
+                ? DefaultFirebaseOptions.currentPlatform.iosClientId
+                : DefaultFirebaseOptions.currentPlatform.androidClientId)
+        .signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    try {
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      final user = currentUser;
+      if (user != null) {
+        return user;
+      } else {
+        throw UserNotLoggedInAuthException();
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'account-exists-with-different-credential') {
+        throw AccountExistsWithDifferentCredentialAuthException();
+      } else if (e.code == 'invalid-credential') {
+        throw InvalidLoginCredentialsAuthException();
+      } else {
+        throw GenericAuthException();
+      }
+    } catch (_) {
+      throw GenericAuthException();
+    }
+  }
+
+  @override
+  Future<AuthUser> signInWithFacebook() async {
+    final LoginResult loginResult = await FacebookAuth.instance.login(
+      loginBehavior: LoginBehavior.dialogOnly,
+    );
+    final OAuthCredential facebookAuthCredential =
+        FacebookAuthProvider.credential(loginResult.accessToken!.token);
+    try {
+      await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+      final user = currentUser;
+      if (user != null) {
+        return user;
+      } else {
+        throw UserNotLoggedInAuthException();
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'account-exists-with-different-credential') {
+        throw AccountExistsWithDifferentCredentialAuthException();
+      } else if (e.code == 'invalid-credential') {
+        throw InvalidLoginCredentialsAuthException();
+      } else {
+        throw GenericAuthException();
+      }
+    } catch (_) {
+      throw GenericAuthException();
+    }
   }
 }

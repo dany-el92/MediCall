@@ -10,20 +10,18 @@ class CalendarView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
-                  onPressed: () {},
-                  extendedPadding: const EdgeInsets.symmetric(horizontal: 7.5),
-                  foregroundColor: Colors.white,
-                  backgroundColor: AppColors.bluChiaro,
-                  shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                    ),
-                  icon: const Icon(Icons.edit),
-                  label: const Text('Prenota visita'),
-                  extendedTextStyle: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold
-                  ),
-                ),
+        onPressed: () {},
+        extendedPadding: const EdgeInsets.symmetric(horizontal: 7.5),
+        foregroundColor: Colors.white,
+        backgroundColor: AppColors.bluChiaro,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        icon: const Icon(Icons.edit),
+        label: const Text('Prenota visita'),
+        extendedTextStyle:
+            const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Column(
         children: [
@@ -67,7 +65,6 @@ class CalendarView extends StatelessWidget {
                   ),
                 ),
                 //const SizedBox(height: 20),
-                
               ],
             ),
           ),

@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.bluScuro),
           useMaterial3: true,
         ),
+        //initialRoute: Routes.verifyMailView,
         home: const HomePage(),
         routes: {
           Routes.loginView: (context) => const LoginView(),

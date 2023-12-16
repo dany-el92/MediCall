@@ -51,10 +51,10 @@ class _LoginViewState extends State<LoginView> {
                 begin: Alignment(0.5, 0),
                 end: Alignment(0.5, 1),
                 colors: [
-                  AppColors.bluChiaro,
-                  AppColors.bluMedio,
-                  AppColors.bluScuro,
-                ])),
+              AppColors.bluChiaro,
+              AppColors.bluMedio,
+              AppColors.bluScuro,
+            ])),
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -135,7 +135,7 @@ class _LoginViewState extends State<LoginView> {
                           backgroundColor: AppColors.oro,
                           foregroundColor: Colors.black,
                           fixedSize:
-                          Size(size.width * 0.95, size.height * 0.06),
+                              Size(size.width * 0.95, size.height * 0.06),
                         ),
                         onPressed: () async {
                           final email = _emailController.text;
@@ -151,20 +151,21 @@ class _LoginViewState extends State<LoginView> {
                               //Utente verificato
                               Navigator.of(context).pushNamedAndRemoveUntil(
                                 Routes.mainView,
-                                    (route) => false,
+                                (route) => false,
                               );
                             } else {
                               //Utente NON verificato
                               Navigator.of(context).pushNamedAndRemoveUntil(
                                 Routes.verifyMailView,
-                                    (route) => false,
+                                (route) => false,
                               );
                             }
                           } on InvalidLoginCredentialsAuthException {
-                            await showErrorDialog(
-                                context, 'Nome utente o password sbagliati!\nRiprovare.');
+                            await showErrorDialog(context,
+                                'Nome utente o password sbagliati!\nRiprovare.');
                           } on GenericAuthException {
-                            await showErrorDialog(context, 'Errore di autenticazione');
+                            await showErrorDialog(
+                                context, 'Errore di autenticazione');
                           }
 
                           // if (_formKey.currentState?.validate() ?? false) {
@@ -218,13 +219,38 @@ class _LoginViewState extends State<LoginView> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              try {
+                                await AuthService.firebase().signInWithGoogle();
+                                if (!context.mounted) return;
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                  Routes.mainView,
+                                  (route) => false,
+                                );
+                              } on GenericAuthException {
+                                await showErrorDialog(
+                                    context, 'Errore di autenticazione');
+                              }
+                            },
                             icon: SvgPicture.asset(
                               ImageConstant.googleLogo,
                             ),
                           ),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              try {
+                                await AuthService.firebase()
+                                    .signInWithFacebook();
+                                if (!context.mounted) return;
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                  Routes.mainView,
+                                  (route) => false,
+                                );
+                              } on GenericAuthException {
+                                await showErrorDialog(
+                                    context, 'Errore di autenticazione');
+                              }
+                            },
                             icon: SvgPicture.asset(
                               ImageConstant.facebookLogo,
                               width: 40,
@@ -244,7 +270,8 @@ class _LoginViewState extends State<LoginView> {
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.pushNamedAndRemoveUntil(context, Routes.registerView, (route) => false);
+                              Navigator.pushNamedAndRemoveUntil(context,
+                                  Routes.registerView, (route) => false);
                             },
                             child: const Text(
                               'Registrati',
