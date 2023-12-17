@@ -49,32 +49,32 @@
 		<true/>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
-        <key>NSCameraUsageDescription</key>
-        <string>This app needs access to your camera in order to scan text.</string>
-        <key>NSPhotoLibraryUsageDescription</key>
-        <string>This app needs access to your gallery to scan text</string>
-        <key>CFBundleURLTypes</key>
-        <array>
-            <dict>
-                <key>CFBundleTypeRole</key>
-                <string>Editor</string>
-                <key>CFBundleURLSchemes</key>
-                <array>
-                    <string>com.googleusercontent.apps.728510861444-7cirdg9e7e48kk7scdahgnfrt1hljd26<string>
-                    <string>227283466982512<string>
-                <array>
-            <dict>
-        <array>
-        <key>FacebookAppID</key>
-        <string>227283466982512</string>
-        <key>FacebookClientToken</key>
-        <string>375031e1fc78325652c80841c7be17e9</string>
-        <key>FacebookDisplayName</key>
-        <string>MediCall</string>
-        <key>LSApplicationQueriesSchemes</key>
-        <array>
-            <string>fbapi</string>
-            <string>fb-messenger-share-api</string>
-        <array>
+		<key>NSCameraUsageDescription</key>
+		<string>This app needs access to your camera in order to scan text.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>This app needs access to your gallery to scan text</string>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>com.googleusercontent.apps.728510861444-7cirdg9e7e48kk7scdahgnfrt1hljd26</string>
+					<string>227283466982512</string>
+				</array>
+			</dict>
+		</array>
+		<key>FacebookAppID</key>
+		<string>227283466982512</string>
+		<key>FacebookClientToken</key>
+		<string>375031e1fc78325652c80841c7be17e9</string>
+		<key>FacebookDisplayName</key>
+		<string>MediCall</string>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>fbapi</string>
+			<string>fb-messenger-share-api</string>
+		</array>
 	</dict>
 </plist>

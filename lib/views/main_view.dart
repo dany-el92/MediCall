@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:medicall/utilities/image_picker_service.dart';
 import 'package:medicall/constants/colors.dart';
@@ -22,6 +23,14 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   //TODO: da cambiare con la pagina iniziale
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FlutterNativeSplash.remove();
+    });
+  }
 
   void _navigateBottomBar(int index) {
     setState(() {
