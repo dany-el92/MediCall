@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:medicall/constants/colors.dart';
 import 'package:medicall/constants/images.dart';
+import 'package:medicall/utilities/image_picker_service.dart';
 
 class PrescriptionView extends StatelessWidget {
   const PrescriptionView({super.key});
@@ -10,7 +11,7 @@ class PrescriptionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
-                    onPressed: () {},
+                    onPressed: () async {await ImagePickerService().chooseImageFile(context);},
                     foregroundColor: Colors.white,
                     extendedPadding: const EdgeInsets.symmetric(horizontal: 7.5),
                     backgroundColor: AppColors.bluChiaro,

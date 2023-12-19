@@ -79,6 +79,7 @@ class _RegisterViewState extends State<RegisterView> {
                         children: [
                           // Input Codice Fiscale
                           CustomTextFormField(
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
                             textInputAction: TextInputAction.next,
                             labelText: 'Codice Fiscale',
                             keyboardType: TextInputType.text,
@@ -99,6 +100,7 @@ class _RegisterViewState extends State<RegisterView> {
                           // Input Nome
                           SizedBox(height: size.height * 0.02),
                           CustomTextFormField(
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
                             textInputAction: TextInputAction.next,
                             labelText: 'Nome',
                             keyboardType: TextInputType.name,
@@ -114,6 +116,7 @@ class _RegisterViewState extends State<RegisterView> {
                           // Input Cognome
                           SizedBox(height: size.height * 0.02),
                           CustomTextFormField(
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
                             textInputAction: TextInputAction.next,
                             labelText: 'Cognome',
                             keyboardType: TextInputType.name,
@@ -129,6 +132,7 @@ class _RegisterViewState extends State<RegisterView> {
                           // Input Email
                           SizedBox(height: size.height * 0.02),
                           CustomTextFormField(
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
                             textInputAction: TextInputAction.next,
                             labelText: 'Email',
                             keyboardType: TextInputType.emailAddress,
@@ -155,6 +159,7 @@ class _RegisterViewState extends State<RegisterView> {
                           // Input Password
                           SizedBox(height: size.height * 0.02),
                           CustomTextFormField(
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
                             textInputAction: TextInputAction.next,
                             labelText: 'Password',
                             keyboardType: TextInputType.visiblePassword,
@@ -186,6 +191,7 @@ class _RegisterViewState extends State<RegisterView> {
                           // Input Data di Nascita
                           SizedBox(height: size.height * 0.02),
                           CustomTextFormField(
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
                             onTap: _selectDate,
                             textInputAction: TextInputAction.next,
                             labelText: 'Data di Nascita',

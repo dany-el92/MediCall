@@ -15,6 +15,7 @@ class CustomTextFormField extends StatelessWidget {
     this.autofocus,
     this.focusNode,
     this.onTap,
+    this.floatingLabelBehavior
   });
 
   final void Function(String)? onChanged;
@@ -29,6 +30,7 @@ class CustomTextFormField extends StatelessWidget {
   final FocusNode? focusNode;
   final void Function()? onEditingComplete;
   final Future<void> Function()? onTap;
+  final FloatingLabelBehavior? floatingLabelBehavior;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +64,7 @@ class CustomTextFormField extends StatelessWidget {
         ),
         suffixIcon: suffixIcon,
         labelText: labelText,
-        floatingLabelBehavior: FloatingLabelBehavior.never,
+        floatingLabelBehavior: floatingLabelBehavior,
         fillColor: Colors.white,
         filled: true,
       ),

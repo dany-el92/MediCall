@@ -53,6 +53,7 @@ class _LoginViewState extends State<LoginView> {
                     children: [
                       //Input Email
                       CustomTextFormField(
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                         textInputAction: TextInputAction.next,
                         labelText: 'Email',
                         keyboardType: TextInputType.emailAddress,
@@ -73,6 +74,7 @@ class _LoginViewState extends State<LoginView> {
                       SizedBox(height: size.height * 0.02),
                       //Input Password
                       CustomTextFormField(
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                         textInputAction: TextInputAction.done,
                         labelText: 'Password',
                         keyboardType: TextInputType.visiblePassword,
