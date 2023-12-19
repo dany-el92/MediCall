@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:medicall/authentication/auth_exceptions.dart';
+import 'package:medicall/authentication/auth_service.dart';
 import 'package:medicall/components/custom_text_form_field.dart';
 import 'package:medicall/constants/colors.dart';
 import 'package:medicall/utilities/extensions.dart';
 import 'package:medicall/constants/routes.dart';
+import 'package:medicall/utilities/show_dialogs.dart';
 
 import '../../constants/images.dart';
 
@@ -18,9 +22,26 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   //TODO: Add controller
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
   bool isObscure = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FlutterNativeSplash.remove();
+    });
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +84,7 @@ class _LoginViewState extends State<LoginView> {
                             Icons.email,
                           ),
                         ),
-                        controller: emailController,
+                        controller: _emailController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Email non inserita';
@@ -99,7 +120,7 @@ class _LoginViewState extends State<LoginView> {
                             ),
                           ),
                         ),
-                        controller: passwordController,
+                        controller: _passwordController,
                         validator: null, //TODO: Add validator
                       ),
                       TextButton(
@@ -122,19 +143,50 @@ class _LoginViewState extends State<LoginView> {
                           fixedSize:
                               Size(size.width * 0.95, size.height * 0.06),
                         ),
-                        onPressed: () {
-                          if (_formKey.currentState?.validate() ?? false) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Logged In!'),
-                              ),
+                        onPressed: () async {
+                          final email = _emailController.text;
+                          final password = _passwordController.text;
+
+                          try {
+                            await AuthService.firebase().logIn(
+                              email: email,
+                              password: password,
                             );
-                            emailController.clear();
-                            passwordController.clear();
-                            Future.delayed(const Duration(seconds: 5), () {
-                              Navigator.of(context).pushReplacementNamed(Routes.mainView);
-                            });
+                            final user = AuthService.firebase().currentUser;
+                            if (user?.isEmailVerified ?? false) {
+                              //Utente verificato
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                Routes.mainView,
+                                (route) => false,
+                              );
+                            } else {
+                              //Utente NON verificato
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                Routes.verifyMailView,
+                                (route) => false,
+                              );
+                            }
+                          } on InvalidLoginCredentialsAuthException {
+                            await showErrorDialog(context,
+                                'Nome utente o password sbagliati!\nRiprovare.');
+                          } on GenericAuthException {
+                            await showErrorDialog(
+                                context, 'Errore di autenticazione');
                           }
+
+                          // if (_formKey.currentState?.validate() ?? false) {
+                          //   ScaffoldMessenger.of(context).showSnackBar(
+                          //     const SnackBar(
+                          //       content: Text('Logged In!'),
+                          //     ),
+                          //   );
+                          //   emailController.clear();
+                          //   passwordController.clear();
+                          //   Future.delayed(const Duration(seconds: 5), () {
+                          //     Navigator.of(context).pushReplacementNamed(
+                          //         Routes.mainView);
+                          //   });
+                          // }
                         },
                         child: const Text(
                           'ACCEDI',
@@ -173,13 +225,38 @@ class _LoginViewState extends State<LoginView> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              try {
+                                await AuthService.firebase().signInWithGoogle();
+                                if (!context.mounted) return;
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                  Routes.mainView,
+                                  (route) => false,
+                                );
+                              } on GenericAuthException {
+                                await showErrorDialog(
+                                    context, 'Errore di autenticazione');
+                              }
+                            },
                             icon: SvgPicture.asset(
                               ImageConstant.googleLogo,
                             ),
                           ),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              try {
+                                await AuthService.firebase()
+                                    .signInWithFacebook();
+                                if (!context.mounted) return;
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                  Routes.mainView,
+                                  (route) => false,
+                                );
+                              } on GenericAuthException {
+                                await showErrorDialog(
+                                    context, 'Errore di autenticazione');
+                              }
+                            },
                             icon: SvgPicture.asset(
                               ImageConstant.facebookLogo,
                               width: 40,
@@ -199,7 +276,8 @@ class _LoginViewState extends State<LoginView> {
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, Routes.registerView);
+                              Navigator.pushNamedAndRemoveUntil(context,
+                                  Routes.registerView, (route) => false);
                             },
                             child: const Text(
                               'Registrati',
