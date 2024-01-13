@@ -45,3 +45,22 @@ Future<bool> showLogOutDialog(BuildContext context) {
     },
   ).then((value) => value ?? false);
 }
+
+Future<bool> showErrorOCRDialog(BuildContext context){
+  return showDialog<bool>(
+    context: context, 
+    builder: (context){
+      return AlertDialog(
+        title: const Text("Oops! Qualcosa è andato storto..."),
+        content: const Text("Non è stato possibile scannerizzare alcune informazioni dalla ricetta. Per favore riprova in un ambiente più luminoso"),
+        actions: [
+          TextButton(
+          onPressed: () async{
+            Navigator.of(context).pop(true);
+          } , 
+          child: const Text('OK'))
+        ],
+      );
+    }
+  ).then((value) => value ?? false);
+}

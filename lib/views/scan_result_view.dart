@@ -257,8 +257,19 @@ void initState(){
                             onPressed: () {
                               if (_formKey.currentState?.validate() ?? false) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Ricetta salvata con successo'),
+                                  SnackBar(
+                                    content: const Text('Ricetta salvata con successo'),
+                                    backgroundColor: Colors.green,
+                                    behavior: SnackBarBehavior.floating,
+                                    dismissDirection: DismissDirection.up,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    margin: EdgeInsets.only(
+                                      bottom: size.height-210,
+                                      right:10,
+                                      left:10
+                                    ),
                                   ),
                                 );
                                 prescrizioneController.clear();

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:medicall/utilities/show_dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,7 +12,10 @@ import 'package:url_launcher/url_launcher.dart';
 class ImagePickerService {
   Future<PickedFile> pickImage({required ImageSource source}) async {
     final xFileSource = await ImagePicker().pickImage(source: source);
-    return PickedFile(xFileSource!.path);
+    if(xFileSource != null){
+       return PickedFile(xFileSource.path);
+    }
+    return PickedFile('');
   }
 
   Future<void> printTextFromUrl(BuildContext context) async {
@@ -83,8 +86,14 @@ class ImagePickerService {
         }
         else if(counter==1){
           counter++;
+          if(_checkNomeCognome(block.text, exp_ese, exp_pr, exp_imp)){
+            nome='';
+            cognome='';
+          }
+          else{
           nome= _getNome2(block.text);
           cognome=_getCognome2(block.text);
+          }
           //print(nome);
           //print(cognome);
         }
@@ -175,11 +184,16 @@ class ImagePickerService {
 
       List<bool> datacontrol= [nome.isNotEmpty,cognome.isNotEmpty,CF.isNotEmpty,impegnativa.isNotEmpty,prescrizione.isNotEmpty,auth.isNotEmpty,esenzione.isNotEmpty,codice_asl.isNotEmpty,data.isNotEmpty];
       if(!_checkData(datacontrol)){
-        ScaffoldMessenger.of(context).showSnackBar(
+        final hasClosed= await showErrorOCRDialog(context);
+        if(hasClosed){
+          openSourceCamera(context);
+        }
+       /* ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Non è stato possibile scannerizzare alcune informazioni dalla ricetta. Per favore riprova in un ambiente più luminoso')));
         Future.delayed(const Duration(seconds: 4), () async{
           await ImagePickerService().chooseImageFile(context);
         });
+        */
         
       }
       else{
@@ -197,6 +211,17 @@ class ImagePickerService {
           content: Text('An error occurred when scanning text'),
         ),
       );
+    }
+  }
+
+  Future<void> openSourceCamera(BuildContext context) async{
+    final file= await pickImage(source: ImageSource.camera);
+    XFile selected = XFile(file.path);
+    if(selected.path.isNotEmpty){
+      if(!context.mounted) return;
+      await scanImage(File(selected.path), context);
+    } else{
+      if(!context.mounted) return;
     }
   }
 
@@ -423,7 +448,7 @@ class ImagePickerService {
           case 1:
           break;
           case 2:
-          nome=x;
+          nome=(x+' ');
           break;
           case >=3:
           nome+=(x+' ');
@@ -1004,6 +1029,30 @@ class ImagePickerService {
     }
 
     return z;    
+  }
+
+  bool _checkNomeCognome(String x, RegExp exp_ese, RegExp exp_pr, RegExp exp_imp){
+    RegExp exp_altro= RegExp(r"(ALTRO:)|(ALTRO)");
+    RegExp exp_cap= RegExp(r"(CAP:)|(CAP)");
+    RegExp exp_indirizzo= RegExp(r"(INDIRIZZO:)|(INDIRIZZO)");
+    RegExp exp_citta= RegExp(r"(CITTA':)|(CITTA:)|(CITTA')|(CITTA)");
+    RegExp exp_ssn = RegExp(r"(SERVIZIO)|(SANITARIO)|(NAZIONALE)");
+    RegExp exp_pre = RegExp(r"(PRESCRIZIONE)");
+    RegExpMatch? match_altro, match_cap, match_indirizzo, match_ese, match_pr, match_imp, match_citta, match_ssn, match_pre;
+    match_altro=exp_altro.firstMatch(x);
+    match_cap=exp_cap.firstMatch(x);
+    match_indirizzo=exp_indirizzo.firstMatch(x);
+    match_ese=exp_ese.firstMatch(x);
+    match_pr=exp_pr.firstMatch(x);
+    match_imp=exp_imp.firstMatch(x);
+    match_citta=exp_citta.firstMatch(x);
+    match_ssn=exp_ssn.firstMatch(x);
+    match_pre=exp_pre.firstMatch(x);
+    if(match_altro!=null || match_pr!=null || match_cap!=null || match_indirizzo!=null || match_ese!=null || match_imp!=null || match_citta!=null || match_ssn!=null || match_pre!=null){
+      return true;
+    }
+
+    return false;
   }
 
 }
