@@ -211,7 +211,7 @@ void initState(){
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             textInputAction: TextInputAction.next,
                             labelText: 'Data (gg/mm/aaaa)',
-                            keyboardType: TextInputType.datetime,
+                            keyboardType: TextInputType.text,
                             controller: dataController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {

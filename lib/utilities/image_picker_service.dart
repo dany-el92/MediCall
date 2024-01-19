@@ -1038,7 +1038,8 @@ class ImagePickerService {
     RegExp exp_citta= RegExp(r"(CITTA':)|(CITTA:)|(CITTA')|(CITTA)");
     RegExp exp_ssn = RegExp(r"(SERVIZIO)|(SANITARIO)|(NAZIONALE)");
     RegExp exp_pre = RegExp(r"(PRESCRIZIONE)");
-    RegExpMatch? match_altro, match_cap, match_indirizzo, match_ese, match_pr, match_imp, match_citta, match_ssn, match_pre;
+    RegExp exp_prov = RegExp(r"(PROV:)|(PROV)");
+    RegExpMatch? match_altro, match_cap, match_indirizzo, match_ese, match_pr, match_imp, match_citta, match_ssn, match_pre, match_prov;
     match_altro=exp_altro.firstMatch(x);
     match_cap=exp_cap.firstMatch(x);
     match_indirizzo=exp_indirizzo.firstMatch(x);
@@ -1048,7 +1049,8 @@ class ImagePickerService {
     match_citta=exp_citta.firstMatch(x);
     match_ssn=exp_ssn.firstMatch(x);
     match_pre=exp_pre.firstMatch(x);
-    if(match_altro!=null || match_pr!=null || match_cap!=null || match_indirizzo!=null || match_ese!=null || match_imp!=null || match_citta!=null || match_ssn!=null || match_pre!=null){
+    match_prov=exp_prov.firstMatch(x);
+    if(match_altro!=null || match_pr!=null || match_cap!=null || match_indirizzo!=null || match_ese!=null || match_imp!=null || match_citta!=null || match_ssn!=null || match_pre!=null || match_prov != null){
       return true;
     }
 
