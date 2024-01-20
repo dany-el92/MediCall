@@ -5,4 +5,5 @@ class Routes {
   static const String mainView = '/main';
   static const String receiptView = '/receipt';
   static const String verifyMailView = '/verify-mail';
+  static const String forgotPasswordView = '/forgot-password';
 }

@@ -3,6 +3,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:medicall/authentication/auth_service.dart';
 import 'package:medicall/constants/colors.dart';
 import 'package:medicall/constants/routes.dart';
+import 'package:medicall/views/auth/ForgotPasswordView.dart';
 import 'package:medicall/views/auth/login_view.dart';
 import 'package:medicall/views/auth/verify_email_view.dart';
 import 'package:medicall/views/main_view.dart';
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.bluScuro),
           useMaterial3: true,
         ),
-        //initialRoute: Routes.verifyMailView,
+        //initialRoute: Routes.forgotPasswordView,
         home: const HomePage(),
         routes: {
           Routes.loginView: (context) => const LoginView(),
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
           Routes.splashScreen: (context) => const SplashScreen(),
           Routes.receiptView: (context) => const PrescriptionView(),
           Routes.verifyMailView: (context) => const VerifyEmailView(),
+          Routes.forgotPasswordView: (context) => const ForgotPasswordView(),
         });
   }
 }

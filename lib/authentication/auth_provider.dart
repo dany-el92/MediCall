@@ -19,6 +19,8 @@ abstract class AuthProvider {
 
   Future<void> sendEmailVerification();
 
+  Future<void> sendPasswordResetEmail({required String email});
+
   Future<AuthUser> signInWithGoogle();
 
   Future<AuthUser> signInWithFacebook();

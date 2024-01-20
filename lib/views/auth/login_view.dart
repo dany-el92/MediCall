@@ -21,7 +21,6 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  //TODO: Add controller
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
   bool isObscure = true;
@@ -124,7 +123,10 @@ class _LoginViewState extends State<LoginView> {
                         validator: null, //TODO: Add validator
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamedAndRemoveUntil(context,
+                              Routes.forgotPasswordView, (route) => false);
+                        },
                         child: const Text(
                           'Hai dimenticato la Password?',
                           style: TextStyle(
