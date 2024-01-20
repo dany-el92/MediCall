@@ -73,7 +73,7 @@ class _MainViewState extends State<MainView> {
             elevation: 10,
             label: 'Salva Ricetta',
             onTap: () async {
-              await ImagePickerService().chooseImageFile(context);
+              await ImagePickerService().regexText(context);
             },
           ),
         ],
