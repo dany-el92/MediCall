@@ -3,7 +3,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:medicall/authentication/auth_service.dart';
 import 'package:medicall/constants/colors.dart';
 import 'package:medicall/constants/routes.dart';
-import 'package:medicall/views/auth/ForgotPasswordView.dart';
+import 'package:medicall/views/auth/forgot_password_view.dart';
 import 'package:medicall/views/auth/login_view.dart';
 import 'package:medicall/views/auth/verify_email_view.dart';
 import 'package:medicall/views/main_view.dart';

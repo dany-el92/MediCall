@@ -9,9 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="319b905b-128b-41c1-bf19-d7f8bb000158" name="Changes" comment="Riorganizzazione della struttura della classe image_picker_service.dart, modularità funzioni, funzione riconoscimento medicinali, gestione errori e retry.">
-      <change afterPath="$PROJECT_DIR$/assets/images/forgotPassword.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/views/auth/ForgotPasswordView.dart" afterDir="false" />
+    <list default="true" id="319b905b-128b-41c1-bf19-d7f8bb000158" name="Changes" comment="Implementazione funzionalità reset password dimenticata.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/7.5/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/7.5/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/7.5/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/7.5/executionHistory/executionHistory.lock" afterDir="false" />
@@ -19,15 +17,10 @@
       <change beforePath="$PROJECT_DIR$/android/.gradle/7.5/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/7.5/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/authentication/auth_exceptions.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/authentication/auth_exceptions.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/authentication/auth_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/authentication/auth_provider.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/authentication/auth_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/authentication/auth_service.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/authentication/firebase_auth_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/authentication/firebase_auth_provider.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/constants/images.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/constants/images.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/constants/routes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/constants/routes.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/views/auth/login_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/views/auth/login_view.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/views/scan_result_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/views/scan_result_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utilities/image_picker_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utilities/image_picker_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/views/auth/ForgotPasswordView.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/views/auth/forgot_password_view.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,7 +164,8 @@
       <workItem from="1705580387086" duration="351000" />
       <workItem from="1705580760635" duration="1783000" />
       <workItem from="1705599691258" duration="20379000" />
-      <workItem from="1705686847971" duration="26390000" />
+      <workItem from="1705686847971" duration="32489000" />
+      <workItem from="1705847535053" duration="4403000" />
     </task>
     <task id="LOCAL-00001" summary="Primo commit">
       <option name="closed" value="true" />
@@ -301,7 +295,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705770995029</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Implementazione funzionalità reset password dimenticata.">
+      <option name="closed" value="true" />
+      <created>1705778838979</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1705778838979</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -333,7 +335,8 @@
     <MESSAGE value="Implementazione login e registrazione 2.0 (aggiunta di accesso a google e facebook)" />
     <MESSAGE value="Correzione codice, splash screen e miglioramento caricamento immagini all'avvio dell'app." />
     <MESSAGE value="Riorganizzazione della struttura della classe image_picker_service.dart, modularità funzioni, funzione riconoscimento medicinali, gestione errori e retry." />
-    <option name="LAST_COMMIT_MESSAGE" value="Riorganizzazione della struttura della classe image_picker_service.dart, modularità funzioni, funzione riconoscimento medicinali, gestione errori e retry." />
+    <MESSAGE value="Implementazione funzionalità reset password dimenticata." />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementazione funzionalità reset password dimenticata." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

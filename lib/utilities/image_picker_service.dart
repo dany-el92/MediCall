@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:medicall/components/extracted_data_receipt.dart';
 import 'package:medicall/utilities/receipt_processing.dart';
@@ -27,13 +27,13 @@ class ImagePickerService {
       selectedFile = await openSource(ImageSource.gallery, context);
     }
 
-    final recognizedText = await scanImage(File(selectedFile!.path), context);
+    if (selectedFile == null) return;
 
-    log(recognizedText.text);
+    final recognizedText = await scanImage(File(selectedFile.path), context);
+
+    if (recognizedText == null) return;
 
     final aicNumber = RegexHelper.getAicNumber(recognizedText.text);
-
-    log(aicNumber);
 
     // If the aicNumber is the same as the recognized text, it means no match was found
     if (aicNumber == recognizedText.text) {
@@ -51,7 +51,6 @@ class ImagePickerService {
       throw Exception('Could not launch $url');
     }
   }
-
 
   void handleAicNumberError(BuildContext context) async {
     bool hasClosed = await showErrorOCRDialog(context);
@@ -102,7 +101,11 @@ class ImagePickerService {
       selectedFile = await openSource(ImageSource.gallery, context);
     }
 
-    final recognizedText = await scanImage(File(selectedFile!.path), context);
+    if (selectedFile == null) return;
+
+    final recognizedText = await scanImage(File(selectedFile.path), context);
+
+    if (recognizedText == null) return;
 
     final extractedData = processTextBlocks(recognizedText.blocks);
     if (!RegexHelper.checkData(extractedData.dataControl)) {
@@ -117,12 +120,12 @@ class ImagePickerService {
       return await showModalBottomSheet(
           context: context, builder: (builder) => bottomSheet(context));
     } catch (e) {
-      print('errore');
+      log('Errore scelta source: $e');
     }
     return null;
   }
 
-  Future<RecognizedText> scanImage(File file, BuildContext context) async {
+  Future<RecognizedText?> scanImage(File file, BuildContext context) async {
     final textRecognizer = TextRecognizer();
     try {
       final inputImage = InputImage.fromFile(file);
@@ -132,40 +135,36 @@ class ImagePickerService {
 
       return recognizedText;
     } catch (e) {
-      if (!context.mounted) return Future.error(e);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('An error occurred when scanning text'),
+          content: Text(
+              'Errore durante la scannerizzazione dell\'immagine. Riprovare.'),
         ),
       );
-      return Future.error(e);
+      return null;
     }
   }
 
   Future<XFile?> openSource(ImageSource source, BuildContext context) async {
     final file = await pickImage(source: source, context: context);
-    XFile selected = XFile(file.path);
-    if (selected.path.isNotEmpty) {
-      if (!context.mounted) return null;
-      if (Navigator.canPop(context)) {
-        Navigator.pop(context, selected);
+    if (file != null) {
+      XFile selected = XFile(file.path);
+      if (selected.path.isNotEmpty) {
+        if (!context.mounted) return null;
+        if (Navigator.canPop(context)) {
+          Navigator.pop(context, selected);
+        }
+        return selected;
       }
-      return selected;
-    } else {
-      if (!context.mounted) return null;
-      if (Navigator.canPop(context)) {
-        Navigator.pop(context);
-      }
-      return null;
     }
+    return null;
   }
 
-  Future<PickedFile> pickImage(
+  Future<PickedFile?> pickImage(
       {required ImageSource source, required BuildContext context}) async {
     final xFileSource = await ImagePicker().pickImage(source: source);
     if (xFileSource == null || xFileSource.path.isEmpty) {
-      Navigator.pop(context);
-      throw Exception('Nessuna immagine selezionata');
+      return null;
     }
     return PickedFile(xFileSource.path);
   }
