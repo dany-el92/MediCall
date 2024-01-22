@@ -11,7 +11,13 @@ class RegexHelper {
 
     // If there is a match, return the matched string
     if (matches.isNotEmpty) {
-      return matches.first.group(1)!;
+      if(matches.first.group(2)!=null){
+        return matches.first.group(2)!;
+      }
+      else{
+        return matches.first.group(4)!;
+      }
+      //return matches.first.group(1)!;
     }
 
     // If there is no match, return the original text
@@ -19,23 +25,53 @@ class RegexHelper {
   }
 
   static String getNome(String nome, String cognome, RegExpMatch exp) {
-    List<String> lista = exp[0]!.split(' ');
-    int counter = 0;
-    for (String x in lista) {
-      counter++;
-      switch (counter) {
-        case 1:
-          break;
-        case 2:
-          cognome = x;
-          break;
-        case >= 3:
-          nome += ('$x ');
-          break;
+    List<String> lista=exp[0]!.split('\n');
+    if(lista.length>=2){
+       int counter = 0;
+      for (String x in lista[1].split(' ')) {
+        counter++;
+        switch (counter) {
+          case 1:
+            cognome = x;
+            break;
+          case >= 2:
+            nome += ('$x ');
+            break;
+        }
       }
+    } else if(exp[0]!.contains(RegExp(':'),14)|| exp[0]!.contains(RegExp(':'),13)){
+         List<String> lista=exp[0]!.split(':');
+         int counter=0;
+         for(String x in lista[1].trim().split(' ')){
+           counter++;
+           switch(counter){
+             case 1:
+             cognome=x;
+             break;
+             case >=2:
+             nome += ('$x ');
+             break;
+            }
+          }
+    } else if(nome.isEmpty){
+         List<String> lista = exp[0]!.split(' ');
+          int counter = 0;
+          for (String x in lista) {
+            counter++;
+            switch (counter) {
+              case 1:
+                break;
+              case 2:
+                cognome = x;
+                break;
+              case >= 3:
+                nome += ('$x ');
+                break;
+            }
+          }
     }
-
-    if (nome.isEmpty) {
+  
+    /*if (nome.isEmpty) {
       List<String> lista = exp[0]!.split('\n');
       int counter = 0;
       for (String x in lista[1].split(' ')) {
@@ -50,6 +86,7 @@ class RegexHelper {
         }
       }
     }
+    */
 
     return nome;
   }
@@ -69,6 +106,20 @@ class RegexHelper {
             break;
         }
       }
+    } else if(expMatch[0]!.contains(RegExp(':'),14)|| expMatch[0]!.contains(RegExp(':'),13)){
+       List<String> lista=expMatch[0]!.split(':');
+         int counter=0;
+         for(String x in lista[1].trim().split(' ')){
+           counter++;
+           switch(counter){
+             case 1:
+             cognome=x;
+             break;
+             case >=2:
+             nome += ('$x ');
+             break;
+            }
+          }
     } else if (cognome.isEmpty) {
       List<String> lista = expMatch[0]!.split(' ');
       int counter = 0;
@@ -102,7 +153,7 @@ class RegexHelper {
           case 2:
             esenzione = ('$x ');
             break;
-          case >= 3:
+          case 3:
             esenzione += x;
             break;
         }
@@ -118,7 +169,7 @@ class RegexHelper {
           case 2:
             esenzione = ('$x ');
             break;
-          case >= 3:
+          case 3:
             esenzione += x;
             break;
         }
@@ -601,7 +652,7 @@ class RegexHelper {
   }
 
   static bool checkNomeCognome(
-      String x, RegExp expEse, RegExp expPr, RegExp expImp) {
+      String x, RegExp expEse, RegExp expPr, RegExp expImp, RegExp expCF) {
     RegExp expAltro = RegExp(r"(ALTRO:)|(ALTRO)");
     RegExp expCap = RegExp(r"(CAP:)|(CAP)");
     RegExp expIndirizzo = RegExp(r"(INDIRIZZO:)|(INDIRIZZO)");
@@ -618,7 +669,8 @@ class RegexHelper {
         matchCitta,
         matchSsn,
         matchPre,
-        matchProv;
+        matchProv,
+        matchCF;
     matchAltro = expAltro.firstMatch(x);
     matchCap = expCap.firstMatch(x);
     matchIndirizzo = expIndirizzo.firstMatch(x);
@@ -629,6 +681,7 @@ class RegexHelper {
     matchSsn = expSsn.firstMatch(x);
     matchPre = expPre.firstMatch(x);
     matchProv = expProv.firstMatch(x);
+    matchCF= expCF.firstMatch(x);
     if (matchAltro != null ||
         matchPr != null ||
         matchCap != null ||
@@ -638,7 +691,8 @@ class RegexHelper {
         matchCitta != null ||
         matchSsn != null ||
         matchPre != null ||
-        matchProv != null) {
+        matchProv != null ||
+        matchCF != null) {
       return true;
     }
 

@@ -2,7 +2,7 @@
 
 class RegexConstants {
   static final RegExp expNc = RegExp(
-      r"(((DELL'ASSISTITO:) |(DELLASSISTITO:) |(DELL'ASSISTITO) |(DELLASSISTITO) )[A-Za-z ]+|((DELL'ASSISTITO:)\n|(DELLASSISTITO:)\n|(DELL'ASSISTITO)\n|(DELLASSISTITO)\n)[A-Za-z ]+)");
+      r"(((DELL'ASSISTITO:) |(DELLASSISTITO:) |(DELL'ASSISTITO) |(DELLASSISTITO) )[A-Za-z ]+|((DELL'ASSISTITO:)\n|(DELLASSISTITO:)\n|(DELL'ASSISTITO)\n|(DELLASSISTITO)\n)[A-Za-z ]+)|(((DELL'ASSISTITO:)|(DELLASSISTITO:))[A-Za-z ]+)");
   static final RegExp expNc2 = RegExp(
       r"(DELL'ASSISTITO:)|(DELLASSISTITO:)|(DELL'ASSISTITO)|(DELLASSISTITO)");
   static final RegExp expImp = RegExp(
@@ -22,5 +22,5 @@ class RegexConstants {
       r"((CODICE ASL:) \d{3})|((CODICE ASL) \d{3})|((CODICEASL) \d{3})|((CODICEASL:) \d{3})");
   static final RegExp expPre = RegExp(r"\d{2}\.\d{1,2}(\.\d)? [\w()-. ]+");
   static final RegExp aicNumber =
-      RegExp(r"A\.[A-Za-z0-9]?\.C\.\D*(\d{6})", caseSensitive: false);
+      RegExp(r"(A\.[A-Za-z0-9]?\.C\.\D*(\d{6}))|(A[A-Za-z0-9]?C\D*(\d{6}))", caseSensitive: false);
 }

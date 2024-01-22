@@ -43,7 +43,7 @@ ExtractedData processTextBlocks(List<TextBlock> blocks) {
     } else if (counter == 1) {
       counter++;
       if (RegexHelper.checkNomeCognome(block.text, RegexConstants.expEse,
-          RegexConstants.expPr, RegexConstants.expImp)) {
+          RegexConstants.expPr, RegexConstants.expImp, RegexConstants.expCf)) {
         nome = '';
         cognome = '';
       } else {
