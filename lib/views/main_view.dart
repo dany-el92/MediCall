@@ -22,7 +22,7 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   //TODO: da cambiare con la pagina iniziale
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
 
   @override
   void initState() {
@@ -50,8 +50,6 @@ class _MainViewState extends State<MainView> {
     if (index == 0) {
       return SpeedDial(
         animatedIcon: AnimatedIcons.menu_close,
-        //overlayColor: Colors.black,
-        //overlayOpacity: 0.5,
         spacing: 10,
         curve: Curves.easeIn,
         elevation: 10,
@@ -128,7 +126,7 @@ class _MainViewState extends State<MainView> {
         ],
         backgroundColor: AppColors.bluChiaro,
         color: const Color(0xfff9f9f9),
-        buttonBackgroundColor: Colors.white,
+        buttonBackgroundColor: Colors.grey[100],
         animationCurve: Curves.easeInOut,
         animationDuration: const Duration(milliseconds: 500),
         onTap: _navigateBottomBar,

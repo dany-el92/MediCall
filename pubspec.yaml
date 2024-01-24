@@ -28,6 +28,8 @@ dependencies:
   firebase_core: ^2.24.2
   google_sign_in: ^6.2.1
   flutter_facebook_auth: ^6.0.3
+  speech_to_text: ^6.5.1
+  flutter_tts: ^3.8.5
 
 flutter_native_splash:
   background_image: assets/images/gradient.png

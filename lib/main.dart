@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.bluScuro),
           useMaterial3: true,
         ),
-        //initialRoute: Routes.forgotPasswordView,
+        //initialRoute: Prova_Microfono(),
         home: const HomePage(),
         routes: {
           Routes.loginView: (context) => const LoginView(),
