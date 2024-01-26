@@ -151,27 +151,6 @@ class HomePageView extends StatelessWidget {
               onTap: () {},
             ),
             SizedBox(height: size.height * 0.04),
-            // const Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     ViewIcon(
-            //       icon: Icons.medical_information,
-            //       text: 'Prova',
-            //     ),
-            //     ViewIcon(
-            //       icon: Icons.add,
-            //       text: 'Prova',
-            //     ),
-            //     ViewIcon(
-            //       icon: Icons.add,
-            //       text: 'Prova',
-            //     ),
-            //     ViewIcon(
-            //       icon: Icons.add,
-            //       text: 'Prova',
-            //     ),
-            //   ],
-            // ),
           ],
         ),
       ),

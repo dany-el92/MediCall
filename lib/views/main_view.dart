@@ -22,7 +22,7 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   //TODO: da cambiare con la pagina iniziale
-  int _selectedIndex = 2;
+  int _selectedIndex = 0;
 
   @override
   void initState() {
