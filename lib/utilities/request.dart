@@ -72,7 +72,7 @@ class OpenAIService {
 
     // Send the extracted information to the server
     var response = await http.post(
-      Uri.parse('https://5949-95-251-24-61.ngrok-free.app/extract'),
+      Uri.parse('https://670c-95-251-24-61.ngrok-free.app/extract'),
       // Replace with your server URL
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({

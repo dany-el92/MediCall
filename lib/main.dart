@@ -3,6 +3,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:medicall/authentication/auth_service.dart';
 import 'package:medicall/constants/colors.dart';
 import 'package:medicall/constants/routes.dart';
+import 'package:medicall/messaging/firebase_cloud_messaging.dart';
 import 'package:medicall/views/auth/forgot_password_view.dart';
 import 'package:medicall/views/auth/login_view.dart';
 import 'package:medicall/views/auth/verify_email_view.dart';
@@ -65,6 +66,7 @@ class HomePage extends StatelessWidget {
               final user = AuthService.firebase().currentUser;
               if (user != null) {
                 if (user.isEmailVerified) {
+                  CloudMessaging().initNotification();
                   return const MainView();
                 } else {
                   return const VerifyEmailView();
