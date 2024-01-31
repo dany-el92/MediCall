@@ -12,6 +12,7 @@ Future getData(url) async {
 
 class OpenAIService {
   final List<Map<String, String>> messages = [];
+  String generatedContent = '';
 
   Future<String> chatGPTAPI(String prompt) async {
     messages.add({
@@ -53,9 +54,9 @@ class OpenAIService {
           'content': content,
         });
 
-        await extractAndSendData(content);
+        generatedContent = await extractAndSendData(content);
 
-        return content;
+        return generatedContent;
       }
       return 'An internal error occurred';
     } catch (e) {
@@ -63,30 +64,54 @@ class OpenAIService {
     }
   }
 
-  Future<void> extractAndSendData(String content) async {
+  bool isInputComplete(Map<String, String> userInput) {
+    List<String> requiredFields = ['ora', 'data', 'luogo', 'prestazione'];
+
+    for (String field in requiredFields) {
+      if (!userInput.containsKey(field) || userInput[field]!.isEmpty || userInput[field]!.contains('non specificato')) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  Future<String> extractAndSendData(String content) async {
     // Extract the information from the generated content
     String ora = RegexHelper.extractOra(content);
     String data = RegexHelper.extractData(content);
     String luogo = RegexHelper.extractLuogo(content);
     String prestazione = RegexHelper.extractPrestazione(content);
 
-    // Send the extracted information to the server
-    var response = await http.post(
-      Uri.parse('https://670c-95-251-24-61.ngrok-free.app/extract'),
-      // Replace with your server URL
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode({
-        'ora': ora,
-        'data': data,
-        'luogo': luogo,
-        'prestazione': prestazione,
-      }),
-    );
+    // Check if the extracted information is complete
+    Map<String, String> userInput = {
+      'ora': ora,
+      'data': data,
+      'luogo': luogo,
+      'prestazione': prestazione,
+    };
 
-    if (response.statusCode == 200) {
-      print('Information sent to the server successfully');
+    if (isInputComplete(userInput)) {
+      // Send the extracted information to the server
+      var response = await http.post(
+        Uri.parse('https://670c-95-251-24-61.ngrok-free.app/extract'),
+        // Replace with your server URL
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({
+          'ora': ora,
+          'data': data,
+          'luogo': luogo,
+          'prestazione': prestazione,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        return content;
+      } else {
+        return 'Server non raggiungibile, riprova più tardi';
+      }
     } else {
-      print('Failed to send information to the server');
+      return "Per favore, reinvia il messaggio inserendo tutte le informazioni richieste";
     }
   }
 }
