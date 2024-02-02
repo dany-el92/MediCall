@@ -81,7 +81,6 @@ class _AssistantViewState extends State<AssistantView> {
     _messages.add(Message(content: _recognizedWords, isSender: true));
     _generatedContent = await _openAIService.chatGPTAPI(_recognizedWords);
     _recognizedWords = "";
-    _generatedContent ??= "Non ho capito, puoi ripetere?";
     await systemSpeak(_generatedContent!);
     _messages.add(Message(content: _generatedContent!, isSender: false));
     setState(() {});
@@ -171,13 +170,12 @@ class _AssistantViewState extends State<AssistantView> {
               _messages.add(Message(content: message, isSender: true));
               setState(() {});
               _generatedContent = await _openAIService.chatGPTAPI(message);
-              _generatedContent ??= "Non ho capito, puoi ripetere?";
               await systemSpeak(_generatedContent!);
               _messages
                   .add(Message(content: _generatedContent!, isSender: false));
               setState(() {});
             },
-            messageBarHitText: "Messaggio...",
+            messageBarHintText: "Messaggio...",
             sendButtonColor: AppColors.bluChiaro,
             actions: [
               IconButton(

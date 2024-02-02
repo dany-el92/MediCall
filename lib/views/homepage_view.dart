@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:medicall/components/appointment.dart';
 import 'package:medicall/components/appointment_card.dart';
 import 'package:medicall/components/assistant_card.dart';
 import 'package:medicall/constants/images.dart';
@@ -16,6 +17,7 @@ class HomePageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = context.mediaQuerySize;
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -151,7 +153,14 @@ class HomePageView extends StatelessWidget {
                 )
               ],
             ),
+            //TODO: da rendere dinamico tramite la lista degli appuntamenti
             AppointmentCard(
+              appointment: Appointment(
+                nomeDottore: 'Dr. Daniele Gregori',
+                prestazione: 'Ortopedia',
+                data: DateTime(2024, 06, 1),
+                ora: const TimeOfDay(hour: 10, minute: 30),
+              ),
               onTap: () {},
             ),
             SizedBox(height: size.height * 0.04),

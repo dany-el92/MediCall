@@ -1,6 +1,7 @@
 // lib/constants/regex_constants.dart
 
 class RegexConstants {
+  // Regex per la scansione della ricetta
   static final RegExp expNc = RegExp(
       r"(((DELL'ASSISTITO:) |(DELLASSISTITO:) |(DELL'ASSISTITO) |(DELLASSISTITO) )[A-Za-z ]+|((DELL'ASSISTITO:)\n|(DELLASSISTITO:)\n|(DELL'ASSISTITO)\n|(DELLASSISTITO)\n)[A-Za-z ]+)|(((DELL'ASSISTITO:)|(DELLASSISTITO:))[A-Za-z ]+)");
   static final RegExp expNc2 = RegExp(
@@ -21,6 +22,15 @@ class RegexConstants {
   static final RegExp expAsl = RegExp(
       r"((CODICE ASL:) \d{3})|((CODICE ASL) \d{3})|((CODICEASL) \d{3})|((CODICEASL:) \d{3})");
   static final RegExp expPre = RegExp(r"\d{2}\.\d{1,2}(\.\d)? [\w()-. ]+");
-  static final RegExp aicNumber =
-      RegExp(r"(A\.[A-Za-z0-9]?\.C\.\D*(\d{6}))|(A[A-Za-z0-9]?C\D*(\d{6}))", caseSensitive: false);
+
+  // Regex per la scansione dei medicinali tramite numero AIC
+  static final RegExp aicNumber = RegExp(
+      r"(A\.[A-Za-z0-9]?\.C\.\D*(\d{6}))|(A[A-Za-z0-9]?C\D*(\d{6}))",
+      caseSensitive: false);
+
+  // Regex per i dati dell'appuntamento in input all'assistente da inviare al server
+  static final RegExp oraExp = RegExp(r'-Ora: (.*)');
+  static final RegExp dataExp = RegExp(r'-Data: (.*)');
+  static final RegExp luogoExp = RegExp(r'-Luogo: (.*)');
+  static final RegExp prestazioneExp = RegExp(r'-Prestazione: (.*)');
 }

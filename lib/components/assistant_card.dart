@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:medicall/constants/colors.dart';
-import 'package:medicall/constants/images.dart';
 
 class AssistantCard extends StatelessWidget {
   const AssistantCard({super.key});

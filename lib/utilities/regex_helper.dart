@@ -2,6 +2,30 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 import 'package:medicall/constants/regex.dart';
 
 class RegexHelper {
+  static String extractOra(String content) {
+    RegExp oraExp = RegexConstants.oraExp;
+    String ora = oraExp.firstMatch(content)?.group(1) ?? '';
+    return ora;
+  }
+
+  static String extractData(String content) {
+    RegExp dataExp = RegexConstants.dataExp;
+    String data = dataExp.firstMatch(content)?.group(1) ?? '';
+    return data;
+  }
+
+  static String extractLuogo(String content) {
+    RegExp luogoExp = RegexConstants.luogoExp;
+    String luogo = luogoExp.firstMatch(content)?.group(1) ?? '';
+    return luogo;
+  }
+
+  static String extractPrestazione(String content) {
+    RegExp prestazioneExp = RegexConstants.prestazioneExp;
+    String prestazione = prestazioneExp.firstMatch(content)?.group(1) ?? '';
+    return prestazione;
+  }
+
   static String getAicNumber(String text) {
     // Define the regular expression
     RegExp expAic = RegexConstants.aicNumber;

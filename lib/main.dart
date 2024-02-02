@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:medicall/authentication/auth_service.dart';
 import 'package:medicall/constants/colors.dart';
 import 'package:medicall/constants/routes.dart';
+import 'package:medicall/messaging/firebase_cloud_messaging.dart';
 import 'package:medicall/database/utente.dart';
 import 'package:medicall/utilities/api_services.dart';
 import 'package:medicall/views/auth/forgot_password_view.dart';
@@ -17,6 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  initializeDateFormatting('it_IT', null);
   runApp(const MyApp());
 }
 
@@ -94,7 +97,8 @@ class _HomePageState extends State<HomePage> {
             case ConnectionState.done:
               final user = AuthService.firebase().currentUser;
               if (user != null) {
-                if (user.isEmailVerified && u!=null) { 
+                if (user.isEmailVerified && u!=null) {
+                CloudMessaging().initNotification(); 
                 return MainView(utente: u!);
                 } else {
                   return const VerifyEmailView();
