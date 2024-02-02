@@ -4,6 +4,8 @@ import 'package:medicall/authentication/auth_service.dart';
 import 'package:medicall/components/custom_text_form_field.dart';
 import 'package:medicall/constants/colors.dart';
 import 'package:medicall/constants/routes.dart';
+import 'package:medicall/database/utente.dart';
+import 'package:medicall/utilities/api_services.dart';
 import 'package:medicall/utilities/extensions.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:medicall/utilities/show_dialogs.dart';
@@ -61,7 +63,9 @@ class _RegisterViewState extends State<RegisterView> {
 
     if (_picked != null) {
       setState(() {
-        _dataController.text = _picked.toString().split(" ")[0];
+        String data= "${_picked.day.toString().padLeft(2,'0')}/${_picked.month.toString().padLeft(2,'0')}/${_picked.year}";
+        _dataController.text=data;
+        //_dataController.text = _picked.toString().split(" ")[0];
       });
     }
   }
@@ -316,12 +320,26 @@ class _RegisterViewState extends State<RegisterView> {
                               //Ultimo testo che l'utente ha digitato nei campi
                               final email = _emailController.text;
                               final password = _passwordController.text;
+                              
+                              if(_formKey.currentState?.validate() ?? false){
 
                               try {
                                 await AuthService.firebase().createUser(
                                   email: email,
                                   password: password,
                                 );
+
+                                Utente utente= Utente(
+                                codiceFiscale: _CFController.text,
+                                nome: _nomeController.text,
+                                cognome: _cognomeController.text,
+                                dataNascita: _dataController.text,
+                                genere: dropDownValue,
+                                password: _passwordController.text,
+                                familiare: "0",
+                                email: _emailController.text);
+
+                                APIServices.addUtente(utente);
 
                                 AuthService.firebase().sendEmailVerification();
                                 //Non rimuove tutte le view precedenti, ma fa solo una push della nuova schermata su quelle già presenti
@@ -356,6 +374,7 @@ class _RegisterViewState extends State<RegisterView> {
                               //   genereController.clear();
                               //   Navigator.pop(context);
                               // }
+                              }
                             },
                             child: const Text(
                               ' REGISTRATI',

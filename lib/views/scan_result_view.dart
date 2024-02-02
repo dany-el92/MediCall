@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:medicall/components/custom_text_form_field.dart';
 import 'package:medicall/constants/colors.dart';
+import 'package:medicall/database/ricetta_medica.dart';
+import 'package:medicall/database/scansione.dart';
+import 'package:medicall/database/utente.dart';
+import 'package:medicall/utilities/api_services.dart';
 import 'package:medicall/utilities/extensions.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final _formKey = GlobalKey<FormState>();
 
@@ -260,8 +265,32 @@ class _ResultScreenState extends State<ResultScreen> {
                             fixedSize:
                                 Size(size.width * 0.95, size.height * 0.06),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState?.validate() ?? false) {
+
+                              Ricetta ricetta= Ricetta(
+                                impegnativa: impegnativaController.text,
+                                codiceAsl: codice_asl_Controller.text,
+                                codiceAutenticazione: codice_autenticazione_Controller.text,
+                                nome: nomeController.text,
+                                cf: CFController.text,
+                                esenzione: esenzioneController.text,
+                                prescrizione: prescrizioneController.text,
+                                data: dataController.text,
+                                cognome: cognomeController.text,
+                              );
+
+                              APIServices.addRicetta(ricetta);
+                              final prefs= await SharedPreferences.getInstance();
+                              String? email= prefs.getString("email");
+                              String? password= prefs.getString("password");
+                              if(email!=null && password!=null){
+                                Utente? u = await APIServices.getUtente(email, password);
+                                Scansione s=Scansione(idCf: u!.codiceFiscale,idImpegnativa: impegnativaController.text);
+                                APIServices.addScansione(s);
+                              }
+                              
+                              
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: const Text(

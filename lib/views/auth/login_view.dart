@@ -5,9 +5,13 @@ import 'package:medicall/authentication/auth_exceptions.dart';
 import 'package:medicall/authentication/auth_service.dart';
 import 'package:medicall/components/custom_text_form_field.dart';
 import 'package:medicall/constants/colors.dart';
+import 'package:medicall/database/utente.dart';
+import 'package:medicall/utilities/api_services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:medicall/utilities/extensions.dart';
 import 'package:medicall/constants/routes.dart';
 import 'package:medicall/utilities/show_dialogs.dart';
+import 'package:medicall/views/main_view.dart';
 
 import '../../constants/images.dart';
 
@@ -148,25 +152,33 @@ class _LoginViewState extends State<LoginView> {
                         onPressed: () async {
                           final email = _emailController.text;
                           final password = _passwordController.text;
+                          final prefs= await SharedPreferences.getInstance();
 
                           try {
                             await AuthService.firebase().logIn(
                               email: email,
                               password: password,
                             );
-                            final user = AuthService.firebase().currentUser;
-                            if (user?.isEmailVerified ?? false) {
-                              //Utente verificato
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                Routes.mainView,
-                                (route) => false,
-                              );
-                            } else {
-                              //Utente NON verificato
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                Routes.verifyMailView,
-                                (route) => false,
-                              );
+
+                            Utente? u = await APIServices.getUtente(email, password);
+                            if(u !=null){
+                              final user = AuthService.firebase().currentUser;
+                              if (user?.isEmailVerified ?? false) {
+                                //Utente verificato
+                                prefs.setString("email", u.email!);
+                                prefs.setString("password", u.password!);
+                                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainView(utente: u)), (route) => false);
+                             //   Navigator.of(context).pushNamedAndRemoveUntil(
+                             //     Routes.mainView,
+                             //     (route) => false,
+                             //   );
+                              } else {
+                                //Utente NON verificato
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                  Routes.verifyMailView,
+                                  (route) => false,
+                                );
+                              }
                             }
                           } on InvalidLoginCredentialsAuthException {
                             await showErrorDialog(context,

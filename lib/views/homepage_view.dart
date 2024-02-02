@@ -3,11 +3,15 @@ import 'package:flutter_svg/svg.dart';
 import 'package:medicall/components/appointment_card.dart';
 import 'package:medicall/components/assistant_card.dart';
 import 'package:medicall/constants/images.dart';
+import 'package:medicall/database/utente.dart';
 import 'package:medicall/utilities/extensions.dart';
 import 'package:medicall/constants/colors.dart';
 
 class HomePageView extends StatelessWidget {
-  const HomePageView({super.key});
+
+  final Utente utente;
+
+  const HomePageView({super.key, required this.utente});
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +25,10 @@ class HomePageView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Column(
+                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                const Text(
                       'Ciao,',
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
@@ -32,7 +36,7 @@ class HomePageView extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Daniele Gregori👋',
+                      "${utente.nome} ${utente.cognome} 👋",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 25,
@@ -43,7 +47,7 @@ class HomePageView extends StatelessWidget {
                 CircleAvatar(
                   radius: 25,
                   backgroundColor: Colors.blueAccent.shade700,
-                  child: const Text('DG',
+                  child: Text("${utente.nome![0]}${utente.cognome![0]}",
                       style: TextStyle(
                         color: Colors.white,
                       )),

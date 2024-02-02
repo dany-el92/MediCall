@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:medicall/database/utente.dart';
 import 'package:medicall/utilities/image_picker_service.dart';
 import 'package:medicall/constants/colors.dart';
 import 'package:medicall/constants/images.dart';
@@ -14,7 +15,9 @@ import 'package:medicall/views/assistant_view.dart';
 import 'package:medicall/views/prescription_view.dart';
 
 class MainView extends StatefulWidget {
-  const MainView({super.key});
+  final Utente utente;
+
+  const MainView({Key? key, required this.utente}) : super(key: key);
 
   @override
   State<MainView> createState() => _MainViewState();
@@ -23,10 +26,16 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   //TODO: da cambiare con la pagina iniziale
   int _selectedIndex = 0;
+  final List _pages =[];
 
   @override
   void initState() {
     super.initState();
+    _pages.add(HomePageView(utente: widget.utente));
+    _pages.add(const CalendarView());
+    _pages.add(const AssistantView());
+    _pages.add(const PrescriptionView());
+    _pages.add(AccountView(utente: widget.utente,));
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FlutterNativeSplash.remove();
     });
@@ -38,14 +47,14 @@ class _MainViewState extends State<MainView> {
     });
   }
 
-  final List _pages = [
+  /*final List _pages = [
     const HomePageView(),
     const CalendarView(),
     const AssistantView(),
     const PrescriptionView(),
     const AccountView()
   ];
-
+  */
   SpeedDial? _checkIndex(int index) {
     if (index == 0) {
       return SpeedDial(

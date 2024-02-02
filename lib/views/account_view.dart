@@ -1,12 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medicall/authentication/auth_service.dart';
 import 'package:medicall/constants/colors.dart';
 import 'package:medicall/constants/routes.dart';
+import 'package:medicall/database/utente.dart';
+import 'package:medicall/utilities/api_services.dart';
 import 'package:medicall/utilities/extensions.dart';
 import 'package:medicall/utilities/show_dialogs.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountView extends StatelessWidget {
-  const AccountView({super.key});
+
+  final Utente utente;
+
+  const AccountView({super.key, required this.utente});
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +36,10 @@ class AccountView extends StatelessWidget {
                       final shouldLogout = await showLogOutDialog(context);
                       //True se l'utente sceglie di uscire, false se annulla
                       if (shouldLogout) {
+                        final prefs= await SharedPreferences.getInstance();
+                        prefs.remove("email");
+                        prefs.remove("password");
+                        prefs.clear();
                         await AuthService.firebase().logOut();
                         Navigator.of(context).pushNamedAndRemoveUntil(
                             Routes.loginView, (_) => false);
@@ -53,16 +64,16 @@ class AccountView extends StatelessWidget {
                     CircleAvatar(
                         radius: 50,
                         backgroundColor: Colors.blueAccent.shade700,
-                        child: const Text('SC',
+                        child: Text("${utente.nome![0]}${utente.cognome![0]}",
                             style:
-                                TextStyle(color: Colors.white, fontSize: 30))),
+                            const TextStyle(color: Colors.white, fontSize: 30))),
                     SizedBox(height: size.height * 0.03),
-                    const Text("Samuele Antonio Cesaro",
-                        style: TextStyle(
+                    Text("${utente.nome} ${utente.cognome}",
+                        style: const TextStyle(
                             fontSize: 25, fontWeight: FontWeight.bold)),
                     SizedBox(height: size.height * 0.02),
-                    const Text("RSSMRA99D20F205R",
-                        style: TextStyle(
+                    Text("${utente.codiceFiscale}",
+                        style: const TextStyle(
                             fontSize: 15, fontWeight: FontWeight.normal))
                   ],
                 )
@@ -202,7 +213,21 @@ class AccountView extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18)),
             SizedBox(height: size.height * 0.03),
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                final choose = await showDeleteAccountDialog(context);
+                if(choose){
+                  APIServices.deleteUtente(utente.codiceFiscale!);
+                  prefs.remove("email");
+                  prefs.remove("password");
+                  prefs.clear();
+                  final user= FirebaseAuth.instance.currentUser!;
+                  await user.reauthenticateWithCredential(EmailAuthProvider.credential(email: utente.email!, password: utente.password!));
+                  await user.delete();
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                   Routes.loginView, (_) => false);
+                }
+              },
               icon: const Icon(Icons.delete, color: AppColors.oro, size: 25),
               label: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

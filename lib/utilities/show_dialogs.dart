@@ -64,3 +64,27 @@ Future<bool> showErrorOCRDialog(BuildContext context) {
         );
       }).then((value) => value ?? false);
 }
+
+
+Future<bool> showDeleteAccountDialog(BuildContext context){
+  return showDialog<bool>(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text("ATTENZIONE!"),
+        content: const Text("Sei sicuro di voler eliminare permanentemente l'account? Così facendo tutti i tuoi dati verranno cancellati!"),
+        actions: [
+          TextButton(
+            onPressed: (){
+              Navigator.of(context).pop(true);
+            }, 
+          child: const Text("Sì")),
+          TextButton(
+            onPressed: (){
+              Navigator.of(context).pop(false);
+            }, 
+            child: const Text("Annulla"))
+        ],
+      );
+    }).then((value) => value ?? false);
+}

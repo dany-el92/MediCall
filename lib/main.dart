@@ -3,6 +3,8 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:medicall/authentication/auth_service.dart';
 import 'package:medicall/constants/colors.dart';
 import 'package:medicall/constants/routes.dart';
+import 'package:medicall/database/utente.dart';
+import 'package:medicall/utilities/api_services.dart';
 import 'package:medicall/views/auth/forgot_password_view.dart';
 import 'package:medicall/views/auth/login_view.dart';
 import 'package:medicall/views/auth/verify_email_view.dart';
@@ -10,6 +12,7 @@ import 'package:medicall/views/main_view.dart';
 import 'package:medicall/views/auth/register_view.dart';
 import 'package:medicall/views/prescription_view.dart';
 import 'package:medicall/views/splash_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -38,12 +41,12 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.bluScuro),
           useMaterial3: true,
         ),
-        //initialRoute: Prova_Microfono(),
+       // initialRoute: Routes.loginView,
         home: const HomePage(),
         routes: {
           Routes.loginView: (context) => const LoginView(),
           Routes.registerView: (context) => const RegisterView(),
-          Routes.mainView: (context) => const MainView(),
+        //  Routes.mainView: (context) => const MainView(),
           Routes.splashScreen: (context) => const SplashScreen(),
           Routes.receiptView: (context) => const PrescriptionView(),
           Routes.verifyMailView: (context) => const VerifyEmailView(),
@@ -52,8 +55,35 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+  Utente? u;
+
+ @override
+ void initState(){
+  super.initState();
+  getCurrentUser();
+ }
+
+
+  Future<void> getCurrentUser() async{
+    final prefs= await SharedPreferences.getInstance();
+    String? email=prefs.getString("email");
+    String? password=prefs.getString("password");
+    if(email!=null && password!=null){
+    Utente? y= await APIServices.getUtente(email, password);
+      setState(() {
+      u=y;
+    });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,8 +94,8 @@ class HomePage extends StatelessWidget {
             case ConnectionState.done:
               final user = AuthService.firebase().currentUser;
               if (user != null) {
-                if (user.isEmailVerified) {
-                  return const MainView();
+                if (user.isEmailVerified && u!=null) { 
+                return MainView(utente: u!);
                 } else {
                   return const VerifyEmailView();
                 }
