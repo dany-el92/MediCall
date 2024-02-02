@@ -44,12 +44,12 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.bluScuro),
           useMaterial3: true,
         ),
-       // initialRoute: Routes.loginView,
-        home: const HomePage(),
+        // initialRoute: Routes.loginView,
+        home: MainView(utente: Utente(nome: "Daniele", cognome: "Gregori")),
         routes: {
           Routes.loginView: (context) => const LoginView(),
           Routes.registerView: (context) => const RegisterView(),
-        //  Routes.mainView: (context) => const MainView(),
+          //  Routes.mainView: (context) => const MainView(),
           Routes.splashScreen: (context) => const SplashScreen(),
           Routes.receiptView: (context) => const PrescriptionView(),
           Routes.verifyMailView: (context) => const VerifyEmailView(),
@@ -66,25 +66,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   Utente? u;
 
- @override
- void initState(){
-  super.initState();
-  getCurrentUser();
- }
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
 
-
-  Future<void> getCurrentUser() async{
-    final prefs= await SharedPreferences.getInstance();
-    String? email=prefs.getString("email");
-    String? password=prefs.getString("password");
-    if(email!=null && password!=null){
-    Utente? y= await APIServices.getUtente(email, password);
+  Future<void> getCurrentUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString("email");
+    String? password = prefs.getString("password");
+    if (email != null && password != null) {
+      Utente? y = await APIServices.getUtente(email, password);
       setState(() {
-      u=y;
-    });
+        u = y;
+      });
     }
   }
 
@@ -97,9 +95,9 @@ class _HomePageState extends State<HomePage> {
             case ConnectionState.done:
               final user = AuthService.firebase().currentUser;
               if (user != null) {
-                if (user.isEmailVerified && u!=null) {
-                CloudMessaging().initNotification(); 
-                return MainView(utente: u!);
+                if (user.isEmailVerified && u != null) {
+                  CloudMessaging().initNotification();
+                  return MainView(utente: u!);
                 } else {
                   return const VerifyEmailView();
                 }

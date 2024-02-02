@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  const CustomTextFormField({
-    required this.textInputAction,
-    required this.labelText,
-    required this.keyboardType,
-    required this.controller,
-    super.key,
-    this.onChanged,
-    this.validator,
-    this.obscureText,
-    this.suffixIcon,
-    this.onEditingComplete,
-    this.autofocus,
-    this.focusNode,
-    this.onTap,
-    this.floatingLabelBehavior
-  });
+  const CustomTextFormField(
+      {required this.textInputAction,
+      required this.labelText,
+      required this.keyboardType,
+      required this.controller,
+      super.key,
+      this.onChanged,
+      this.validator,
+      this.obscureText,
+      this.suffixIcon,
+      this.onEditingComplete,
+      this.autofocus,
+      this.focusNode,
+      this.onTap,
+      this.floatingLabelBehavior});
 
   final void Function(String)? onChanged;
   final String? Function(String?)? validator;

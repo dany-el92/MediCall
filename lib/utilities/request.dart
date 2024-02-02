@@ -94,7 +94,7 @@ class OpenAIService {
     if (isInputComplete(userInput)) {
       // Send the extracted information to the server
       var response = await http.post(
-        Uri.parse('https://670c-95-251-24-61.ngrok-free.app/extract'),
+        Uri.parse('http://89.168.86.207:5001/extract'),
         // Replace with your server URL
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
@@ -106,7 +106,7 @@ class OpenAIService {
       );
 
       if (response.statusCode == 200) {
-        return content;
+        return "Grazie, la sua richiesta è stata inviata con successo. Le faremo sapere al più presto l'esito della prenotazione.";
       } else {
         return 'Server non raggiungibile, riprova più tardi';
       }

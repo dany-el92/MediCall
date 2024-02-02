@@ -39,7 +39,7 @@ class HomePageView extends StatelessWidget {
                     ),
                     Text(
                       "${utente.nome} ${utente.cognome} 👋",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 25,
                       ),
@@ -50,7 +50,7 @@ class HomePageView extends StatelessWidget {
                   radius: 25,
                   backgroundColor: Colors.blueAccent.shade700,
                   child: Text("${utente.nome![0]}${utente.cognome![0]}",
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                       )),
                 )
