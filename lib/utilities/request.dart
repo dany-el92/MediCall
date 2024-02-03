@@ -39,8 +39,8 @@ class OpenAIService {
         body: jsonEncode({
           "model": "gpt-3.5-turbo",
           "messages": messages,
-          "max_tokens": 100,
-          "temperature": 0.1,
+          "max_tokens": 256,
+          "temperature": 0,
         }),
       );
 

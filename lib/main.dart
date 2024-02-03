@@ -1,3 +1,4 @@
+import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -10,15 +11,22 @@ import 'package:medicall/utilities/api_services.dart';
 import 'package:medicall/views/auth/forgot_password_view.dart';
 import 'package:medicall/views/auth/login_view.dart';
 import 'package:medicall/views/auth/verify_email_view.dart';
+import 'package:medicall/views/calendar_view.dart';
 import 'package:medicall/views/main_view.dart';
 import 'package:medicall/views/auth/register_view.dart';
 import 'package:medicall/views/prescription_view.dart';
 import 'package:medicall/views/splash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+GlobalKey<CurvedNavigationBarState> bottomNavigationKey = GlobalKey();
+
+
+Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  // TODO da rimuovere queste due righe quando funzionerà il login
+  await AuthService.firebase().initialize();
+  await CloudMessaging().initNotification();
   initializeDateFormatting('it_IT', null);
   runApp(const MyApp());
 }
@@ -52,6 +60,7 @@ class MyApp extends StatelessWidget {
           //  Routes.mainView: (context) => const MainView(),
           Routes.splashScreen: (context) => const SplashScreen(),
           Routes.receiptView: (context) => const PrescriptionView(),
+          Routes.calendarView: (context) => const CalendarView(),
           Routes.verifyMailView: (context) => const VerifyEmailView(),
           Routes.forgotPasswordView: (context) => const ForgotPasswordView(),
         });

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:medicall/database/utente.dart';
+import 'package:medicall/main.dart';
 import 'package:medicall/utilities/image_picker_service.dart';
 import 'package:medicall/constants/colors.dart';
 import 'package:medicall/constants/images.dart';
@@ -26,7 +27,8 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   //TODO: da cambiare con la pagina iniziale
   int _selectedIndex = 0;
-  final List _pages =[];
+  final List _pages = [];
+
 
   @override
   void initState() {
@@ -35,7 +37,9 @@ class _MainViewState extends State<MainView> {
     _pages.add(const CalendarView());
     _pages.add(const AssistantView());
     _pages.add(const PrescriptionView());
-    _pages.add(AccountView(utente: widget.utente,));
+    _pages.add(AccountView(
+      utente: widget.utente,
+    ));
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FlutterNativeSplash.remove();
     });
@@ -109,6 +113,7 @@ class _MainViewState extends State<MainView> {
       body: _pages[_selectedIndex],
       bottomNavigationBar: CurvedNavigationBar(
         index: _selectedIndex,
+        key: bottomNavigationKey,
         items: const [
           CurvedNavigationBarItem(
             child: Icon(Icons.home),
