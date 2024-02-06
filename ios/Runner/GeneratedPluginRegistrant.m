@@ -54,6 +54,18 @@
 @import flutter_tts;
 #endif
 
+#if __has_include(<geocoding_ios/GeocodingPlugin.h>)
+#import <geocoding_ios/GeocodingPlugin.h>
+#else
+@import geocoding_ios;
+#endif
+
+#if __has_include(<google_maps_flutter_ios/FLTGoogleMapsPlugin.h>)
+#import <google_maps_flutter_ios/FLTGoogleMapsPlugin.h>
+#else
+@import google_maps_flutter_ios;
+#endif
+
 #if __has_include(<google_mlkit_commons/GoogleMlKitCommonsPlugin.h>)
 #import <google_mlkit_commons/GoogleMlKitCommonsPlugin.h>
 #else
@@ -119,6 +131,8 @@
   [FlutterNativeSplashPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterNativeSplashPlugin"]];
   [FlutterSecureStoragePlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterSecureStoragePlugin"]];
   [FlutterTtsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterTtsPlugin"]];
+  [GeocodingPlugin registerWithRegistrar:[registry registrarForPlugin:@"GeocodingPlugin"]];
+  [FLTGoogleMapsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleMapsPlugin"]];
   [GoogleMlKitCommonsPlugin registerWithRegistrar:[registry registrarForPlugin:@"GoogleMlKitCommonsPlugin"]];
   [GoogleMlKitTextRecognitionPlugin registerWithRegistrar:[registry registrarForPlugin:@"GoogleMlKitTextRecognitionPlugin"]];
   [FLTGoogleSignInPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleSignInPlugin"]];
