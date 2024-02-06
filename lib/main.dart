@@ -15,11 +15,11 @@ import 'package:medicall/views/calendar_view.dart';
 import 'package:medicall/views/main_view.dart';
 import 'package:medicall/views/auth/register_view.dart';
 import 'package:medicall/views/prescription_view.dart';
+import 'package:medicall/views/structure_details_view.dart';
 import 'package:medicall/views/splash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 GlobalKey<CurvedNavigationBarState> bottomNavigationKey = GlobalKey();
-
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         // initialRoute: Routes.loginView,
-        home: MainView(utente: Utente(nome: "Daniele", cognome: "Gregori")),
+        home: const StructureDetails(),
         routes: {
           Routes.loginView: (context) => const LoginView(),
           Routes.registerView: (context) => const RegisterView(),

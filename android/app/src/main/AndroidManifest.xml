@@ -5,9 +5,9 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <application
-            android:label="medicall"
+            android:label="MediCall"
             android:name="${applicationName}"
-            android:icon="@mipmap/ic_launcher">
+            android:icon="@mipmap/icona_app">
 
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
@@ -41,5 +41,8 @@
         <meta-data
                 android:name="flutterEmbedding"
                 android:value="2"/>
+        <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="AIzaSyAARy9YAHR9YDTizI3EmppeUMIUFMUhdZA"/>
     </application>
 </manifest>
