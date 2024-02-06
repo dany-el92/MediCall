@@ -71,9 +71,9 @@ class ImagePickerService {
     }
   }
 
-  void handleReceiptScanSuccess(
+  Future<bool?> handleReceiptScanSuccess(
       BuildContext context, ExtractedData data) async {
-    await Navigator.of(context).push(
+  final closed=  await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => ResultScreen(
           nome: data.nome,
@@ -88,9 +88,11 @@ class ImagePickerService {
         ),
       ),
     );
+
+    return closed;
   }
 
-  Future<void> regexText(BuildContext context) async {
+  Future<bool?> regexText(BuildContext context) async {
     XFile? selectedFile;
 
     if (_selectedSource == null) {
@@ -101,18 +103,22 @@ class ImagePickerService {
       selectedFile = await openSource(ImageSource.gallery, context);
     }
 
-    if (selectedFile == null) return;
+    if (selectedFile == null) return null;
 
     final recognizedText = await scanImage(File(selectedFile.path), context);
 
-    if (recognizedText == null) return;
+    if (recognizedText == null) return null;
 
     final extractedData = processTextBlocks(recognizedText.blocks);
     if (!RegexHelper.checkData(extractedData.dataControl)) {
       handleReceiptScanError(context, extractedData.dataControl);
     } else {
-      handleReceiptScanSuccess(context, extractedData);
+      final end = handleReceiptScanSuccess(context, extractedData);
+      return end;
+      
     }
+
+    return false;
   }
 
   Future<XFile?> chooseImageFile(BuildContext context) async {

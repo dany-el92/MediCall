@@ -316,7 +316,7 @@ class _ResultScreenState extends State<ResultScreen> {
                               codice_asl_Controller.clear();
                               codice_autenticazione_Controller.clear();
                               impegnativaController.clear();
-                              Navigator.pop(context);
+                              Navigator.pop(context, true);
                             }
                           },
                           child: const Text(

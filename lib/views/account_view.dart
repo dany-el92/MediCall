@@ -7,6 +7,9 @@ import 'package:medicall/database/utente.dart';
 import 'package:medicall/utilities/api_services.dart';
 import 'package:medicall/utilities/extensions.dart';
 import 'package:medicall/utilities/show_dialogs.dart';
+import 'package:medicall/views/account_password_data_view.dart';
+import 'package:medicall/views/account_data_view.dart';
+import 'package:medicall/views/account_email_data_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountView extends StatelessWidget {
@@ -93,7 +96,15 @@ class AccountView extends StatelessWidget {
                 color: AppColors.oro,
                 size: 25,
               ),
-              onPressed: () {},
+              onPressed: () { 
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => AccountDataView(
+                    cf: utente.codiceFiscale!, 
+                    nome: utente.nome!, 
+                    cognome: utente.cognome!, 
+                    genere: utente.genere!, 
+                    dataNascita: utente.dataNascita!)));
+              },
               label: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -152,7 +163,13 @@ class AccountView extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18)),
             SizedBox(height: size.height * 0.03),
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => AccountEmailDataView(
+                    email: utente.email!, 
+                    nome: utente.nome!, 
+                    cognome: utente.cognome!)));
+              },
               icon: const Icon(Icons.email, color: AppColors.oro, size: 25),
               label: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -181,7 +198,13 @@ class AccountView extends StatelessWidget {
             ),
             SizedBox(height: size.height * 0.02),
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => AccountPasswordDataView(
+                    cognome: utente.cognome!, 
+                    nome: utente.nome!, 
+                    password: utente.password!)));
+              },
               icon: const Icon(Icons.key, color: AppColors.oro, size: 25),
               label: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

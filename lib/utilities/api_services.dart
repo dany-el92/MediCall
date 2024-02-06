@@ -159,4 +159,21 @@ class APIServices {
       log(e.toString());
     }
   }
+
+  static Future<RicettaList?> getRicetteFromUtente (Utente u) async{
+    try{
+      var client= http.Client();
+      var uri= Uri.parse("${RestAPIs.baseURL}${RestAPIs.ricettaMedica}/utente/${u.codiceFiscale!}");
+      var response = await client.get(uri);
+      client.close();
+      log(response.statusCode.toString());
+      if(response.statusCode== 200){
+        return ricettaListFromJson(response.body);
+      }
+    } catch(e){
+      log(e.toString());
+    }
+
+    return null;
+  }
 }
