@@ -5,11 +5,11 @@
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
-		<string>Medicall</string>
+		<string>MediCall</string>
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>
-		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+		<string>com.example.medicall</string>
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
 		<key>CFBundleName</key>
@@ -52,7 +52,9 @@
 		<key>NSCameraUsageDescription</key>
 		<string>This app needs access to your camera in order to scan text.</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>This app needs access to your gallery to scan text</string>
+		<string>This app needs access to your gallery to scan text.</string>
+		<key>NSMicrophoneUsageDescription</key>
+        <string>This app does not require access to the microphone.</string>
 		<key>CFBundleURLTypes</key>
 		<array>
 			<dict>
