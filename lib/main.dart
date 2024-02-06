@@ -25,8 +25,8 @@ Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   // TODO da rimuovere queste due righe quando funzionerà il login
-  await AuthService.firebase().initialize();
-  await CloudMessaging().initNotification();
+  // await AuthService.firebase().initialize();
+  // await CloudMessaging().initNotification();
   initializeDateFormatting('it_IT', null);
   runApp(const MyApp());
 }
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         // initialRoute: Routes.loginView,
-        home: const StructureDetails(),
+        home: MainView(utente: Utente(nome: "Daniele", cognome: "Gregori", email: "danielbat2000@gmail.com", password: "ciao", codiceFiscale: "fafasf", dataNascita: "01/06/2000", genere: "M")),
         routes: {
           Routes.loginView: (context) => const LoginView(),
           Routes.registerView: (context) => const RegisterView(),

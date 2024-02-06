@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:medicall/components/appointment.dart';
@@ -20,6 +19,28 @@ class _CalendarViewState extends State<CalendarView>
   static const List<Tab> tabs = <Tab>[
     Tab(text: 'In programma'),
     Tab(text: 'Passate'),
+  ];
+
+  // Lista di appuntamenti sia futuri che passati
+  static final List<Appointment> appointments = [
+    Appointment(
+      nomeDottore: 'Dr. Daniele Gregori',
+      prestazione: 'Ortopedia',
+      data: DateTime(2024, 06, 1),
+      ora: const TimeOfDay(hour: 10, minute: 30),
+    ),
+    Appointment(
+      nomeDottore: 'Dr. Samuele Antonio Cesaro',
+      prestazione: 'Cardiologo',
+      data: DateTime(2024, 11, 20),
+      ora: const TimeOfDay(hour: 12, minute: 30),
+    ),
+    Appointment(
+      nomeDottore: 'Dr.ssa Daniela Amendola',
+      prestazione: 'Cardiologa',
+      data: DateTime(2023, 11, 20),
+      ora: const TimeOfDay(hour: 12, minute: 30),
+    ),
   ];
 
   @override
@@ -71,9 +92,9 @@ class _CalendarViewState extends State<CalendarView>
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: TabBarView(
         controller: _tabController,
-        children: const [
-          Tab1(),
-          Tab2(),
+        children: [
+          Tab1(appointments: appointments),
+          Tab2(appointments: appointments),
         ],
       ),
     );
@@ -81,34 +102,24 @@ class _CalendarViewState extends State<CalendarView>
 }
 
 class Tab1 extends StatelessWidget {
-  const Tab1({super.key});
+  final List<Appointment> appointments;
 
-  static final List<Appointment> appointments = [
-    Appointment(
-      nomeDottore: 'Dr. Daniele Gregori',
-      prestazione: 'Ortopedia',
-      data: DateTime(2024, 06, 1),
-      ora: const TimeOfDay(hour: 10, minute: 30),
-    ),
-    Appointment(
-      nomeDottore: 'Dr. Samuele Antonio Cesaro',
-      prestazione: 'Cardiologo',
-      data: DateTime(2024, 11, 20),
-      ora: const TimeOfDay(hour: 12, minute: 30),
-    ),
-  ];
+  const Tab1({super.key, required this.appointments});
 
   @override
   Widget build(BuildContext context) {
-    // Your code for Tab 1 goes here
-    return appointments.isNotEmpty
+    final futureAppointments = appointments
+        .where((appointment) => appointment.data.isAfter(DateTime.now()))
+        .toList();
+
+    return futureAppointments.isNotEmpty
         ? ListView.builder(
-            itemCount: appointments.length,
+            itemCount: futureAppointments.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.all(15),
                 child: AppointmentCard(
-                  appointment: appointments[index],
+                  appointment: futureAppointments[index],
                   onTap: () {},
                 ),
               );
@@ -155,34 +166,24 @@ class Tab1 extends StatelessWidget {
 }
 
 class Tab2 extends StatelessWidget {
-  const Tab2({super.key});
+  final List<Appointment> appointments;
 
-  static final List<Appointment> appointments = [
-    // Appointment(
-    //   nomeDottore: 'Dr. Daniele Gregori',
-    //   prestazione: 'Ortopedia',
-    //   data: DateTime(2024, 06, 1),
-    //   ora: const TimeOfDay(hour: 10, minute: 30),
-    // ),
-    // Appointment(
-    //   nomeDottore: 'Dr. Samuele Antonio Cesaro',
-    //   prestazione: 'Cardiologo',
-    //   data: DateTime(2024, 11, 20),
-    //   ora: const TimeOfDay(hour: 12, minute: 30),
-    // ),
-  ];
+  const Tab2({super.key, required this.appointments});
 
   @override
   Widget build(BuildContext context) {
-    // Your code for Tab 2 goes here
-    return appointments.isNotEmpty
+    final pastAppointments = appointments
+        .where((appointment) => appointment.data.isBefore(DateTime.now()))
+        .toList();
+
+    return pastAppointments.isNotEmpty
         ? ListView.builder(
-            itemCount: appointments.length,
+            itemCount: pastAppointments.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.all(15),
                 child: AppointmentCard(
-                  appointment: appointments[index],
+                  appointment: pastAppointments[index],
                   onTap: () {},
                 ),
               );

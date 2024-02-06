@@ -9,7 +9,6 @@ import 'package:medicall/utilities/extensions.dart';
 import 'package:medicall/constants/colors.dart';
 
 class HomePageView extends StatelessWidget {
-
   final Utente utente;
 
   const HomePageView({super.key, required this.utente});
@@ -27,10 +26,10 @@ class HomePageView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                 Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                const Text(
+                    const Text(
                       'Ciao,',
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
@@ -153,7 +152,7 @@ class HomePageView extends StatelessWidget {
                 )
               ],
             ),
-            //TODO: da rendere dinamico tramite la lista degli appuntamenti
+            //TODO: da rendere dinamico tramite la lista degli appuntamenti e mostrare l'appuntamento più vicino
             AppointmentCard(
               appointment: Appointment(
                 nomeDottore: 'Dr. Daniele Gregori',
