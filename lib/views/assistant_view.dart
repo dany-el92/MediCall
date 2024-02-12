@@ -126,13 +126,22 @@ class _AssistantViewState extends State<AssistantView> {
                         date: DateTime(now.year, now.month, now.day),
                       ),
                       const BubbleSpecialThree(
-                          textStyle:
-                              TextStyle(color: AppColors.bianco, fontSize: 16),
-                          text:
-                              "Ciao sono Pasqualino, l'assistente virtuale! Come posso aiutarti?",
-                          color: AppColors.bluMedio,
-                          tail: true,
-                          isSender: false),
+                        textStyle:
+                            TextStyle(color: AppColors.bianco, fontSize: 16),
+                        text: "Ciao sono Medi, il tuo assistente virtuale!",
+                        color: AppColors.bluMedio,
+                        tail: true,
+                        isSender: false,
+                      ),
+                      const BubbleSpecialThree(
+                        textStyle:
+                            TextStyle(color: AppColors.bianco, fontSize: 16),
+                        text:
+                            "Per prenotare la tua visita medica, ti preghiamo di inviare un unico messaggio includendo data, ora, luogo e tipo di prestazione richiesta. Grazie!",
+                        color: AppColors.bluMedio,
+                        tail: true,
+                        isSender: false,
+                      ),
                       ..._messages
                           .map((message) => BubbleSpecialThree(
                               text: message.content,
