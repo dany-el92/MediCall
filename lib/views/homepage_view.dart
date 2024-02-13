@@ -1,18 +1,115 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:medicall/components/appointment.dart';
 import 'package:medicall/components/appointment_card.dart';
 import 'package:medicall/components/assistant_card.dart';
 import 'package:medicall/constants/images.dart';
+import 'package:medicall/database/centro_medico.dart';
 import 'package:medicall/database/utente.dart';
+import 'package:medicall/utilities/api_services.dart';
 import 'package:medicall/utilities/extensions.dart';
 import 'package:medicall/constants/colors.dart';
+import 'package:medicall/views/structure_details_view.dart';
 
-class HomePageView extends StatelessWidget {
+const Duration debounceDuration= Duration(milliseconds: 500);
+typedef _Debounceable<S, T> = Future<S?> Function(T parameter);
+
+/// Returns a new function that is a debounced version of the given function.
+///
+/// This means that the original function will be called only after no calls
+/// have been made for the given Duration.
+_Debounceable<S, T> _debounce<S, T>(_Debounceable<S?, T> function) {
+  _DebounceTimer? debounceTimer;
+
+  return (T parameter) async {
+    if (debounceTimer != null && !debounceTimer!.isCompleted) {
+      debounceTimer!.cancel();
+    }
+    debounceTimer = _DebounceTimer();
+    try {
+      await debounceTimer!.future;
+    } catch (error) {
+      if (error is _CancelException) {
+        return null;
+      }
+      rethrow;
+    }
+    return function(parameter);
+  };
+}
+
+// A wrapper around Timer used for debouncing.
+class _DebounceTimer {
+  _DebounceTimer() {
+    _timer = Timer(debounceDuration, _onComplete);
+  }
+
+  late final Timer _timer;
+  final Completer<void> _completer = Completer<void>();
+
+  void _onComplete() {
+    _completer.complete();
+  }
+
+  Future<void> get future => _completer.future;
+
+  bool get isCompleted => _completer.isCompleted;
+
+  void cancel() {
+    _timer.cancel();
+    _completer.completeError(const _CancelException());
+  }
+}
+
+// An exception indicating that the timer was canceled.
+class _CancelException implements Exception {
+  const _CancelException();
+}
+
+
+
+class HomePageView extends StatefulWidget {
 
   final Utente utente;
 
-  const HomePageView({super.key, required this.utente});
+  const HomePageView({Key? key, required this.utente}) : super(key: key);
+
+  @override
+  State<HomePageView> createState() => _HomePageViewState();
+}
+
+class _HomePageViewState extends State<HomePageView> {
+
+  String? currentQuery;
+  late Iterable<Widget> _lastOptions = <Widget>[];
+  late _Debounceable<CentroList?, String> _debouncedSearch;
+
+  Future<CentroList?> searchCentro (String query) async{
+    currentQuery=query;
+    CentroList? options;
+
+    if(currentQuery!.isEmpty){
+      return CentroList(items: []);
+    }  
+    else{
+      options = await APIServices.getCentriFromSearchBar(query.toLowerCase());
+    }
+
+    if(currentQuery != query){
+      return null;
+    }
+
+    currentQuery = null;
+
+    return options;
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    _debouncedSearch = _debounce<CentroList?,String>(searchCentro);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +135,7 @@ class HomePageView extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "${utente.nome} ${utente.cognome} 👋",
+                      "${widget.utente.nome} ${widget.utente.cognome} 👋",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 25,
@@ -49,7 +146,7 @@ class HomePageView extends StatelessWidget {
                 CircleAvatar(
                   radius: 25,
                   backgroundColor: Colors.blueAccent.shade700,
-                  child: Text("${utente.nome![0]}${utente.cognome![0]}",
+                  child: Text("${widget.utente.nome![0]}${widget.utente.cognome![0]}",
                       style: const TextStyle(
                         color: Colors.white,
                       )),
@@ -57,7 +154,45 @@ class HomePageView extends StatelessWidget {
               ],
             ),
             SizedBox(height: size.height * 0.02),
-            ElevatedButton.icon(
+            SearchAnchor(
+              builder: (BuildContext context, SearchController controller){
+                return SearchBar(
+                  controller: controller,
+                  surfaceTintColor: MaterialStateProperty.all(Colors.white),
+                  shadowColor: MaterialStateProperty.all(AppColors.bluChiaro),
+                  hintText: "Trova strutture sanitarie",
+                  hintStyle: MaterialStateProperty.all(const TextStyle(fontSize: 15, letterSpacing: 1.0, fontWeight: FontWeight.normal)),
+                  leading: const Icon(Icons.search, size: 30, color: AppColors.bluChiaro),
+                  elevation: MaterialStateProperty.all(4.0),
+                  onTap: (){
+                    controller.openView();
+                  },
+                  onChanged: (_){
+                    controller.openView();
+                  },
+                );
+              }, 
+              suggestionsBuilder: (BuildContext context, SearchController controller) async{
+                final centrolist = await _debouncedSearch(controller.text);
+                if( centrolist == null){
+                  return _lastOptions;
+                }
+
+                _lastOptions = List<ListTile>.generate(centrolist.items!.length, (int index){
+                  final String item= centrolist.items![index].nome!;
+                  return ListTile(
+                    title: Text(item),
+                    trailing: const Icon(Icons.arrow_outward),
+                    onTap: (){
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => StructureDetails(centro: centrolist.items![index])));
+                    },
+                  );
+                });
+
+                return _lastOptions;
+              }
+            ),
+    /*        ElevatedButton.icon(
               onPressed: () {},
               icon: const Icon(
                 Icons.search,
@@ -85,7 +220,7 @@ class HomePageView extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: size.height * 0.05),
+    */        SizedBox(height: size.height * 0.05),
             const Text(
               "Prenota una visita tramite l'Assistente Virtuale",
               style: TextStyle(

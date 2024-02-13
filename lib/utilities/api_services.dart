@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:medicall/constants/rest_apis.dart';
+import 'package:medicall/database/centro_medico.dart';
+import 'package:medicall/database/prenotazione_visita.dart';
 import 'package:medicall/database/ricetta_medica.dart';
 import 'package:medicall/database/scansione.dart';
 import 'package:medicall/database/servizio_sanitario.dart';
@@ -13,8 +15,8 @@ class APIServices {
   Future<SSList?> getAllSS() async {
     try {
       var client = http.Client();
-      var uri = Uri.parse(RestAPIs.baseURL + RestAPIs.ssTest);
-      //var uri= Uri.parse(RestAPIs.baseURL+RestAPIs.ssTest);
+      var uri = Uri.parse(RestAPIs.baseURL + RestAPIs.servizioSanitario);
+      //var uri= Uri.parse(RestAPIs.baseURL+RestAPIs.servizioSanitario);
       var response = await client.get(uri);
       client.close();
       if (response.statusCode == 200) {
@@ -30,7 +32,7 @@ class APIServices {
   Future<void> addSS(SSList lista) async {
     try {
       var client = http.Client();
-      var uri = Uri.parse(RestAPIs.baseURL + RestAPIs.ssTest);
+      var uri = Uri.parse(RestAPIs.baseURL + RestAPIs.servizioSanitario);
       for (SS x in lista.items!) {
         var response = await client.post(uri,
             body: json.encode(x.toJson()), headers: headers);
@@ -47,7 +49,7 @@ class APIServices {
   Future<void> deleteSS(int id) async {
     try {
       var client = http.Client();
-      var uri = Uri.parse('${RestAPIs.baseURL}${RestAPIs.ssTest}/$id');
+      var uri = Uri.parse('${RestAPIs.baseURL}${RestAPIs.servizioSanitario}/$id');
       var response = await client.delete(uri);
       client.close();
       if (response.statusCode == 204 || response.statusCode == 200) {
@@ -61,7 +63,7 @@ class APIServices {
   Future<void> updateSS(int id, String tipo) async {
     try {
       var client = http.Client();
-      var uri = Uri.parse(RestAPIs.baseURL + RestAPIs.ssTest);
+      var uri = Uri.parse(RestAPIs.baseURL + RestAPIs.servizioSanitario);
       SS x = SS(idServizio: id, tipo: tipo);
       Map<String, dynamic> map = {"items": []};
       print(map["items"]);
@@ -175,5 +177,56 @@ class APIServices {
     }
 
     return null;
+  }
+
+  static Future<CentroList?> getCentriFromSearchBar (String nome) async{
+    try{
+      var client= http.Client();
+      var uri= Uri.parse("${RestAPIs.baseURL}${RestAPIs.centroMedico}/$nome");
+      var response = await client.get(uri);
+      client.close();
+      log(response.statusCode.toString());
+      if(response.statusCode == 200){
+        return centroListFromJson(utf8.decode(response.bodyBytes));
+      }
+
+    } catch(e){
+      log(e.toString());
+    }
+
+    return null;
+  }
+
+  static Future<SSList?> getSSFromCentro (Centro c) async{
+    try{
+      var client= http.Client();
+      var uri= Uri.parse("${RestAPIs.baseURL}${RestAPIs.servizioSanitario}/cm/${c.idCentro}");
+      var response = await client.get(uri);
+      client.close();
+      log(response.statusCode.toString());
+      if(response.statusCode == 200){
+        return ssListFromJson(response.body);
+      }
+
+
+    } catch(e){
+      log(e.toString());
+    }
+
+    return null;
+  }
+
+  static Future<void> addPrenotazione(Prenotazione p) async{
+    try{
+      var client= http.Client();
+      var uri= Uri.parse(RestAPIs.baseURL+RestAPIs.prenotazioneVisita);
+      var response = await client.post(uri, body: json.encode(p.toJson()), headers: headers);
+      log(response.statusCode.toString());
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("POST FUNZIONA");
+      }
+    } catch(e){
+      log(e.toString());
+    }
   }
 }

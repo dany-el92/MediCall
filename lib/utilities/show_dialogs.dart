@@ -88,3 +88,59 @@ Future<bool> showDeleteAccountDialog(BuildContext context){
       );
     }).then((value) => value ?? false);
 }
+
+  Future<bool> showConfirmAppointmentDialog(BuildContext context, String data, String orario, String servizio, String centro){
+    String s="";
+    switch(servizio){
+
+      case "Ortopedia":
+      s="Ortopedica";
+      break;
+
+      case "Cardiologia":
+      s="Cardiologica";
+      break;
+    }
+    
+    List<String> list=data.split("-");
+    return showDialog<bool>(
+      context: context,
+      builder: (context){
+        return AlertDialog(
+          title: const Text("Conferma Prenotazione"),
+          content: Text("Vuoi confermare la prenotazione per una visita $s presso $centro il giorno ${list[2]}/${list[1]}/${list[0]} alle ore $orario?"),
+          actions: [
+            TextButton(
+              onPressed: (){
+                Navigator.of(context).pop(true);
+              }, 
+              child: const Text("Sì")),
+              TextButton(
+                onPressed: (){
+                  Navigator.of(context).pop(false);
+                }, 
+                child: const Text("Annulla"))
+          ]
+        );
+
+      }).then((value) => value ?? false);
+  }
+
+  Future<void> showMissingAppointmentDetailsDialog (BuildContext context, bool data, bool orario, bool tipo){
+    return showDialog(
+      context: context,
+      builder: (context){
+        return AlertDialog(
+          title: const Text("Dati Mancanti"),
+          content: Text("Non è stato possibile effettuare la prenotazione perchè hai dimenticato di selezionare:\n\n${data==true ? "Data Appuntamento\n" : ""}${orario==true ? "Ora Appuntamento\n" : ""}${tipo==true ? "Tipo di Prescrizione" : ""}"),
+          actions: [
+            TextButton(
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+              child:const Text("OK"))
+          ],
+        );
+      });
+
+  }

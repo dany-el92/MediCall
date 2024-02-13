@@ -10,6 +10,7 @@ class DateSelector extends StatefulWidget {
 
 class DateSelectorState extends State<DateSelector> {
   int selectedIndex = -1;
+  String data="";
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +28,7 @@ class DateSelectorState extends State<DateSelector> {
             onTap: () {
               setState(() {
                 selectedIndex = index;
+                data=dates[selectedIndex].toString().split(" ")[0];
               });
               print('Selected date: ${dates[index]}');
             },

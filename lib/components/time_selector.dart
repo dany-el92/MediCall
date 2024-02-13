@@ -9,6 +9,7 @@ class TimeSelector extends StatefulWidget {
 
 class TimeSelectorState extends State<TimeSelector> {
   int selectedIndex = -1;
+  String orario = "";
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class TimeSelectorState extends State<TimeSelector> {
             onTap: () {
               setState(() {
                 selectedIndex = index;
+                orario=times[selectedIndex];
               });
               print('Selected time: ${times[index]}');
             },
