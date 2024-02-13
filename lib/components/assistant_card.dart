@@ -1,5 +1,7 @@
+import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:medicall/constants/colors.dart';
+import 'package:medicall/main.dart';
 
 class AssistantCard extends StatelessWidget {
   const AssistantCard({super.key});
@@ -17,7 +19,10 @@ class AssistantCard extends StatelessWidget {
         ),
         padding: const EdgeInsets.all(10),
       ),
-      onPressed: () {},
+      onPressed: () {
+        CurvedNavigationBarState? state = bottomNavigationKey.currentState;
+        state?.setPage(2);
+      },
       child: const Padding(
         padding: EdgeInsets.all(8.0),
         child: Row(

@@ -52,6 +52,6 @@ post_install do |installer|
   target 'Runner' do
     use_frameworks!
     pod 'Firebase/Core'
-    platform :ios, '12.0' # specifica la versione di iOS
+    platform :ios, '13.0' # specifica la versione di iOS
   end
 end

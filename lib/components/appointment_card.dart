@@ -62,6 +62,7 @@ class AppointmentCard extends StatelessWidget {
                         // Per allineare gli elementi alla fine uso i container che raggruppano i vari widget
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          // Non rimuovere il container, serve per allineare gli elementi
                           Container(
                             child: Row(
                               children: [
@@ -83,6 +84,7 @@ class AppointmentCard extends StatelessWidget {
                               ],
                             ),
                           ),
+                          // Non rimuovere il container, serve per allineare gli elementi
                           Container(
                             child: Row(
                               children: [
@@ -110,8 +112,14 @@ class AppointmentCard extends StatelessWidget {
                     child: Row(
                       children: [
                         const CircleAvatar(
-                            //backgroundImage: AssetImage(''),
-                            ),
+                          radius: 20,
+                          backgroundColor: Colors.blue,
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                        ),
                         const SizedBox(
                           width: 10,
                         ),

@@ -124,10 +124,10 @@ class _HomePageViewState extends State<HomePageView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                 Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                const Text(
+                    const Text(
                       'Ciao,',
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
@@ -288,7 +288,7 @@ class _HomePageViewState extends State<HomePageView> {
                 )
               ],
             ),
-            //TODO: da rendere dinamico tramite la lista degli appuntamenti
+            //TODO: da rendere dinamico tramite la lista degli appuntamenti e mostrare l'appuntamento più vicino
             AppointmentCard(
               appointment: Appointment(
                 nomeDottore: 'Dr. Daniele Gregori',

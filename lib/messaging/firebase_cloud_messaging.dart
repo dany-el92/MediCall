@@ -50,8 +50,8 @@ class CloudMessaging {
     CurvedNavigationBarState? state = bottomNavigationKey.currentState;
     state?.setPage(1);
 
-    print(
-        '${message.notification!.title} ${message.notification!.body} ${message.data}');
+    // print(
+    //     '${message.notification!.title} ${message.notification!.body} ${message.data}');
   }
 
   Future initLocalNotification() async {
