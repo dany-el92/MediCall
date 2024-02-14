@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
+import 'package:medicall/components/appointment.dart';
 import 'package:medicall/constants/rest_apis.dart';
 import 'package:medicall/database/centro_medico.dart';
 import 'package:medicall/database/prenotazione_visita.dart';
@@ -228,5 +229,40 @@ class APIServices {
     } catch(e){
       log(e.toString());
     }
+  }
+
+  static Future<AppointmentList?> getAppointmentsFromUtente(Utente u) async{
+    try{
+      var client= http.Client();
+      var uri= Uri.parse("${RestAPIs.baseURL}${RestAPIs.prenotazioneVisita}/${u.codiceFiscale!}");
+      var response = await client.get(uri);
+      log(response.statusCode.toString());
+      if(response.statusCode == 200){
+        return appointmentListFromJson(response.body);
+      }
+    } catch(e){
+      log(e.toString());
+    }
+
+    return null;
+  }
+
+  static Future<Appointment?> getTodaysAppointment() async{
+    try{
+      var client = http.Client();
+      var uri= Uri.parse(RestAPIs.baseURL + RestAPIs.prenotazioneVisita);
+      var response = await client.get(uri);
+      log(response.statusCode.toString());
+      if(response.statusCode == 200){
+        AppointmentList? a = appointmentListFromJson(response.body);
+        if(a.items!.isNotEmpty){
+          return a.items![0];
+        }
+      }
+    } catch(e){
+      log(e.toString());
+    }
+
+    return null;
   }
 }

@@ -1,9 +1,14 @@
+import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:medicall/components/appointment.dart';
 import 'package:medicall/components/appointment_card.dart';
 import 'package:medicall/constants/colors.dart';
 import 'package:medicall/constants/images.dart';
+import 'package:medicall/database/utente.dart';
+import 'package:medicall/main.dart';
+import 'package:medicall/utilities/api_services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CalendarView extends StatefulWidget {
   const CalendarView({super.key});
@@ -15,37 +20,53 @@ class CalendarView extends StatefulWidget {
 class _CalendarViewState extends State<CalendarView>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  late Future<AppointmentList?> appList;
+
+  Future<AppointmentList?> getAllAppuntamenti()async{
+     final prefs= await SharedPreferences.getInstance();
+    String? email = prefs.getString("email");
+    String? password = prefs.getString("password");
+    if(email!=null && password!=null){
+      Utente? u = await APIServices.getUtente(email, password);
+      AppointmentList? apps = await APIServices.getAppointmentsFromUtente(u!);
+      return apps;
+    }
+
+    return null;
+  }
 
   static const List<Tab> tabs = <Tab>[
     Tab(text: 'In programma'),
     Tab(text: 'Passate'),
   ];
 
-  // Lista di appuntamenti sia futuri che passati
-  static final List<Appointment> appointments = [
+  // Lista di appList sia futuri che passati
+ /* static final List<Appointment> appointments = [
     Appointment(
-      nomeDottore: 'Dr. Daniele Gregori',
-      prestazione: 'Ortopedia',
-      data: DateTime(2024, 06, 1),
-      ora: const TimeOfDay(hour: 10, minute: 30),
+      centroNome: 'Dr. Daniele Gregori',
+      prescrizione: 'Ortopedia',
+      dataPrenotazione: DateTime(2024, 06, 1),
+      orario: const TimeOfDay(hour: 10, minute: 30),
     ),
     Appointment(
-      nomeDottore: 'Dr. Samuele Antonio Cesaro',
-      prestazione: 'Cardiologo',
-      data: DateTime(2024, 11, 20),
-      ora: const TimeOfDay(hour: 12, minute: 30),
+      centroNome: 'Dr. Samuele Antonio Cesaro',
+      prescrizione: 'Cardiologo',
+      dataPrenotazione: DateTime(2024, 11, 20),
+      orario: const TimeOfDay(hour: 12, minute: 30),
     ),
     Appointment(
-      nomeDottore: 'Dr.ssa Daniela Amendola',
-      prestazione: 'Cardiologa',
-      data: DateTime(2023, 11, 20),
-      ora: const TimeOfDay(hour: 12, minute: 30),
+      centroNome: 'Dr.ssa Daniela Amendola',
+      prescrizione: 'Cardiologa',
+      dataPrenotazione: DateTime(2023, 11, 20),
+      orario: const TimeOfDay(hour: 12, minute: 30),
     ),
   ];
 
+*/
   @override
   void initState() {
     super.initState();
+    appList = getAllAppuntamenti();
     _tabController = TabController(vsync: this, length: tabs.length);
   }
 
@@ -75,7 +96,10 @@ class _CalendarViewState extends State<CalendarView>
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          CurvedNavigationBarState? state = bottomNavigationKey.currentState;
+          state?.setPage(2);
+        },
         extendedPadding: const EdgeInsets.symmetric(horizontal: 10),
         foregroundColor: Colors.white,
         backgroundColor: AppColors.bluChiaro,
@@ -90,13 +114,82 @@ class _CalendarViewState extends State<CalendarView>
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: TabBarView(
+      body: FutureBuilder<AppointmentList?>(
+        future: appList,
+        builder: (context,snapshot){
+          if(snapshot.connectionState==ConnectionState.waiting){
+            return const Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 230)
+                  ),
+                  SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: CircularProgressIndicator()
+                  )
+                ]
+              )
+            );
+          } else if(snapshot.hasData){
+            final appuntamenti = snapshot.data!;
+            return TabBarView(
+              controller: _tabController,
+              children: [
+                Tab1(appointments: appuntamenti.items!),
+                Tab2(appointments: appuntamenti.items!)
+              ],
+            );
+          } else{
+            return Column(
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        ImageConstant.prescriptionImage,
+                        height: 200,
+                        width: 200,
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        "Organizza le tue visite",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 40),
+                        child: Text(
+                          "Tieni traccia delle tue visite e degli appuntamenti con i tuoi medici per non dimenticarli mai più!",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400
+                          )
+                        ),
+                      )
+                    ]
+                  )
+                )
+              ],
+            );
+          }
+        }
+      )
+     /* TabBarView(
         controller: _tabController,
         children: [
-          Tab1(appointments: appointments),
+          Tab1(appointments: ),
           Tab2(appointments: appointments),
         ],
       ),
+    */
     );
   }
 }
@@ -109,7 +202,11 @@ class Tab1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final futureAppointments = appointments
-        .where((appointment) => appointment.data.isAfter(DateTime.now()))
+        .where((appointment) {
+          final datex= DateTime(
+            appointment.dataPrenotazione!.year, appointment.dataPrenotazione!.month, appointment.dataPrenotazione!.day, appointment.orario!.hour, appointment.orario!.minute);
+          return datex.isAfter(DateTime.now());
+        })
         .toList();
 
     return futureAppointments.isNotEmpty
@@ -173,7 +270,12 @@ class Tab2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pastAppointments = appointments
-        .where((appointment) => appointment.data.isBefore(DateTime.now()))
+        .where((appointment){
+          final datax = DateTime(
+            appointment.dataPrenotazione!.year, appointment.dataPrenotazione!.month, appointment.dataPrenotazione!.day, appointment.orario!.hour, appointment.orario!.minute
+          );
+          return datax.isBefore(DateTime.now());
+        })
         .toList();
 
     return pastAppointments.isNotEmpty

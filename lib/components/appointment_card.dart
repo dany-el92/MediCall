@@ -16,14 +16,14 @@ class AppointmentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // Format the date
     final formattedDate =
-        DateFormat('EEEE, d MMMM y', 'it_IT').format(appointment.data);
+        DateFormat('EEEE, d MMMM y', 'it_IT').format(appointment.dataPrenotazione!);
     // Format the time
     final formattedTime = DateFormat('jm', 'it_IT').format(DateTime(
-      appointment.data.year,
-      appointment.data.month,
-      appointment.data.day,
-      appointment.ora.hour,
-      appointment.ora.minute,
+      appointment.dataPrenotazione!.year,
+      appointment.dataPrenotazione!.month,
+      appointment.dataPrenotazione!.day,
+      appointment.orario!.hour,
+      appointment.orario!.minute,
     ));
     return Column(
       children: [
@@ -111,14 +111,12 @@ class AppointmentCard extends StatelessWidget {
                     padding: const EdgeInsets.all(20),
                     child: Row(
                       children: [
-                        const CircleAvatar(
-                          radius: 20,
-                          backgroundColor: Colors.blue,
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.white,
-                            size: 30,
-                          ),
+                        CircleAvatar(
+                          radius: 32.5,
+                          backgroundColor: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Image.asset('assets/images/cavallo_rounded.png',fit: BoxFit.cover))
                         ),
                         const SizedBox(
                           width: 10,
@@ -127,13 +125,13 @@ class AppointmentCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(appointment.nomeDottore,
+                            Text(appointment.centroNome!,
                                 style: const TextStyle(color: Colors.black)),
                             const SizedBox(
                               height: 2,
                             ),
                             Text(
-                              appointment.prestazione,
+                              appointment.prescrizione!,
                               style: TextStyle(color: Colors.grey.shade800),
                             ),
                           ],

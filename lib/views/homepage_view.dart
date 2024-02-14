@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:medicall/components/appointment.dart';
@@ -7,6 +8,7 @@ import 'package:medicall/components/assistant_card.dart';
 import 'package:medicall/constants/images.dart';
 import 'package:medicall/database/centro_medico.dart';
 import 'package:medicall/database/utente.dart';
+import 'package:medicall/main.dart';
 import 'package:medicall/utilities/api_services.dart';
 import 'package:medicall/utilities/extensions.dart';
 import 'package:medicall/constants/colors.dart';
@@ -84,6 +86,12 @@ class _HomePageViewState extends State<HomePageView> {
   String? currentQuery;
   late Iterable<Widget> _lastOptions = <Widget>[];
   late _Debounceable<CentroList?, String> _debouncedSearch;
+  late Future<Appointment?> todayapp;
+
+  Future<Appointment?> checkTodaysAppointment() async{
+    Appointment? a = await APIServices.getTodaysAppointment();
+    return a;
+  }
 
   Future<CentroList?> searchCentro (String query) async{
     currentQuery=query;
@@ -109,6 +117,7 @@ class _HomePageViewState extends State<HomePageView> {
   void initState(){
     super.initState();
     _debouncedSearch = _debounce<CentroList?,String>(searchCentro);
+    todayapp = checkTodaysAppointment();
   }
 
   @override
@@ -284,20 +293,63 @@ class _HomePageViewState extends State<HomePageView> {
                       fontSize: 15,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    CurvedNavigationBarState? state = bottomNavigationKey.currentState;
+                    state?.setPage(1);
+                  },
                 )
               ],
             ),
-            //TODO: da rendere dinamico tramite la lista degli appuntamenti e mostrare l'appuntamento più vicino
-            AppointmentCard(
+            FutureBuilder<Appointment?>(
+              future: todayapp, 
+              builder: (context,snapshot){
+                if(snapshot.connectionState == ConnectionState.waiting){
+                  return const Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 50)
+                      ),
+                      SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: CircularProgressIndicator()
+                      )
+                    ],
+                  );
+                } else if(snapshot.hasData){
+                  final appuntamento = snapshot.data!;
+                  return Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: AppointmentCard(
+                      appointment: appuntamento,
+                      onTap: (){},),
+                  );
+                } else {
+                  return const Padding(
+                    padding: EdgeInsets.only(right: 65,top: 15),
+                    child: Text("Non sono previsti appuntamenti per oggi",
+                      style: TextStyle(
+                        fontSize: 15,
+                        wordSpacing: 1.0,
+                        fontWeight: FontWeight.normal
+                      ),
+                    ),
+                  );
+                }
+              }
+            ),
+
+         /*   AppointmentCard(
               appointment: Appointment(
-                nomeDottore: 'Dr. Daniele Gregori',
-                prestazione: 'Ortopedia',
-                data: DateTime(2024, 06, 1),
-                ora: const TimeOfDay(hour: 10, minute: 30),
+                centroNome: 'Dr. Daniele Gregori',
+                prescrizione: 'Ortopedia',
+                dataPrenotazione: DateTime(2024, 06, 1),
+                orario: const TimeOfDay(hour: 10, minute: 30),
               ),
               onTap: () {},
             ),
+        */
             SizedBox(height: size.height * 0.04),
           ],
         ),
