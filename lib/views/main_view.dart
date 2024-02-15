@@ -29,11 +29,12 @@ class _MainViewState extends State<MainView> {
   int _selectedIndex = 0;
   final List _pages = [];
 
-
   @override
   void initState() {
     super.initState();
-    _pages.add(HomePageView(utente: widget.utente));
+    _pages.add(HomePageView(
+      utente: widget.utente,
+    ));
     _pages.add(const CalendarView());
     _pages.add(const AssistantView());
     _pages.add(const PrescriptionView());

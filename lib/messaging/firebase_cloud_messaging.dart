@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -78,12 +80,19 @@ class CloudMessaging {
       sound: true,
     );
 
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
     FirebaseMessaging.instance.getInitialMessage().then(handleMessage);
     FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
-    // FirebaseMessaging.onBackgroundMessage(handleMessage);
     FirebaseMessaging.onMessage.listen((message) {
       final notification = message.notification;
       if (notification == null) return;
+
+      if (notification.title == "Prenotazione effettuata") {
+        // TODO: crea appuntamento nel calendario
+      } else if (notification.title == "Prenotazione rifiutata") {
+        // TODO: fai qualcosa
+      }
 
       _localNotifications.show(
         notification.hashCode,
@@ -100,5 +109,16 @@ class CloudMessaging {
         payload: jsonEncode(message.toMap()),
       );
     });
+  }
+}
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  final notification = message.notification;
+  if (notification == null) return;
+
+  if (notification.title == "Prenotazione effettuata") {
+    // TODO: crea appuntamento nel calendario
+  } else if (notification.title == "Prenotazione rifiutata") {
+    // TODO: fai qualcosa
   }
 }

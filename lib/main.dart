@@ -25,8 +25,8 @@ Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   // TODO da rimuovere queste due righe quando funzionerà il login
-  // await AuthService.firebase().initialize();
-  // await CloudMessaging().initNotification();
+  await AuthService.firebase().initialize();
+  await CloudMessaging().initNotification();
   initializeDateFormatting('it_IT', null);
   runApp(const MyApp());
 }
