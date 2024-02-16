@@ -5,6 +5,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:medicall/authentication/auth_service.dart';
 import 'package:medicall/constants/colors.dart';
 import 'package:medicall/constants/routes.dart';
+import 'package:medicall/database/centro_medico.dart';
 import 'package:medicall/messaging/firebase_cloud_messaging.dart';
 import 'package:medicall/database/utente.dart';
 import 'package:medicall/utilities/api_services.dart';
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         // initialRoute: Routes.loginView,
-        home: MainView(utente: Utente(nome: "Daniele", cognome: "Gregori", email: "danielbat2000@gmail.com", password: "ciao", codiceFiscale: "fafasf", dataNascita: "01/06/2000", genere: "M")),
+        home: const HomePage(),
         routes: {
           Routes.loginView: (context) => const LoginView(),
           Routes.registerView: (context) => const RegisterView(),

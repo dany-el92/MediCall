@@ -1,5 +1,6 @@
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:medicall/components/date_selector.dart';
@@ -17,34 +18,35 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class StructureDetails extends StatefulWidget {
-
   final Centro centro;
 
-  const StructureDetails({Key? key,required this.centro}) :super(key: key);
+  const StructureDetails({Key? key, required this.centro}) : super(key: key);
 
   @override
   State<StructureDetails> createState() => _StructureDetailsState();
 }
 
 class _StructureDetailsState extends State<StructureDetails> {
-  int tipo=0;
-  int selectedIndex =-1;
-  String nomeTipo="";
+  int tipo = 0;
+  int selectedIndex = -1;
+  String nomeTipo = "";
   final timeKey = GlobalKey<TimeSelectorState>();
   final dateKey = GlobalKey<DateSelectorState>();
   late Future<LatLng> currentLocation;
   late Future<SSList?> slist;
+  final isTodayNotifier = ValueNotifier<bool>(false);
+
   // late GoogleMapController _mapController;
   final Map<String, Marker> _markers = {};
 
-
-  Future<SSList?> getAllSSCentro() async{
+  Future<SSList?> getAllSSCentro() async {
     SSList? list = await APIServices.getSSFromCentro(widget.centro);
     return list;
   }
 
-  Future<LatLng> getPositionCentro() async{
-    LatLng position = await getLocationFromAddress("${widget.centro.indirizzo!}, ${widget.centro.citta!}, ${widget.centro.cap!}, ${widget.centro.provincia!}");
+  Future<LatLng> getPositionCentro() async {
+    LatLng position = await getLocationFromAddress(
+        "${widget.centro.indirizzo!}, ${widget.centro.citta!}, ${widget.centro.cap!}, ${widget.centro.provincia!}");
     return position;
   }
 
@@ -52,17 +54,18 @@ class _StructureDetailsState extends State<StructureDetails> {
   void initState() {
     super.initState();
     currentLocation = getPositionCentro();
- /*   getLocationFromAddress("${widget.centro.indirizzo!}, ${widget.centro.cap!} ${widget.centro.citta!} ${widget.centro.provincia!}")
+    /*   getLocationFromAddress("${widget.centro.indirizzo!}, ${widget.centro.cap!} ${widget.centro.citta!} ${widget.centro.provincia!}")
         .then((location) {
       setState(() {
         currentLocation = location;
       });
     });
-  */  slist = getAllSSCentro();
+  */
+    slist = getAllSSCentro();
   }
 
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
   }
 
@@ -107,59 +110,68 @@ class _StructureDetailsState extends State<StructureDetails> {
                           ),
                         ),
                         FutureBuilder<SSList?>(
-                          future: slist, 
-                          builder: (context,snapshot){
-                            if(snapshot.connectionState == ConnectionState.waiting){
-                              return const Text("");
-                                  
-                            } else if(snapshot.hasData){
-                              final lista = snapshot.data!;
-                              return Column(
-                                children: [
-                                  ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: lista.items!.length,
-                                  itemBuilder: (context,index){
-                                    final servizio = lista.items![index];
-                                    return Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text(servizio.tipo!, style: TextStyle(color: Colors.grey.shade600, fontSize: 16)),
-                                      ],
-                                    );
-                                  }),
-                                ],
-                              );
-                            }
-                                  
-                            return Text("", style: TextStyle(color: Colors.grey.shade600, fontSize: 16));
-                          }),
-                  /*      Text(
+                            future: slist,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Text("");
+                              } else if (snapshot.hasData) {
+                                final lista = snapshot.data!;
+                                return Column(
+                                  children: [
+                                    ListView.builder(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount: lista.items!.length,
+                                        itemBuilder: (context, index) {
+                                          final servizio = lista.items![index];
+                                          return Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(servizio.tipo!,
+                                                  style: TextStyle(
+                                                      color:
+                                                          Colors.grey.shade600,
+                                                      fontSize: 16)),
+                                            ],
+                                          );
+                                        }),
+                                  ],
+                                );
+                              }
+
+                              return Text("",
+                                  style: TextStyle(
+                                      color: Colors.grey.shade600,
+                                      fontSize: 16));
+                            }),
+                        /*      Text(
                           'Laboratorio di analisi',
                           style: TextStyle(
                             color: Colors.grey.shade600,
                             fontSize: 16,
                           ),
                         ),
-                  */      const SizedBox(
+                  */
+                        const SizedBox(
                           height: 20,
                         ),
-                         Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                          const Text('Descrizione',
+                            const Text('Descrizione',
                                 style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
                                 )),
-                          const SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             ExpandableText(
-                              "${widget.centro.indirizzo!}, ${widget.centro.cap!} ${widget.centro.citta!} ${widget.centro.provincia!}\n\n"
-                              "${widget.centro.nome!} ${widget.centro.descrizione!}"
-                            ),
+                                "${widget.centro.indirizzo!}, ${widget.centro.cap!} ${widget.centro.citta!} ${widget.centro.provincia!}\n\n"
+                                "${widget.centro.nome!} ${widget.centro.descrizione!}"),
                           ],
                         ),
                         const SizedBox(
@@ -168,91 +180,103 @@ class _StructureDetailsState extends State<StructureDetails> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                           const Text('Tipo di Prescrizione',
+                            const Text(
+                              'Tipo di Prescrizione',
                               style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold
-                              ),
+                                  fontSize: 20, fontWeight: FontWeight.bold),
                             ),
-                         const SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             FutureBuilder<SSList?>(
-                              future: slist, 
-                              builder: (context,snapshot){
-                                if(snapshot.connectionState == ConnectionState.waiting){
-                                  return const Text("");
-
-                                } else if(snapshot.hasData){
-                                  final lista = snapshot.data!;
-                                  return SizedBox(
-                                    height: 60,
-                                    child: 
-                                      ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: lista.items!.length,
-                                        itemBuilder: (context,index){
-                                          final servizio= lista.items![index];
-                                          return GestureDetector(
-                                            onTap: (){
-                                              setState(() {
-                                                selectedIndex=index;
-                                                tipo=servizio.idServizio!;
-                                                nomeTipo=servizio.tipo!;
-                                              });
-                                            },
-                                            child: SizedBox(
-                                              width: 125,
-                                              child: Card(
-                                                child: Center(
-                                                  child: Text(servizio.tipo!,
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      color:
-                                                        selectedIndex==index ? Colors.blue : Colors.black,
-                                                      fontWeight: selectedIndex == index ? 
-                                                        FontWeight.bold : FontWeight.normal
-                                                    ),
-                                                  )
+                                future: slist,
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Text("");
+                                  } else if (snapshot.hasData) {
+                                    final lista = snapshot.data!;
+                                    return SizedBox(
+                                        height: 60,
+                                        child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: lista.items!.length,
+                                            itemBuilder: (context, index) {
+                                              final servizio =
+                                                  lista.items![index];
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    selectedIndex = index;
+                                                    tipo = servizio.idServizio!;
+                                                    nomeTipo = servizio.tipo!;
+                                                  });
+                                                },
+                                                child: SizedBox(
+                                                  width: 125,
+                                                  child: Card(
+                                                    child: Center(
+                                                        child: Text(
+                                                      servizio.tipo!,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          color:
+                                                              selectedIndex ==
+                                                                      index
+                                                                  ? Colors.blue
+                                                                  : Colors
+                                                                      .black,
+                                                          fontWeight:
+                                                              selectedIndex ==
+                                                                      index
+                                                                  ? FontWeight
+                                                                      .bold
+                                                                  : FontWeight
+                                                                      .normal),
+                                                    )),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                          );
-                                        })
-                                    
-                                  );
-                                }
+                                              );
+                                            }));
+                                  }
 
-                                return const Text("");
-                              }),
-                          const SizedBox(
+                                  return const Text("");
+                                }),
+                            const SizedBox(
                               height: 20,
                             ),
-                          const Text(
+                            const Text(
                               'Data appuntamento',
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                          const SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
-                          DateSelector(key: dateKey,),
-                          const SizedBox(
+                            DateSelector(
+                              key: dateKey,
+                              isTodayNotifier: isTodayNotifier,
+                            ),
+                            const SizedBox(
                               height: 20,
                             ),
-                          const Text(
+                            const Text(
                               'Ora appuntamento',
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                          const SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
-                          TimeSelector(key: timeKey),
+                            TimeSelector(
+                              key: timeKey,
+                              isTodayNotifier: isTodayNotifier,
+                            ),
                           ],
                         ),
                         const SizedBox(
@@ -260,44 +284,58 @@ class _StructureDetailsState extends State<StructureDetails> {
                         ),
                         ElevatedButton(
                           onPressed: () async {
-                            String orario =timeKey.currentState!.orario;
+                            String orario = timeKey.currentState!.orario;
                             String data = dateKey.currentState!.data;
-                            if(data.isNotEmpty && orario.isNotEmpty && tipo!=0){
-                              final choose= await showConfirmAppointmentDialog(context, data, orario, nomeTipo, widget.centro.nome!);
-                              if(choose){
-                                final prefs = await SharedPreferences.getInstance();
+                            if (data.isNotEmpty &&
+                                orario.isNotEmpty &&
+                                tipo != 0) {
+                              final choose = await showConfirmAppointmentDialog(
+                                  context,
+                                  data,
+                                  orario,
+                                  nomeTipo,
+                                  widget.centro.nome!);
+                              if (choose) {
+                                final prefs =
+                                    await SharedPreferences.getInstance();
                                 String? email = prefs.getString("email");
                                 String? password = prefs.getString("password");
-                                if(email!=null && password!=null){
-                                  Utente? u= await APIServices.getUtente(email, password);
-                                  Prenotazione p=Prenotazione(idCm: widget.centro.idCentro, idUtente: u!.codiceFiscale, idTipo: tipo, dataPrenotazione: data, orario: orario);
+                                if (email != null && password != null) {
+                                  Utente? u = await APIServices.getUtente(
+                                      email, password);
+                                  Prenotazione p = Prenotazione(
+                                      idCm: widget.centro.idCentro,
+                                      idUtente: u!.codiceFiscale,
+                                      idTipo: tipo,
+                                      dataPrenotazione: data,
+                                      orario: orario);
                                   APIServices.addPrenotazione(p);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: const Text("Prenotazione effettuata con successo"),
-                                      backgroundColor: Colors.green,
-                                      behavior: SnackBarBehavior.floating,
-                                      dismissDirection: DismissDirection.up,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(30)
-                                      ),
-                                      margin: EdgeInsets.only(
-                                        bottom: size.height -210,
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: const Text(
+                                        "Prenotazione effettuata con successo"),
+                                    backgroundColor: Colors.green,
+                                    behavior: SnackBarBehavior.floating,
+                                    dismissDirection: DismissDirection.up,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30)),
+                                    margin: EdgeInsets.only(
+                                        bottom: size.height - 210,
                                         right: 10,
                                         left: 10),
-                                    )
-                                  );
+                                  ));
                                   Navigator.of(context).pop();
-                                  CurvedNavigationBarState? state = bottomNavigationKey.currentState;
+                                  CurvedNavigationBarState? state =
+                                      bottomNavigationKey.currentState;
                                   state?.setPage(1);
                                   FocusManager.instance.primaryFocus?.unfocus();
                                   Navigator.of(context).pop();
-
                                 }
                               }
-                              
-                            } else{
-                              showMissingAppointmentDetailsDialog(context, data.isEmpty, orario.isEmpty, tipo==0);
+                            } else {
+                              showMissingAppointmentDetailsDialog(context,
+                                  data.isEmpty, orario.isEmpty, tipo == 0);
                             }
                             // Handle confirmation and booking here
                             //print('Data and time confirmed. Booking...');
@@ -326,36 +364,37 @@ class _StructureDetailsState extends State<StructureDetails> {
                           height: 200,
                           width: size.width * 0.9,
                           child: FutureBuilder<LatLng>(
-                            future: currentLocation,
-                            builder: (context,snapshot){
-                              if(snapshot.connectionState == ConnectionState.waiting){
-                                return const CircularProgressIndicator();
-                                  
-                              } else if(snapshot.hasData){
-                                final location = snapshot.data!;
-                                return GoogleMap(
-                                  initialCameraPosition: CameraPosition(target: location, zoom: 18),
-                                  onMapCreated: (controller){
-                                    addMarker('test', location);
-                                  },
-                                   markers: _markers.values.toSet(),
-                                   myLocationButtonEnabled: false,
-                                   myLocationEnabled: false,
-                                   zoomControlsEnabled: false,
-                                   zoomGesturesEnabled: false,
-                                   scrollGesturesEnabled: false,
-                                   rotateGesturesEnabled: false,
-                                   tiltGesturesEnabled: false,
-                                   onTap: (taplocation){
-                                     openGoogleMaps(location.latitude, location.longitude);
-                                   },
+                              future: currentLocation,
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const CircularProgressIndicator();
+                                } else if (snapshot.hasData) {
+                                  final location = snapshot.data!;
+                                  return GoogleMap(
+                                    initialCameraPosition: CameraPosition(
+                                        target: location, zoom: 18),
+                                    onMapCreated: (controller) {
+                                      addMarker('test', location);
+                                    },
+                                    markers: _markers.values.toSet(),
+                                    myLocationButtonEnabled: false,
+                                    myLocationEnabled: false,
+                                    zoomControlsEnabled: false,
+                                    zoomGesturesEnabled: false,
+                                    scrollGesturesEnabled: false,
+                                    rotateGesturesEnabled: false,
+                                    tiltGesturesEnabled: false,
+                                    onTap: (taplocation) {
+                                      openGoogleMaps(location.latitude,
+                                          location.longitude);
+                                    },
                                   );
-                              }
-                                  
-                              return const Text("");
-                                  
-                            }),
-                               /*           child: GoogleMap(
+                                }
+
+                                return const Text("");
+                              }),
+                          /*           child: GoogleMap(
                             initialCameraPosition: CameraPosition(
                               target: currentLocation,
                               zoom: 18,
@@ -377,7 +416,8 @@ class _StructureDetailsState extends State<StructureDetails> {
                                   currentLocation.longitude);
                             },
                           ),
-                                   */       ),
+                                   */
+                        ),
                         const SizedBox(height: 50),
                       ],
                     ),
@@ -440,7 +480,8 @@ class _StructureDetailsState extends State<StructureDetails> {
 
   Future<LatLng> getLocationFromAddress(String address) async {
     try {
-      List<Location> locations = await locationFromAddress(address, localeIdentifier: "it_IT");
+      List<Location> locations =
+          await locationFromAddress(address, localeIdentifier: "it_IT");
       return LatLng(locations.first.latitude, locations.first.longitude);
     } catch (e) {
       print('Error: ${e.toString()}');
