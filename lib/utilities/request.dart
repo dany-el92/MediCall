@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:medicall/constants/secret.dart';
@@ -23,6 +24,7 @@ class OpenAIService {
       -Data:
       -Luogo:
       -Prestazione:
+      Formatta la data nel formato aaaa-mm-gg e l'ora nel formato hh:mm
     ''',
     });
     messages.add({
@@ -54,6 +56,8 @@ class OpenAIService {
           'content': content,
         });
 
+        log(content);
+
         generatedContent = await extractAndSendData(content);
 
         return generatedContent;
@@ -68,7 +72,9 @@ class OpenAIService {
     List<String> requiredFields = ['ora', 'data', 'luogo', 'prestazione'];
 
     for (String field in requiredFields) {
-      if (!userInput.containsKey(field) || userInput[field]!.isEmpty || userInput[field]!.contains('non specificato')) {
+      if (!userInput.containsKey(field) ||
+          userInput[field]!.isEmpty ||
+          userInput[field]!.contains('non specificato')) {
         return false;
       }
     }
@@ -77,41 +83,45 @@ class OpenAIService {
   }
 
   Future<String> extractAndSendData(String content) async {
-    // Extract the information from the generated content
-    String ora = RegexHelper.extractOra(content);
-    String data = RegexHelper.extractData(content);
-    String luogo = RegexHelper.extractLuogo(content);
-    String prestazione = RegexHelper.extractPrestazione(content);
+    try {
+      // Extract the information from the generated content
+      String ora = RegexHelper.extractOra(content);
+      String data = RegexHelper.extractData(content);
+      String luogo = RegexHelper.extractLuogo(content);
+      String prestazione = RegexHelper.extractPrestazione(content);
 
-    // Check if the extracted information is complete
-    Map<String, String> userInput = {
-      'ora': ora,
-      'data': data,
-      'luogo': luogo,
-      'prestazione': prestazione,
-    };
+      // Check if the extracted information is complete
+      Map<String, String> userInput = {
+        'ora': ora,
+        'data': data,
+        'luogo': luogo,
+        'prestazione': prestazione,
+      };
 
-    if (isInputComplete(userInput)) {
-      // Send the extracted information to the server
-      var response = await http.post(
-        Uri.parse('http://89.168.86.207:5001/extract'),
-        // Replace with your server URL
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          'ora': ora,
-          'data': data,
-          'luogo': luogo,
-          'prestazione': prestazione,
-        }),
-      );
+      if (isInputComplete(userInput)) {
+        // Send the extracted information to the server
+        var response = await http.post(
+          Uri.parse('http://89.168.86.207:5001/extract'),
+          // Replace with your server URL
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode({
+            'ora': ora,
+            'data': data,
+            'luogo': luogo,
+            'prestazione': prestazione,
+          }),
+        );
 
-      if (response.statusCode == 200) {
-        return "Grazie, la sua richiesta è stata inviata con successo. Le faremo sapere al più presto l'esito della prenotazione.";
+        if (response.statusCode == 200) {
+          return "Grazie, la sua richiesta è stata inviata con successo. Le faremo sapere al più presto l'esito della prenotazione.";
+        } else {
+          return 'Servizio non disponibile, ci scusiamo per il disagio. Riprova più tardi!';
+        }
       } else {
-        return 'Server non raggiungibile, riprova più tardi';
+        return "Per favore, reinvia il messaggio inserendo tutte le informazioni richieste";
       }
-    } else {
-      return "Per favore, reinvia il messaggio inserendo tutte le informazioni richieste";
+    } catch (e) {
+      return 'Servizio non disponibile, ci scusiamo per il disagio. Riprova più tardi!';
     }
   }
 }

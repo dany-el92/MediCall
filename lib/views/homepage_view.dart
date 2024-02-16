@@ -14,7 +14,8 @@ import 'package:medicall/utilities/extensions.dart';
 import 'package:medicall/constants/colors.dart';
 import 'package:medicall/views/structure_details_view.dart';
 
-const Duration debounceDuration= Duration(milliseconds: 500);
+const Duration debounceDuration = Duration(milliseconds: 500);
+
 typedef _Debounceable<S, T> = Future<S?> Function(T parameter);
 
 /// Returns a new function that is a debounced version of the given function.
@@ -69,10 +70,7 @@ class _CancelException implements Exception {
   const _CancelException();
 }
 
-
-
 class HomePageView extends StatefulWidget {
-
   final Utente utente;
 
   const HomePageView({Key? key, required this.utente}) : super(key: key);
@@ -82,29 +80,27 @@ class HomePageView extends StatefulWidget {
 }
 
 class _HomePageViewState extends State<HomePageView> {
-
   String? currentQuery;
   late Iterable<Widget> _lastOptions = <Widget>[];
   late _Debounceable<CentroList?, String> _debouncedSearch;
   late Future<Appointment?> todayapp;
 
-  Future<Appointment?> checkTodaysAppointment() async{
+  Future<Appointment?> checkTodaysAppointment() async {
     Appointment? a = await APIServices.getTodaysAppointment();
     return a;
   }
 
-  Future<CentroList?> searchCentro (String query) async{
-    currentQuery=query;
+  Future<CentroList?> searchCentro(String query) async {
+    currentQuery = query;
     CentroList? options;
 
-    if(currentQuery!.isEmpty){
+    if (currentQuery!.isEmpty) {
       return CentroList(items: []);
-    }  
-    else{
+    } else {
       options = await APIServices.getCentriFromSearchBar(query.toLowerCase());
     }
 
-    if(currentQuery != query){
+    if (currentQuery != query) {
       return null;
     }
 
@@ -114,9 +110,9 @@ class _HomePageViewState extends State<HomePageView> {
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    _debouncedSearch = _debounce<CentroList?,String>(searchCentro);
+    _debouncedSearch = _debounce<CentroList?, String>(searchCentro);
     todayapp = checkTodaysAppointment();
   }
 
@@ -155,7 +151,8 @@ class _HomePageViewState extends State<HomePageView> {
                 CircleAvatar(
                   radius: 25,
                   backgroundColor: Colors.blueAccent.shade700,
-                  child: Text("${widget.utente.nome![0]}${widget.utente.cognome![0]}",
+                  child: Text(
+                      "${widget.utente.nome![0]}${widget.utente.cognome![0]}",
                       style: const TextStyle(
                         color: Colors.white,
                       )),
@@ -164,44 +161,50 @@ class _HomePageViewState extends State<HomePageView> {
             ),
             SizedBox(height: size.height * 0.02),
             SearchAnchor(
-              builder: (BuildContext context, SearchController controller){
-                return SearchBar(
-                  controller: controller,
-                  surfaceTintColor: MaterialStateProperty.all(Colors.white),
-                  shadowColor: MaterialStateProperty.all(AppColors.bluChiaro),
-                  hintText: "Trova strutture sanitarie",
-                  hintStyle: MaterialStateProperty.all(const TextStyle(fontSize: 15, letterSpacing: 1.0, fontWeight: FontWeight.normal)),
-                  leading: const Icon(Icons.search, size: 30, color: AppColors.bluChiaro),
-                  elevation: MaterialStateProperty.all(4.0),
-                  onTap: (){
-                    controller.openView();
-                  },
-                  onChanged: (_){
-                    controller.openView();
-                  },
-                );
-              }, 
-              suggestionsBuilder: (BuildContext context, SearchController controller) async{
-                final centrolist = await _debouncedSearch(controller.text);
-                if( centrolist == null){
-                  return _lastOptions;
-                }
-
-                _lastOptions = List<ListTile>.generate(centrolist.items!.length, (int index){
-                  final String item= centrolist.items![index].nome!;
-                  return ListTile(
-                    title: Text(item),
-                    trailing: const Icon(Icons.arrow_outward),
-                    onTap: (){
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => StructureDetails(centro: centrolist.items![index])));
-                    },
-                  );
-                });
-
+                builder: (BuildContext context, SearchController controller) {
+              return SearchBar(
+                controller: controller,
+                surfaceTintColor: MaterialStateProperty.all(Colors.white),
+                shadowColor: MaterialStateProperty.all(AppColors.bluChiaro),
+                hintText: "Trova strutture sanitarie",
+                hintStyle: MaterialStateProperty.all(const TextStyle(
+                    fontSize: 15,
+                    letterSpacing: 1.0,
+                    fontWeight: FontWeight.normal)),
+                leading: const Icon(Icons.search,
+                    size: 30, color: AppColors.bluChiaro),
+                elevation: MaterialStateProperty.all(4.0),
+                onTap: () {
+                  controller.openView();
+                },
+                onChanged: (_) {
+                  controller.openView();
+                },
+              );
+            }, suggestionsBuilder:
+                    (BuildContext context, SearchController controller) async {
+              final centrolist = await _debouncedSearch(controller.text);
+              if (centrolist == null) {
                 return _lastOptions;
               }
-            ),
-    /*        ElevatedButton.icon(
+
+              _lastOptions = List<ListTile>.generate(centrolist.items!.length,
+                  (int index) {
+                final String item = centrolist.items![index].nome!;
+                return ListTile(
+                  title: Text(item),
+                  trailing: const Icon(Icons.arrow_outward),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => StructureDetails(
+                            centro: centrolist.items![index])));
+                  },
+                );
+              });
+
+              return _lastOptions;
+            }),
+            /*        ElevatedButton.icon(
               onPressed: () {},
               icon: const Icon(
                 Icons.search,
@@ -229,7 +232,8 @@ class _HomePageViewState extends State<HomePageView> {
                 ),
               ),
             ),
-    */        SizedBox(height: size.height * 0.05),
+    */
+            SizedBox(height: size.height * 0.05),
             const Text(
               "Prenota una visita tramite l'Assistente Virtuale",
               style: TextStyle(
@@ -294,53 +298,51 @@ class _HomePageViewState extends State<HomePageView> {
                     ),
                   ),
                   onPressed: () {
-                    CurvedNavigationBarState? state = bottomNavigationKey.currentState;
+                    CurvedNavigationBarState? state =
+                        bottomNavigationKey.currentState;
                     state?.setPage(1);
                   },
                 )
               ],
             ),
             FutureBuilder<Appointment?>(
-              future: todayapp, 
-              builder: (context,snapshot){
-                if(snapshot.connectionState == ConnectionState.waiting){
-                  return const Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: 50)
+                future: todayapp,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(padding: EdgeInsets.only(top: 50)),
+                        SizedBox(
+                            height: 50,
+                            width: 50,
+                            child: CircularProgressIndicator())
+                      ],
+                    );
+                  } else if (snapshot.hasData) {
+                    final appuntamento = snapshot.data!;
+                    return Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: AppointmentCard(
+                        appointment: appuntamento,
+                        onTap: () {},
                       ),
-                      SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: CircularProgressIndicator()
-                      )
-                    ],
-                  );
-                } else if(snapshot.hasData){
-                  final appuntamento = snapshot.data!;
-                  return Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: AppointmentCard(
-                      appointment: appuntamento,
-                      onTap: (){},),
-                  );
-                } else {
-                  return const Padding(
-                    padding: EdgeInsets.only(right: 65,top: 15),
-                    child: Text("Non sono previsti appuntamenti per oggi",
-                      style: TextStyle(
-                        fontSize: 15,
-                        wordSpacing: 1.0,
-                        fontWeight: FontWeight.normal
+                    );
+                  } else {
+                    return const Padding(
+                      padding: EdgeInsets.only(right: 65, top: 15),
+                      child: Text(
+                        "Non sono previsti appuntamenti per oggi",
+                        style: TextStyle(
+                            fontSize: 15,
+                            wordSpacing: 1.0,
+                            fontWeight: FontWeight.normal),
                       ),
-                    ),
-                  );
-                }
-              }
-            ),
+                    );
+                  }
+                }),
 
-         /*   AppointmentCard(
+            /*   AppointmentCard(
               appointment: Appointment(
                 centroNome: 'Dr. Daniele Gregori',
                 prescrizione: 'Ortopedia',

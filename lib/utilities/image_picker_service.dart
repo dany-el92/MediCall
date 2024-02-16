@@ -18,37 +18,73 @@ class ImagePickerService {
   ImageSource? _selectedSource;
 
   Future<void> printTextFromUrl(BuildContext context) async {
-    XFile? selectedFile;
-    if (_selectedSource == null) {
-      selectedFile = await chooseImageFile(context);
-    } else if (_selectedSource == ImageSource.camera) {
-      selectedFile = await openSource(ImageSource.camera, context);
-    } else if (_selectedSource == ImageSource.gallery) {
-      selectedFile = await openSource(ImageSource.gallery, context);
-    }
+    try {
+      XFile? selectedFile;
+      if (_selectedSource == null) {
+        selectedFile = await chooseImageFile(context);
+      } else if (_selectedSource == ImageSource.camera) {
+        selectedFile = await openSource(ImageSource.camera, context);
+      } else if (_selectedSource == ImageSource.gallery) {
+        selectedFile = await openSource(ImageSource.gallery, context);
+      }
 
-    if (selectedFile == null) return;
+      if (selectedFile == null) return;
 
-    final recognizedText = await scanImage(File(selectedFile.path), context);
+      final recognizedText = await scanImage(File(selectedFile.path), context);
 
-    if (recognizedText == null) return;
+      if (recognizedText == null) return;
 
-    final aicNumber = RegexHelper.getAicNumber(recognizedText.text);
+      final aicNumber = RegexHelper.getAicNumber(recognizedText.text);
 
-    // If the aicNumber is the same as the recognized text, it means no match was found
-    if (aicNumber == recognizedText.text) {
-      handleAicNumberError(context);
-      return;
-    }
+      // If the aicNumber is the same as the recognized text, it means no match was found
+      if (aicNumber == recognizedText.text) {
+        handleAicNumberError(context);
+        return;
+      }
 
-    var data = await getData('http://89.168.86.207:5000/$aicNumber');
-    var decodedData = jsonDecode(data);
-    //chiave del JSON del server
-    var text = decodedData['url'];
-
-    final Uri url = Uri.parse(text);
-    if (!await launchUrl(url)) {
-      throw Exception('Could not launch $url');
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return FutureBuilder<String>(
+            future: getData('http://89.168.86.207:5000/$aicNumber')
+                .then((value) => value.toString()),
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const AlertDialog(
+                  content: Row(
+                    children: [
+                      CircularProgressIndicator(),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Text('Caricamento...'),
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  var decodedData = jsonDecode(snapshot.data!);
+                  var text = decodedData['url'];
+                  final Uri url = Uri.parse(text);
+                  launchUrl(url).then((result) {
+                    if (!result) {
+                      throw Exception('Could not launch $url');
+                    }
+                  });
+                  Navigator.pop(context);
+                  return Container();
+                }
+              }
+            },
+          );
+        },
+      );
+    } catch (e) {
+      // Handle the exception
+      showNetworkErrorOCRDialog(context);
     }
   }
 
@@ -73,7 +109,7 @@ class ImagePickerService {
 
   Future<bool?> handleReceiptScanSuccess(
       BuildContext context, ExtractedData data) async {
-  final closed=  await Navigator.of(context).push(
+    final closed = await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => ResultScreen(
           nome: data.nome,
@@ -115,7 +151,6 @@ class ImagePickerService {
     } else {
       final end = handleReceiptScanSuccess(context, extractedData);
       return end;
-      
     }
 
     return false;
@@ -228,3 +263,44 @@ class ImagePickerService {
     );
   }
 }
+
+// Versione precedente del metodo printTextFromUrl senza loading screen
+// Future<void> printTextFromUrl(BuildContext context) async {
+//   try {
+//     XFile? selectedFile;
+//     if (_selectedSource == null) {
+//       selectedFile = await chooseImageFile(context);
+//     } else if (_selectedSource == ImageSource.camera) {
+//       selectedFile = await openSource(ImageSource.camera, context);
+//     } else if (_selectedSource == ImageSource.gallery) {
+//       selectedFile = await openSource(ImageSource.gallery, context);
+//     }
+//
+//     if (selectedFile == null) return;
+//
+//     final recognizedText = await scanImage(File(selectedFile.path), context);
+//
+//     if (recognizedText == null) return;
+//
+//     final aicNumber = RegexHelper.getAicNumber(recognizedText.text);
+//
+//     // If the aicNumber is the same as the recognized text, it means no match was found
+//     if (aicNumber == recognizedText.text) {
+//       handleAicNumberError(context);
+//       return;
+//     }
+//
+//     var data = await getData('http://89.168.86.207:5000/$aicNumber');
+//     var decodedData = jsonDecode(data);
+//     //chiave del JSON del server
+//     var text = decodedData['url'];
+//
+//     final Uri url = Uri.parse(text);
+//     if (!await launchUrl(url)) {
+//       throw Exception('Could not launch $url');
+//     }
+//   } catch (e) {
+//     // Handle the exception
+//     showNetworkErrorOCRDialog(context);
+//   }
+// }

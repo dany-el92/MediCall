@@ -16,7 +16,6 @@ import 'package:medicall/views/calendar_view.dart';
 import 'package:medicall/views/main_view.dart';
 import 'package:medicall/views/auth/register_view.dart';
 import 'package:medicall/views/prescription_view.dart';
-import 'package:medicall/views/structure_details_view.dart';
 import 'package:medicall/views/splash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
