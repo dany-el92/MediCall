@@ -29,8 +29,8 @@ class RegexConstants {
       caseSensitive: false);
 
   // Regex per i dati dell'appuntamento in input all'assistente da inviare al server
-  static final RegExp oraExp = RegExp(r'-Ora: (.*)');
-  static final RegExp dataExp = RegExp(r'-Data: (.*)');
-  static final RegExp luogoExp = RegExp(r'-Luogo: (.*)');
-  static final RegExp prestazioneExp = RegExp(r'-Prestazione: (.*)');
+  static final RegExp oraExp = RegExp(r'- Ora: (.*)');
+  static final RegExp dataExp = RegExp(r'- Data: (.*)');
+  static final RegExp luogoExp = RegExp(r'- Luogo: (.*)');
+  static final RegExp prestazioneExp = RegExp(r'- Prestazione: (.*)');
 }

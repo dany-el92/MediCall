@@ -119,6 +119,10 @@ Future<bool> showConfirmAppointmentDialog(BuildContext context, String data,
     case "Cardiologia":
       s = "Cardiologica";
       break;
+    
+    default:
+    s = servizio;
+    break;
   }
 
   List<String> list = data.split("-");

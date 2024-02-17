@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:medicall/utilities/api_services.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -92,6 +92,7 @@ class CloudMessaging {
         // TODO: crea appuntamento nel calendario
       } else if (notification.title == "Prenotazione rifiutata") {
         // TODO: fai qualcosa
+        APIServices.deleteLatestAppointment();
       }
 
       _localNotifications.show(
@@ -120,5 +121,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     // TODO: crea appuntamento nel calendario
   } else if (notification.title == "Prenotazione rifiutata") {
     // TODO: fai qualcosa
+    APIServices.deleteLatestAppointment();
   }
 }

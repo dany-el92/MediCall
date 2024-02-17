@@ -3,7 +3,13 @@ import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:medicall/constants/secret.dart';
+import 'package:medicall/database/centro_medico.dart';
+import 'package:medicall/database/prenotazione_visita.dart';
+import 'package:medicall/database/servizio_sanitario.dart';
+import 'package:medicall/database/utente.dart';
+import 'package:medicall/utilities/api_services.dart';
 import 'package:medicall/utilities/regex_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future getData(url) async {
   var uri = Uri.parse(url);
@@ -99,23 +105,52 @@ class OpenAIService {
       };
 
       if (isInputComplete(userInput)) {
-        // Send the extracted information to the server
-        var response = await http.post(
-          Uri.parse('http://89.168.86.207:5001/extract'),
-          // Replace with your server URL
-          headers: {"Content-Type": "application/json"},
-          body: jsonEncode({
-            'ora': ora,
-            'data': data,
-            'luogo': luogo,
-            'prestazione': prestazione,
-          }),
-        );
+        SS? servizio;
+        final prefs= await SharedPreferences.getInstance();
+        String? email = prefs.getString("email");
+        String? password = prefs.getString("password");
+        CentroList? centro = await APIServices.getCentriFromSearchBar(luogo);
+        if(centro == null || centro.items!.isEmpty){
+          return "La struttura sanitaria da lei inserita, non esiste. Per favore riprovi";
+        }
 
-        if (response.statusCode == 200) {
-          return "Grazie, la sua richiesta è stata inviata con successo. Le faremo sapere al più presto l'esito della prenotazione.";
-        } else {
-          return 'Servizio non disponibile, ci scusiamo per il disagio. Riprova più tardi!';
+        SSList? listSS = await APIServices.getSSFromCentro(centro.items![0]);
+        List<String> ssList = prestazione.split(" ");
+        if(ssList.length == 2){
+          servizio = await APIServices.getSS(ssList[1]);
+           if(servizio == null){
+            return "Il servizio sanitario da lei inserito, non esiste. Per favore riprovi";
+          } else{
+            bool exists = listSS!.items!.any((element) => element.idServizio == servizio!.idServizio);
+            if(!exists){
+              return "Il servizio sanitario da lei inserito non è offerto dalla struttura ${centro.items![0].nome!}";
+            }
+          }
+        }
+
+        if(email !=null && password != null){
+          Utente? utente = await APIServices.getUtente(email, password);
+          Prenotazione prenotazione = Prenotazione(dataPrenotazione: data, idUtente: utente!.codiceFiscale, idCm: centro.items![0].idCentro, idTipo: servizio!.idServizio , orario: ora);
+          APIServices.addPrenotazione(prenotazione);
+        // Send the extracted information to the server
+          var response = await http.post(
+            Uri.parse('http://89.168.86.207:5001/extract'),
+            // Replace with your server URL
+            headers: {"Content-Type": "application/json"},
+            body: jsonEncode({
+              'nomeCompleto': "${utente.nome!} ${utente.cognome!}",
+              'ora': ora,
+              'data': data,
+              'luogo': centro.items![0].nome,
+              'prestazione': prestazione,
+            }),
+          );
+
+          if (response.statusCode == 200) {
+            return "Grazie, la sua richiesta è stata inviata con successo. Le faremo sapere al più presto l'esito della prenotazione.";
+          } else {
+            return 'Servizio non disponibile, ci scusiamo per il disagio. Riprova più tardi!';
+          }
         }
       } else {
         return "Per favore, reinvia il messaggio inserendo tutte le informazioni richieste";
@@ -123,5 +158,7 @@ class OpenAIService {
     } catch (e) {
       return 'Servizio non disponibile, ci scusiamo per il disagio. Riprova più tardi!';
     }
+
+    return "Errore";
   }
 }
