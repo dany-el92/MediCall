@@ -184,8 +184,13 @@ class _PrescriptionViewState extends State<PrescriptionView> {
                   iconColor: AppColors.oro,
                   textColor: AppColors.oro,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                  onTap: (){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => PrescriptionDataView(ricetta: ricetta)));
+                  onTap: () async{
+                    final deleted = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => PrescriptionDataView(ricetta: ricetta)));
+                    if(deleted != null && deleted){
+                      setState(() {
+                        rlist=getAllRicetteUtente();
+                      });
+                    }
                     },
                   ),
                 );

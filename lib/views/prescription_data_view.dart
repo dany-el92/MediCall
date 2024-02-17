@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:medicall/components/custom_text_form_field.dart';
 import 'package:medicall/constants/colors.dart';
 import 'package:medicall/database/ricetta_medica.dart';
+import 'package:medicall/utilities/api_services.dart';
 import 'package:medicall/utilities/extensions.dart';
+import 'package:medicall/utilities/show_dialogs.dart';
 
 class PrescriptionDataView extends StatefulWidget {
 
@@ -158,6 +160,31 @@ class _PrescriptionDataViewState extends State<PrescriptionDataView> {
                         labelText: 'Esenzione',
                         keyboardType: TextInputType.none,
                         controller: esenzioneController,
+                      ),
+                      SizedBox(height: size.height * 0.026),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shadowColor: Colors.black,
+                          elevation: 20,
+                          backgroundColor: AppColors.bluChiaro,
+                          fixedSize: 
+                            Size(size.width * 0.95, size.height * 0.06),
+                        ),
+                        onPressed: () async{
+                          final choose = await showDeletePrescriptionDialog(context);
+                          if(choose){
+                            APIServices.deleteRicetta(widget.ricetta.impegnativa!);
+                            Navigator.pop(context,true);
+                          }
+                        }, 
+                        child: const Text(
+                          "ELIMINA RICETTA",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red
+                          ),
+                        )
                       ),
                     ],
                   )

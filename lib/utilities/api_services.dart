@@ -265,4 +265,51 @@ class APIServices {
 
     return null;
   }
+
+  static Future<SS?> getSS(String tipo) async{
+    try{
+      var client = http.Client();
+      var uri = Uri.parse("${RestAPIs.baseURL}${RestAPIs.servizioSanitario}/ss/$tipo");
+      var response = await client.get(uri);
+      log(response.statusCode.toString());
+      if(response.statusCode == 200){
+        SSList? s = ssListFromJson(response.body);
+        if(s.items!.isNotEmpty){
+          return s.items![0];
+        }
+      }
+    } catch(e){
+      log(e.toString());
+    }
+
+    return null;
+  }
+
+  static Future<void> deleteLatestAppointment() async{
+    try{
+      var client = http.Client();
+      var uri = Uri.parse("${RestAPIs.baseURL}${RestAPIs.prenotazioneVisita}/delete");
+      var response = await client.delete(uri);
+      log(response.statusCode.toString());
+      if(response.statusCode == 200 || response.statusCode == 204){
+        print("DELETE APPUNTAMENTO BOT FUNZIONA");
+      }
+    } catch(e){
+      log(e.toString());
+    }
+  }
+
+  static Future<void> deleteRicetta(String impegnativa) async{
+    try{
+      var client = http.Client();
+      var uri= Uri.parse("${RestAPIs.baseURL}${RestAPIs.ricettaMedica}/$impegnativa");
+      var response = await client.delete(uri);
+      log(response.statusCode.toString());
+      if(response.statusCode == 200 || response.statusCode == 204){
+        print("DELETE FUNZIONA");
+      }
+    } catch(e){
+      log(e.toString());
+    }
+  }
 }

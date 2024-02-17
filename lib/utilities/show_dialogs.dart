@@ -144,3 +144,26 @@ Future<bool> showDeleteAccountDialog(BuildContext context){
       });
 
   }
+
+  Future<bool> showDeletePrescriptionDialog(BuildContext context){
+    return showDialog<bool>(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text("ATTENZIONE!"),
+        content: const Text("Sei sicuro di voler eliminare permanentemente questa ricetta dal tuo account?"),
+        actions: [
+          TextButton(
+            onPressed: (){
+              Navigator.of(context).pop(true);
+            }, 
+          child: const Text("Sì")),
+          TextButton(
+            onPressed: (){
+              Navigator.of(context).pop(false);
+            }, 
+            child: const Text("Annulla"))
+        ],
+      );
+    }).then((value) => value ?? false);
+  }
