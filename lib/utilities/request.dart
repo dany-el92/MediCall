@@ -30,7 +30,8 @@ class OpenAIService {
       -Data:
       -Luogo:
       -Prestazione:
-      Formatta la data nel formato aaaa-mm-gg e l'ora nel formato hh:mm
+      Formatta la data nel formato aaaa-mm-gg e l'ora nel formato hh:mm.
+      Se l'anno non è specificato, assumi che sia il 2024.
     ''',
     });
     messages.add({

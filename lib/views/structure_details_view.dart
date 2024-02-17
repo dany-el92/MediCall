@@ -446,6 +446,7 @@ class _StructureDetailsState extends State<StructureDetails> {
                 radius: 25,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
+                  // TODO: Change the image dynamically
                   child: Image.asset(
                     'assets/images/cavallo_rounded.png',
                     fit: BoxFit.cover,

@@ -63,8 +63,9 @@ class _RegisterViewState extends State<RegisterView> {
 
     if (_picked != null) {
       setState(() {
-        String data= "${_picked.day.toString().padLeft(2,'0')}/${_picked.month.toString().padLeft(2,'0')}/${_picked.year}";
-        _dataController.text=data;
+        String data =
+            "${_picked.day.toString().padLeft(2, '0')}/${_picked.month.toString().padLeft(2, '0')}/${_picked.year}";
+        _dataController.text = data;
         //_dataController.text = _picked.toString().split(" ")[0];
       });
     }
@@ -126,7 +127,6 @@ class _RegisterViewState extends State<RegisterView> {
                               return null;
                             },
                           ),
-
                           // Input Nome
                           SizedBox(height: size.height * 0.02),
                           CustomTextFormField(
@@ -142,7 +142,6 @@ class _RegisterViewState extends State<RegisterView> {
                               return null;
                             },
                           ),
-
                           // Input Cognome
                           SizedBox(height: size.height * 0.02),
                           CustomTextFormField(
@@ -158,7 +157,6 @@ class _RegisterViewState extends State<RegisterView> {
                               return null;
                             },
                           ),
-
                           // Input Email
                           SizedBox(height: size.height * 0.02),
                           CustomTextFormField(
@@ -306,7 +304,6 @@ class _RegisterViewState extends State<RegisterView> {
                               color: AppColors.bluChiaro,
                             ),
                           ),
-
                           SizedBox(height: size.height * 0.04),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -318,62 +315,62 @@ class _RegisterViewState extends State<RegisterView> {
                             ),
                             onPressed: () async {
                               //Ultimo testo che l'utente ha digitato nei campi
-                              final email = _emailController.text;
-                              final password = _passwordController.text;
-                              
-                              if(_formKey.currentState?.validate() ?? false){
+                              final email = _emailController.text.trim();
+                              final password = _passwordController.text.trim();
 
-                              try {
-                                await AuthService.firebase().createUser(
-                                  email: email,
-                                  password: password,
-                                );
+                              if (_formKey.currentState?.validate() ?? false) {
+                                try {
+                                  await AuthService.firebase().createUser(
+                                    email: email,
+                                    password: password,
+                                  );
 
-                                Utente utente= Utente(
-                                codiceFiscale: _CFController.text,
-                                nome: _nomeController.text,
-                                cognome: _cognomeController.text,
-                                dataNascita: _dataController.text,
-                                genere: dropDownValue,
-                                password: _passwordController.text,
-                                familiare: "0",
-                                email: _emailController.text);
+                                  Utente utente = Utente(
+                                      codiceFiscale: _CFController.text.trim(),
+                                      nome: _nomeController.text.trim(),
+                                      cognome: _cognomeController.text.trim(),
+                                      dataNascita: _dataController.text.trim(),
+                                      genere: dropDownValue,
+                                      password: _passwordController.text.trim(),
+                                      familiare: "0",
+                                      email: _emailController.text.trim());
 
-                                APIServices.addUtente(utente);
+                                  APIServices.addUtente(utente);
 
-                                AuthService.firebase().sendEmailVerification();
-                                //Non rimuove tutte le view precedenti, ma fa solo una push della nuova schermata su quelle già presenti
-                                Navigator.of(context)
-                                    .pushNamed(Routes.verifyMailView);
-                              } on WeakPasswordAuthException {
-                                await showErrorDialog(
-                                    context, 'Password debole');
-                              } on EmailAlreadyInUseAuthException {
-                                await showErrorDialog(
-                                    context, 'Email già in uso');
-                              } on InvalidEmailAuthException {
-                                await showErrorDialog(
-                                    context, 'Email non valida');
-                              } on GenericAuthException {
-                                await showErrorDialog(
-                                    context, 'Errore di registrazione');
-                              }
-                              // if (_formKey.currentState?.validate() ?? false) {
-                              //   ScaffoldMessenger.of(context).showSnackBar(
-                              //     const SnackBar(
-                              //       content: Text(
-                              //           'Registrazione avvenuta con successo'),
-                              //     ),
-                              //   );
-                              //   emailController.clear();
-                              //   passwordController.clear();
-                              //   CFController.clear();
-                              //   nomeController.clear();
-                              //   cognomeController.clear();
-                              //   dataController.clear();
-                              //   genereController.clear();
-                              //   Navigator.pop(context);
-                              // }
+                                  AuthService.firebase()
+                                      .sendEmailVerification();
+                                  //Non rimuove tutte le view precedenti, ma fa solo una push della nuova schermata su quelle già presenti
+                                  Navigator.of(context)
+                                      .pushNamed(Routes.verifyMailView);
+                                } on WeakPasswordAuthException {
+                                  await showErrorDialog(
+                                      context, 'Password debole');
+                                } on EmailAlreadyInUseAuthException {
+                                  await showErrorDialog(
+                                      context, 'Email già in uso');
+                                } on InvalidEmailAuthException {
+                                  await showErrorDialog(
+                                      context, 'Email non valida');
+                                } on GenericAuthException {
+                                  await showErrorDialog(
+                                      context, 'Errore di registrazione');
+                                }
+                                // if (_formKey.currentState?.validate() ?? false) {
+                                //   ScaffoldMessenger.of(context).showSnackBar(
+                                //     const SnackBar(
+                                //       content: Text(
+                                //           'Registrazione avvenuta con successo'),
+                                //     ),
+                                //   );
+                                //   emailController.clear();
+                                //   passwordController.clear();
+                                //   CFController.clear();
+                                //   nomeController.clear();
+                                //   cognomeController.clear();
+                                //   dataController.clear();
+                                //   genereController.clear();
+                                //   Navigator.pop(context);
+                                // }
                               }
                             },
                             child: const Text(

@@ -50,7 +50,8 @@ class APIServices {
   Future<void> deleteSS(int id) async {
     try {
       var client = http.Client();
-      var uri = Uri.parse('${RestAPIs.baseURL}${RestAPIs.servizioSanitario}/$id');
+      var uri =
+          Uri.parse('${RestAPIs.baseURL}${RestAPIs.servizioSanitario}/$id');
       var response = await client.delete(uri);
       client.close();
       if (response.statusCode == 204 || response.statusCode == 200) {
@@ -163,152 +164,156 @@ class APIServices {
     }
   }
 
-  static Future<RicettaList?> getRicetteFromUtente (Utente u) async{
-    try{
-      var client= http.Client();
-      var uri= Uri.parse("${RestAPIs.baseURL}${RestAPIs.ricettaMedica}/utente/${u.codiceFiscale!}");
+  static Future<RicettaList?> getRicetteFromUtente(Utente u) async {
+    try {
+      var client = http.Client();
+      var uri = Uri.parse(
+          "${RestAPIs.baseURL}${RestAPIs.ricettaMedica}/utente/${u.codiceFiscale!}");
       var response = await client.get(uri);
       client.close();
       log(response.statusCode.toString());
-      if(response.statusCode== 200){
+      if (response.statusCode == 200) {
         return ricettaListFromJson(response.body);
       }
-    } catch(e){
+    } catch (e) {
       log(e.toString());
     }
 
     return null;
   }
 
-  static Future<CentroList?> getCentriFromSearchBar (String nome) async{
-    try{
-      var client= http.Client();
-      var uri= Uri.parse("${RestAPIs.baseURL}${RestAPIs.centroMedico}/$nome");
+  static Future<CentroList?> getCentriFromSearchBar(String nome) async {
+    try {
+      var client = http.Client();
+      var uri = Uri.parse("${RestAPIs.baseURL}${RestAPIs.centroMedico}/$nome");
       var response = await client.get(uri);
       client.close();
       log(response.statusCode.toString());
-      if(response.statusCode == 200){
+      if (response.statusCode == 200) {
         return centroListFromJson(utf8.decode(response.bodyBytes));
       }
-
-    } catch(e){
+    } catch (e) {
       log(e.toString());
     }
 
     return null;
   }
 
-  static Future<SSList?> getSSFromCentro (Centro c) async{
-    try{
-      var client= http.Client();
-      var uri= Uri.parse("${RestAPIs.baseURL}${RestAPIs.servizioSanitario}/cm/${c.idCentro}");
+  static Future<SSList?> getSSFromCentro(Centro c) async {
+    try {
+      var client = http.Client();
+      var uri = Uri.parse(
+          "${RestAPIs.baseURL}${RestAPIs.servizioSanitario}/cm/${c.idCentro}");
       var response = await client.get(uri);
       client.close();
       log(response.statusCode.toString());
-      if(response.statusCode == 200){
+      if (response.statusCode == 200) {
         return ssListFromJson(response.body);
       }
-
-
-    } catch(e){
+    } catch (e) {
       log(e.toString());
     }
 
     return null;
   }
 
-  static Future<void> addPrenotazione(Prenotazione p) async{
-    try{
-      var client= http.Client();
-      var uri= Uri.parse(RestAPIs.baseURL+RestAPIs.prenotazioneVisita);
-      var response = await client.post(uri, body: json.encode(p.toJson()), headers: headers);
+  static Future<void> addPrenotazione(Prenotazione p) async {
+    try {
+      var client = http.Client();
+      var uri = Uri.parse(RestAPIs.baseURL + RestAPIs.prenotazioneVisita);
+      var response = await client.post(uri,
+          body: json.encode(p.toJson()), headers: headers);
       log(response.statusCode.toString());
       if (response.statusCode == 200 || response.statusCode == 201) {
         print("POST FUNZIONA");
       }
-    } catch(e){
+    } catch (e) {
       log(e.toString());
     }
   }
 
-  static Future<AppointmentList?> getAppointmentsFromUtente(Utente u) async{
-    try{
-      var client= http.Client();
-      var uri= Uri.parse("${RestAPIs.baseURL}${RestAPIs.prenotazioneVisita}/${u.codiceFiscale!}");
+  static Future<AppointmentList?> getAppointmentsFromUtente(Utente u) async {
+    try {
+      var client = http.Client();
+      var uri = Uri.parse(
+          "${RestAPIs.baseURL}${RestAPIs.prenotazioneVisita}/${u.codiceFiscale!}");
       var response = await client.get(uri);
       log(response.statusCode.toString());
-      if(response.statusCode == 200){
+      if (response.statusCode == 200) {
         return appointmentListFromJson(response.body);
       }
-    } catch(e){
+    } catch (e) {
       log(e.toString());
     }
 
     return null;
   }
 
-  static Future<Appointment?> getTodaysAppointment() async{
-    try{
+  static Future<Appointment?> getTodaysAppointment() async {
+    try {
       var client = http.Client();
-      var uri= Uri.parse(RestAPIs.baseURL + RestAPIs.prenotazioneVisita);
+      var uri = Uri.parse(RestAPIs.baseURL + RestAPIs.prenotazioneVisita);
       var response = await client.get(uri);
       log(response.statusCode.toString());
-      if(response.statusCode == 200){
+      if (response.statusCode == 200) {
         AppointmentList? a = appointmentListFromJson(response.body);
-        if(a.items!.isNotEmpty){
+        if (a.items!.isNotEmpty) {
           return a.items![0];
         }
       }
-    } catch(e){
+    } catch (e) {
       log(e.toString());
     }
 
     return null;
   }
 
-  static Future<SS?> getSS(String tipo) async{
-    try{
+  static Future<SS?> getSS(String tipo) async {
+    try {
       var client = http.Client();
-      var uri = Uri.parse("${RestAPIs.baseURL}${RestAPIs.servizioSanitario}/ss/$tipo");
+      var uri = Uri.parse(
+          "${RestAPIs.baseURL}${RestAPIs.servizioSanitario}/ss/$tipo");
       var response = await client.get(uri);
       log(response.statusCode.toString());
-      if(response.statusCode == 200){
+      if (response.statusCode == 200) {
         SSList? s = ssListFromJson(response.body);
-        if(s.items!.isNotEmpty){
+        if (s.items!.isNotEmpty) {
           return s.items![0];
         }
       }
-    } catch(e){
+    } catch (e) {
       log(e.toString());
     }
 
     return null;
   }
 
-  static Future<void> deleteLatestAppointment() async{
-    try{
+  static Future<void> deleteLatestAppointment() async {
+    try {
       var client = http.Client();
-      var uri = Uri.parse("${RestAPIs.baseURL}${RestAPIs.prenotazioneVisita}/delete");
+      var uri =
+          Uri.parse("${RestAPIs.baseURL}${RestAPIs.prenotazioneVisita}/delete");
       var response = await client.delete(uri);
       log(response.statusCode.toString());
-      if(response.statusCode == 200 || response.statusCode == 204){
+      if (response.statusCode == 200 || response.statusCode == 204) {
         print("DELETE APPUNTAMENTO BOT FUNZIONA");
       }
-    } catch(e){
+    } catch (e) {
       log(e.toString());
     }
   }
 
-  static Future<void> deleteRicetta(String impegnativa) async{
-    try{
+  static Future<void> deleteRicetta(String impegnativa) async {
+    try {
       var client = http.Client();
-      var uri= Uri.parse("${RestAPIs.baseURL}${RestAPIs.ricettaMedica}/$impegnativa");
+      var uri = Uri.parse(
+          "${RestAPIs.baseURL}${RestAPIs.ricettaMedica}/$impegnativa");
       var response = await client.delete(uri);
       log(response.statusCode.toString());
-      if(response.statusCode == 200 || response.statusCode == 204){
+      if (response.statusCode == 200 || response.statusCode == 204) {
         print("DELETE FUNZIONA");
       }
-    } catch(e){
+    } catch (e) {
       log(e.toString());
     }
   }

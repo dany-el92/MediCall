@@ -18,10 +18,6 @@ const Duration debounceDuration = Duration(milliseconds: 500);
 
 typedef _Debounceable<S, T> = Future<S?> Function(T parameter);
 
-/// Returns a new function that is a debounced version of the given function.
-///
-/// This means that the original function will be called only after no calls
-/// have been made for the given Duration.
 _Debounceable<S, T> _debounce<S, T>(_Debounceable<S?, T> function) {
   _DebounceTimer? debounceTimer;
 
@@ -161,49 +157,63 @@ class _HomePageViewState extends State<HomePageView> {
             ),
             SizedBox(height: size.height * 0.02),
             SearchAnchor(
+                viewSurfaceTintColor: Colors.white,
+                textCapitalization: TextCapitalization.words,
+                viewLeading: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () async {
+                      Navigator.pop(context);
+                      await Future.delayed(
+                        const Duration(milliseconds: 100),
+                        () => FocusManager.instance.primaryFocus?.unfocus(),
+                      );
+                    }),
                 builder: (BuildContext context, SearchController controller) {
-              return SearchBar(
-                controller: controller,
-                surfaceTintColor: MaterialStateProperty.all(Colors.white),
-                shadowColor: MaterialStateProperty.all(AppColors.bluChiaro),
-                hintText: "Trova strutture sanitarie",
-                hintStyle: MaterialStateProperty.all(const TextStyle(
-                    fontSize: 15,
-                    letterSpacing: 1.0,
-                    fontWeight: FontWeight.normal)),
-                leading: const Icon(Icons.search,
-                    size: 30, color: AppColors.bluChiaro),
-                elevation: MaterialStateProperty.all(4.0),
-                onTap: () {
-                  controller.openView();
+                  return SearchBar(
+                    controller: controller,
+                    surfaceTintColor: MaterialStateProperty.all(Colors.white),
+                    shadowColor: MaterialStateProperty.all(AppColors.bluChiaro),
+                    hintText: "Trova strutture sanitarie",
+                    hintStyle: MaterialStateProperty.all(const TextStyle(
+                        fontSize: 15,
+                        letterSpacing: 1.0,
+                        fontWeight: FontWeight.normal)),
+                    leading: const Icon(Icons.search,
+                        size: 30, color: AppColors.bluChiaro),
+                    elevation: MaterialStateProperty.all(4.0),
+                    onTap: () {
+                      controller.openView();
+                    },
+                    onChanged: (_) {
+                      controller.openView();
+                    },
+                  );
                 },
-                onChanged: (_) {
-                  controller.openView();
-                },
-              );
-            }, suggestionsBuilder:
+                suggestionsBuilder:
                     (BuildContext context, SearchController controller) async {
-              final centrolist = await _debouncedSearch(controller.text);
-              if (centrolist == null) {
-                return _lastOptions;
-              }
+                  final centrolist = await _debouncedSearch(controller.text);
 
-              _lastOptions = List<ListTile>.generate(centrolist.items!.length,
-                  (int index) {
-                final String item = centrolist.items![index].nome!;
-                return ListTile(
-                  title: Text(item),
-                  trailing: const Icon(Icons.arrow_outward),
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => StructureDetails(
-                            centro: centrolist.items![index])));
-                  },
-                );
-              });
+                  if (centrolist == null) {
+                    return _lastOptions;
+                  }
 
-              return _lastOptions;
-            }),
+                  _lastOptions = List<ListTile>.generate(
+                      centrolist.items!.length, (int index) {
+                    final String item = centrolist.items![index].nome!;
+                    return ListTile(
+                      leading: const Icon(Icons.local_hospital),
+                      title: Text(item),
+                      trailing: const Icon(Icons.arrow_outward),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => StructureDetails(
+                                centro: centrolist.items![index])));
+                      },
+                    );
+                  });
+
+                  return _lastOptions;
+                }),
             /*        ElevatedButton.icon(
               onPressed: () {},
               icon: const Icon(

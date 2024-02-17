@@ -88,6 +88,8 @@ class CloudMessaging {
       final notification = message.notification;
       if (notification == null) return;
 
+      log('Received notification foreground: ${notification.title} - ${notification.body}');
+
       if (notification.title == "Prenotazione effettuata") {
         // TODO: crea appuntamento nel calendario
       } else if (notification.title == "Prenotazione rifiutata") {
@@ -116,6 +118,9 @@ class CloudMessaging {
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   final notification = message.notification;
   if (notification == null) return;
+
+  log('Received notification in background: ${notification.title} - ${notification.body}');
+
 
   if (notification.title == "Prenotazione effettuata") {
     // TODO: crea appuntamento nel calendario

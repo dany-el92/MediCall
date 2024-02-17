@@ -124,7 +124,7 @@ class _LoginViewState extends State<LoginView> {
                           ),
                         ),
                         controller: _passwordController,
-                        validator: null, //TODO: Add validator
+                        validator: null,
                       ),
                       TextButton(
                         onPressed: () {
@@ -152,7 +152,7 @@ class _LoginViewState extends State<LoginView> {
                         onPressed: () async {
                           final email = _emailController.text;
                           final password = _passwordController.text;
-                          final prefs= await SharedPreferences.getInstance();
+                          final prefs = await SharedPreferences.getInstance();
 
                           try {
                             await AuthService.firebase().logIn(
@@ -160,18 +160,23 @@ class _LoginViewState extends State<LoginView> {
                               password: password,
                             );
 
-                            Utente? u = await APIServices.getUtente(email, password);
-                            if(u !=null){
+                            Utente? u =
+                                await APIServices.getUtente(email, password);
+                            if (u != null) {
                               final user = AuthService.firebase().currentUser;
                               if (user?.isEmailVerified ?? false) {
                                 //Utente verificato
                                 prefs.setString("email", u.email!);
                                 prefs.setString("password", u.password!);
-                                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainView(utente: u)), (route) => false);
-                             //   Navigator.of(context).pushNamedAndRemoveUntil(
-                             //     Routes.mainView,
-                             //     (route) => false,
-                             //   );
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            MainView(utente: u)),
+                                    (route) => false);
+                                //   Navigator.of(context).pushNamedAndRemoveUntil(
+                                //     Routes.mainView,
+                                //     (route) => false,
+                                //   );
                               } else {
                                 //Utente NON verificato
                                 Navigator.of(context).pushNamedAndRemoveUntil(
@@ -211,74 +216,74 @@ class _LoginViewState extends State<LoginView> {
                         ),
                       ),
                       SizedBox(height: size.height * 0.03),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Divider(
-                              color: Colors.grey.shade200,
-                            ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            child: Text(
-                              'Oppure accedi con',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Divider(
-                              color: Colors.grey.shade200,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: size.height * 0.01),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          IconButton(
-                            onPressed: () async {
-                              try {
-                                await AuthService.firebase().signInWithGoogle();
-                                if (!context.mounted) return;
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                                  Routes.mainView,
-                                  (route) => false,
-                                );
-                              } on GenericAuthException {
-                                await showErrorDialog(
-                                    context, 'Errore di autenticazione');
-                              }
-                            },
-                            icon: SvgPicture.asset(
-                              ImageConstant.googleLogo,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () async {
-                              try {
-                                await AuthService.firebase()
-                                    .signInWithFacebook();
-                                if (!context.mounted) return;
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                                  Routes.mainView,
-                                  (route) => false,
-                                );
-                              } on GenericAuthException {
-                                await showErrorDialog(
-                                    context, 'Errore di autenticazione');
-                              }
-                            },
-                            icon: SvgPicture.asset(
-                              ImageConstant.facebookLogo,
-                              width: 40,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: size.height * 0.02),
+                      // Row(
+                      //   children: [
+                      //     Expanded(
+                      //       child: Divider(
+                      //         color: Colors.grey.shade200,
+                      //       ),
+                      //     ),
+                      //     const Padding(
+                      //       padding: EdgeInsets.symmetric(horizontal: 20),
+                      //       child: Text(
+                      //         'Oppure accedi con',
+                      //         style: TextStyle(
+                      //           color: Colors.white,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     Expanded(
+                      //       child: Divider(
+                      //         color: Colors.grey.shade200,
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                      // SizedBox(height: size.height * 0.01),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      //   children: [
+                      //     IconButton(
+                      //       onPressed: () async {
+                      //         try {
+                      //           await AuthService.firebase().signInWithGoogle();
+                      //           if (!context.mounted) return;
+                      //           Navigator.of(context).pushNamedAndRemoveUntil(
+                      //             Routes.mainView,
+                      //             (route) => false,
+                      //           );
+                      //         } on GenericAuthException {
+                      //           await showErrorDialog(
+                      //               context, 'Errore di autenticazione');
+                      //         }
+                      //       },
+                      //       icon: SvgPicture.asset(
+                      //         ImageConstant.googleLogo,
+                      //       ),
+                      //     ),
+                      //     IconButton(
+                      //       onPressed: () async {
+                      //         try {
+                      //           await AuthService.firebase()
+                      //               .signInWithFacebook();
+                      //           if (!context.mounted) return;
+                      //           Navigator.of(context).pushNamedAndRemoveUntil(
+                      //             Routes.mainView,
+                      //             (route) => false,
+                      //           );
+                      //         } on GenericAuthException {
+                      //           await showErrorDialog(
+                      //               context, 'Errore di autenticazione');
+                      //         }
+                      //       },
+                      //       icon: SvgPicture.asset(
+                      //         ImageConstant.facebookLogo,
+                      //         width: 40,
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                      // SizedBox(height: size.height * 0.02),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

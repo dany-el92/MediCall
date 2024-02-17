@@ -5,7 +5,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:medicall/authentication/auth_service.dart';
 import 'package:medicall/constants/colors.dart';
 import 'package:medicall/constants/routes.dart';
-import 'package:medicall/database/centro_medico.dart';
 import 'package:medicall/messaging/firebase_cloud_messaging.dart';
 import 'package:medicall/database/utente.dart';
 import 'package:medicall/utilities/api_services.dart';
@@ -24,9 +23,6 @@ GlobalKey<CurvedNavigationBarState> bottomNavigationKey = GlobalKey();
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  // TODO da rimuovere queste due righe quando funzionerà il login
-  await AuthService.firebase().initialize();
-  await CloudMessaging().initNotification();
   initializeDateFormatting('it_IT', null);
   runApp(const MyApp());
 }
