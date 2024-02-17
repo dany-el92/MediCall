@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DateSelector extends StatefulWidget {
-  const DateSelector({super.key});
+  final ValueNotifier<bool> isTodayNotifier;
+
+  const DateSelector({super.key, required this.isTodayNotifier});
 
   @override
   State<DateSelector> createState() => DateSelectorState();
@@ -10,7 +12,7 @@ class DateSelector extends StatefulWidget {
 
 class DateSelectorState extends State<DateSelector> {
   int selectedIndex = -1;
-  String data="";
+  String data = "";
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +30,16 @@ class DateSelectorState extends State<DateSelector> {
             onTap: () {
               setState(() {
                 selectedIndex = index;
-                data=dates[selectedIndex].toString().split(" ")[0];
+                data = dates[selectedIndex].toString().split(" ")[0];
               });
               print('Selected date: ${dates[index]}');
+              if (dates[index].day == DateTime.now().day &&
+                  dates[index].month == DateTime.now().month &&
+                  dates[index].year == DateTime.now().year) {
+                widget.isTodayNotifier.value = true;
+              } else {
+                widget.isTodayNotifier.value = false;
+              }
             },
             child: SizedBox(
               width: 65.0,

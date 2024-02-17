@@ -25,17 +25,20 @@ class CloudMessaging {
     String? token = await _firebaseMessaging.getToken();
 
     if (token != null) {
-      var response = await http.post(
-        Uri.parse('http://89.168.86.207:5001/save_token'),
-        // Replace with your server URL
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({'token': token}),
-      );
+      try {
+        var response = await http.post(
+          Uri.parse('http://89.168.86.207:5001/save_token'),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode({'token': token}),
+        );
 
-      if (response.statusCode == 200) {
-        print('Token sent to the server successfully');
-      } else {
-        print('Failed to send token to the server');
+        if (response.statusCode == 200) {
+          print('Token sent to the server successfully');
+        } else {
+          print('Failed to send token to the server');
+        }
+      } catch (e) {
+        print('Failed to send token to the server. Error: $e');
       }
     } else {
       print('Failed to get FCM token');
@@ -51,9 +54,6 @@ class CloudMessaging {
     // All'apertura della notifica rimando alla pagina delle prenotazioni (calendar_view)
     CurvedNavigationBarState? state = bottomNavigationKey.currentState;
     state?.setPage(1);
-
-    // print(
-    //     '${message.notification!.title} ${message.notification!.body} ${message.data}');
   }
 
   Future initLocalNotification() async {

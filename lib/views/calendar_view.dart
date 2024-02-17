@@ -22,11 +22,11 @@ class _CalendarViewState extends State<CalendarView>
   late TabController _tabController;
   late Future<AppointmentList?> appList;
 
-  Future<AppointmentList?> getAllAppuntamenti()async{
-     final prefs= await SharedPreferences.getInstance();
+  Future<AppointmentList?> getAllAppuntamenti() async {
+    final prefs = await SharedPreferences.getInstance();
     String? email = prefs.getString("email");
     String? password = prefs.getString("password");
-    if(email!=null && password!=null){
+    if (email != null && password != null) {
       Utente? u = await APIServices.getUtente(email, password);
       AppointmentList? apps = await APIServices.getAppointmentsFromUtente(u!);
       return apps;
@@ -41,7 +41,7 @@ class _CalendarViewState extends State<CalendarView>
   ];
 
   // Lista di appList sia futuri che passati
- /* static final List<Appointment> appointments = [
+  /* static final List<Appointment> appointments = [
     Appointment(
       centroNome: 'Dr. Daniele Gregori',
       prescrizione: 'Ortopedia',
@@ -79,110 +79,97 @@ class _CalendarViewState extends State<CalendarView>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Le mie visite',
-          style: TextStyle(
-            fontSize: 30,
+        appBar: AppBar(
+          title: const Text(
+            'Le mie visite',
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          bottom: TabBar(
+            controller: _tabController,
+            tabs: tabs,
+            // cambia la grandezza dell'indicatore
+            indicatorSize: TabBarIndicatorSize.tab,
+            overlayColor: MaterialStateProperty.all(Colors.transparent),
+          ),
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            CurvedNavigationBarState? state = bottomNavigationKey.currentState;
+            state?.setPage(2);
+          },
+          extendedPadding: const EdgeInsets.symmetric(horizontal: 10),
+          foregroundColor: Colors.white,
+          backgroundColor: AppColors.bluChiaro,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          icon: const Icon(Icons.edit),
+          label: const Text('Prenota visita'),
+          extendedTextStyle: const TextStyle(
+            fontSize: 15,
             fontWeight: FontWeight.bold,
           ),
         ),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: tabs,
-          // cambia la grandezza dell'indicatore
-          indicatorSize: TabBarIndicatorSize.tab,
-          overlayColor: MaterialStateProperty.all(Colors.transparent),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          CurvedNavigationBarState? state = bottomNavigationKey.currentState;
-          state?.setPage(2);
-        },
-        extendedPadding: const EdgeInsets.symmetric(horizontal: 10),
-        foregroundColor: Colors.white,
-        backgroundColor: AppColors.bluChiaro,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
-        icon: const Icon(Icons.edit),
-        label: const Text('Prenota visita'),
-        extendedTextStyle: const TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: FutureBuilder<AppointmentList?>(
-        future: appList,
-        builder: (context,snapshot){
-          if(snapshot.connectionState==ConnectionState.waiting){
-            return const Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 230)
-                  ),
-                  SizedBox(
-                    height: 50,
-                    width: 50,
-                    child: CircularProgressIndicator()
-                  )
-                ]
-              )
-            );
-          } else if(snapshot.hasData){
-            final appuntamenti = snapshot.data!;
-            return TabBarView(
-              controller: _tabController,
-              children: [
-                Tab1(appointments: appuntamenti.items!),
-                Tab2(appointments: appuntamenti.items!)
-              ],
-            );
-          } else{
-            return Column(
-              children: [
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        ImageConstant.prescriptionImage,
-                        height: 200,
-                        width: 200,
-                      ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        "Organizza le tue visite",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 40),
-                        child: Text(
-                          "Tieni traccia delle tue visite e degli appuntamenti con i tuoi medici per non dimenticarli mai più!",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w400
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        body: FutureBuilder<AppointmentList?>(
+            future: appList,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                      Padding(padding: EdgeInsets.only(top: 230)),
+                      SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: CircularProgressIndicator())
+                    ]));
+              } else if (snapshot.hasData) {
+                final appuntamenti = snapshot.data!;
+                return TabBarView(
+                  controller: _tabController,
+                  children: [
+                    Tab1(appointments: appuntamenti.items!),
+                    Tab2(appointments: appuntamenti.items!)
+                  ],
+                );
+              } else {
+                return Column(
+                  children: [
+                    Expanded(
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                          SvgPicture.asset(
+                            ImageConstant.prescriptionImage,
+                            height: 200,
+                            width: 200,
+                          ),
+                          const SizedBox(height: 20),
+                          const Text(
+                            "Organizza le tue visite",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 25, fontWeight: FontWeight.bold),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 40),
+                            child: Text(
+                                "Tieni traccia delle tue visite e degli appuntamenti con i tuoi medici per non dimenticarli mai più!",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.w400)),
                           )
-                        ),
-                      )
-                    ]
-                  )
-                )
-              ],
-            );
-          }
-        }
-      )
-     /* TabBarView(
+                        ]))
+                  ],
+                );
+              }
+            })
+        /* TabBarView(
         controller: _tabController,
         children: [
           Tab1(appointments: ),
@@ -190,7 +177,7 @@ class _CalendarViewState extends State<CalendarView>
         ],
       ),
     */
-    );
+        );
   }
 }
 
@@ -201,13 +188,15 @@ class Tab1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final futureAppointments = appointments
-        .where((appointment) {
-          final datex= DateTime(
-            appointment.dataPrenotazione!.year, appointment.dataPrenotazione!.month, appointment.dataPrenotazione!.day, appointment.orario!.hour, appointment.orario!.minute);
-          return datex.isAfter(DateTime.now());
-        })
-        .toList();
+    final futureAppointments = appointments.where((appointment) {
+      final datex = DateTime(
+          appointment.dataPrenotazione!.year,
+          appointment.dataPrenotazione!.month,
+          appointment.dataPrenotazione!.day,
+          appointment.orario!.hour,
+          appointment.orario!.minute);
+      return datex.isAfter(DateTime.now());
+    }).toList();
 
     return futureAppointments.isNotEmpty
         ? ListView.builder(
@@ -269,14 +258,15 @@ class Tab2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pastAppointments = appointments
-        .where((appointment){
-          final datax = DateTime(
-            appointment.dataPrenotazione!.year, appointment.dataPrenotazione!.month, appointment.dataPrenotazione!.day, appointment.orario!.hour, appointment.orario!.minute
-          );
-          return datax.isBefore(DateTime.now());
-        })
-        .toList();
+    final pastAppointments = appointments.where((appointment) {
+      final datax = DateTime(
+          appointment.dataPrenotazione!.year,
+          appointment.dataPrenotazione!.month,
+          appointment.dataPrenotazione!.day,
+          appointment.orario!.hour,
+          appointment.orario!.minute);
+      return datax.isBefore(DateTime.now());
+    }).toList();
 
     return pastAppointments.isNotEmpty
         ? ListView.builder(
