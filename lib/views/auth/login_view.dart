@@ -126,7 +126,7 @@ class _LoginViewState extends State<LoginView> {
                         controller: _passwordController,
                         validator: null,
                       ),
-                      TextButton(
+              /*        TextButton(
                         onPressed: () {
                           Navigator.pushNamedAndRemoveUntil(context,
                               Routes.forgotPasswordView, (route) => false);
@@ -139,7 +139,7 @@ class _LoginViewState extends State<LoginView> {
                           ),
                         ),
                       ),
-                      SizedBox(height: size.height * 0.02),
+                 */     SizedBox(height: size.height * 0.05),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           shadowColor: Colors.black,

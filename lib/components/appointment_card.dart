@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:medicall/components/appointment.dart';
 
-class AppointmentCard extends StatelessWidget {
+class AppointmentCard extends StatefulWidget {
   final Appointment appointment;
   final void Function() onTap;
 
@@ -13,17 +13,86 @@ class AppointmentCard extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<AppointmentCard> createState() => _AppointmentCardState();
+}
+
+class _AppointmentCardState extends State<AppointmentCard> {
+  String immagine="";
+
+   String getCentroImage(int id){
+    String x = "";
+    switch(id){
+      case 41:
+      x = "assets/images/41.jpg";
+      break;
+
+      case 69:
+      x= "assets/images/69.png";
+      break;
+
+      case 70:
+      x = "assets/images/70.jpeg";
+      break;
+
+      case 71:
+      x = "assets/images/71.jpeg";
+      break;
+
+      case 72:
+      x = "assets/images/72.png";
+      break;
+
+      case 73:
+      x = "assets/images/73.jpeg";
+      break;
+
+      case 74:
+      x = "assets/images/74.jpeg";
+      break;
+
+      case 75:
+      x = "assets/images/75.jpeg";
+      break;
+
+      case 76:
+      x = "assets/images/76.jpeg";
+      break;
+
+      case 77:
+      x = "assets/images/77.jpeg";
+      break;
+
+      default:
+      x = "assets/images/cavallo_rounded.png";
+      break;
+    }
+
+    return x;
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    immagine = getCentroImage(widget.appointment.idCm!);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // Format the date
     final formattedDate =
-        DateFormat('EEEE, d MMMM y', 'it_IT').format(appointment.dataPrenotazione!);
+        DateFormat('EEEE, d MMMM y', 'it_IT').format(widget.appointment.dataPrenotazione!);
     // Format the time
     final formattedTime = DateFormat('jm', 'it_IT').format(DateTime(
-      appointment.dataPrenotazione!.year,
-      appointment.dataPrenotazione!.month,
-      appointment.dataPrenotazione!.day,
-      appointment.orario!.hour,
-      appointment.orario!.minute,
+      widget.appointment.dataPrenotazione!.year,
+      widget.appointment.dataPrenotazione!.month,
+      widget.appointment.dataPrenotazione!.day,
+      widget.appointment.orario!.hour,
+      widget.appointment.orario!.minute,
     ));
     return Column(
       children: [
@@ -44,7 +113,7 @@ class AppointmentCard extends StatelessWidget {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: onTap,
+              onTap: widget.onTap,
               splashFactory: InkRipple.splashFactory,
               child: Column(
                 children: [
@@ -116,7 +185,7 @@ class AppointmentCard extends StatelessWidget {
                           backgroundColor: Colors.white,
                           child: Padding(
                             padding: const EdgeInsets.all(8),
-                            child: Image.asset('assets/images/cavallo_rounded.png',fit: BoxFit.cover))
+                            child: Image.asset(immagine,fit: BoxFit.cover))
                         ),
                         const SizedBox(
                           width: 10,
@@ -125,13 +194,13 @@ class AppointmentCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(appointment.centroNome!,
+                            Text(widget.appointment.centroNome!,
                                 style: const TextStyle(color: Colors.black)),
                             const SizedBox(
                               height: 2,
                             ),
                             Text(
-                              appointment.prescrizione!,
+                              widget.appointment.prescrizione!,
                               style: TextStyle(color: Colors.grey.shade800),
                             ),
                           ],

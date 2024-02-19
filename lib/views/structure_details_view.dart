@@ -1,6 +1,5 @@
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:medicall/components/date_selector.dart';
@@ -30,6 +29,7 @@ class _StructureDetailsState extends State<StructureDetails> {
   int tipo = 0;
   int selectedIndex = -1;
   String nomeTipo = "";
+  String immagine="";
   final timeKey = GlobalKey<TimeSelectorState>();
   final dateKey = GlobalKey<DateSelectorState>();
   late Future<LatLng> currentLocation;
@@ -50,10 +50,62 @@ class _StructureDetailsState extends State<StructureDetails> {
     return position;
   }
 
+  String getCentroImage(int id){
+    String x = "";
+    switch(id){
+      case 41:
+      x = "assets/images/41.jpg";
+      break;
+
+      case 69:
+      x= "assets/images/69.png";
+      break;
+
+      case 70:
+      x = "assets/images/70.jpeg";
+      break;
+
+      case 71:
+      x = "assets/images/71.jpeg";
+      break;
+
+      case 72:
+      x = "assets/images/72.png";
+      break;
+
+      case 73:
+      x = "assets/images/73.jpeg";
+      break;
+
+      case 74:
+      x = "assets/images/74.jpeg";
+      break;
+
+      case 75:
+      x = "assets/images/75.jpeg";
+      break;
+
+      case 76:
+      x = "assets/images/76.jpeg";
+      break;
+
+      case 77:
+      x = "assets/images/77.jpeg";
+      break;
+
+      default:
+      x = "assets/images/cavallo_rounded.png";
+      break;
+    }
+
+    return x;
+  }
+
   @override
   void initState() {
     super.initState();
     currentLocation = getPositionCentro();
+    immagine = getCentroImage(widget.centro.idCentro!);
     /*   getLocationFromAddress("${widget.centro.indirizzo!}, ${widget.centro.cap!} ${widget.centro.citta!} ${widget.centro.provincia!}")
         .then((location) {
       setState(() {
@@ -171,7 +223,7 @@ class _StructureDetailsState extends State<StructureDetails> {
                             ),
                             ExpandableText(
                                 "${widget.centro.indirizzo!}, ${widget.centro.cap!} ${widget.centro.citta!} ${widget.centro.provincia!}\n\n"
-                                "${widget.centro.nome!} ${widget.centro.descrizione!}"),
+                                "${widget.centro.descrizione!}"),
                           ],
                         ),
                         const SizedBox(
@@ -448,7 +500,7 @@ class _StructureDetailsState extends State<StructureDetails> {
                   padding: const EdgeInsets.all(8.0),
                   // TODO: Change the image dynamically
                   child: Image.asset(
-                    'assets/images/cavallo_rounded.png',
+                    immagine,
                     fit: BoxFit.cover,
                   ),
                 ),

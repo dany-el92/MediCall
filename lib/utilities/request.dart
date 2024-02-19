@@ -127,6 +127,26 @@ class OpenAIService {
               return "Il servizio sanitario da lei inserito non è offerto dalla struttura ${centro.items![0].nome!}";
             }
           }
+        } else if(ssList.length == 3){
+          servizio = await APIServices.getSS(ssList[2]);
+           if(servizio == null){
+            return "Il servizio sanitario da lei inserito, non esiste. Per favore riprovi";
+          } else{
+            bool exists = listSS!.items!.any((element) => element.idServizio == servizio!.idServizio);
+            if(!exists){
+              return "Il servizio sanitario da lei inserito non è offerto dalla struttura ${centro.items![0].nome!}";
+            }
+          }
+        } else if(ssList.length == 4){
+          servizio = await APIServices.getSS("${ssList[2]} ${ssList[3]}");
+           if(servizio == null){
+            return "Il servizio sanitario da lei inserito, non esiste. Per favore riprovi";
+          } else{
+            bool exists = listSS!.items!.any((element) => element.idServizio == servizio!.idServizio);
+            if(!exists){
+              return "Il servizio sanitario da lei inserito non è offerto dalla struttura ${centro.items![0].nome!}";
+            }
+          }
         }
 
         if(email !=null && password != null){

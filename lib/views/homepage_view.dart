@@ -82,7 +82,7 @@ class _HomePageViewState extends State<HomePageView> {
   late Future<Appointment?> todayapp;
 
   Future<Appointment?> checkTodaysAppointment() async {
-    Appointment? a = await APIServices.getTodaysAppointment();
+    Appointment? a = await APIServices.getTodaysAppointment(widget.utente.codiceFiscale!);
     return a;
   }
 
@@ -335,14 +335,17 @@ class _HomePageViewState extends State<HomePageView> {
                       padding: const EdgeInsets.all(10),
                       child: AppointmentCard(
                         appointment: appuntamento,
-                        onTap: () {},
+                        onTap: () {
+                        //  Centro? c = await APIServices.getCentrofromId(appuntamento.idCm!);
+                        //  Navigator.of(context).push(MaterialPageRoute(builder: (context) => AppointmentDataView(centro: c!, idVisita: appuntamento.idVisita!,)));
+                        },
                       ),
                     );
                   } else {
                     return const Padding(
                       padding: EdgeInsets.only(right: 65, top: 15),
                       child: Text(
-                        "Non sono previsti appuntamenti per oggi",
+                        "Non sono previsti appuntamenti programmati",
                         style: TextStyle(
                             fontSize: 15,
                             wordSpacing: 1.0,

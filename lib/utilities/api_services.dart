@@ -223,6 +223,7 @@ class APIServices {
       var uri = Uri.parse(RestAPIs.baseURL + RestAPIs.prenotazioneVisita);
       var response = await client.post(uri,
           body: json.encode(p.toJson()), headers: headers);
+      client.close();
       log(response.statusCode.toString());
       if (response.statusCode == 200 || response.statusCode == 201) {
         print("POST FUNZIONA");
@@ -238,6 +239,7 @@ class APIServices {
       var uri = Uri.parse(
           "${RestAPIs.baseURL}${RestAPIs.prenotazioneVisita}/${u.codiceFiscale!}");
       var response = await client.get(uri);
+      client.close();
       log(response.statusCode.toString());
       if (response.statusCode == 200) {
         return appointmentListFromJson(response.body);
@@ -249,11 +251,12 @@ class APIServices {
     return null;
   }
 
-  static Future<Appointment?> getTodaysAppointment() async {
+  static Future<Appointment?> getTodaysAppointment(String cf) async {
     try {
       var client = http.Client();
-      var uri = Uri.parse(RestAPIs.baseURL + RestAPIs.prenotazioneVisita);
+      var uri = Uri.parse("${RestAPIs.baseURL}${RestAPIs.prenotazioneVisita}/appointment/$cf");
       var response = await client.get(uri);
+      client.close();
       log(response.statusCode.toString());
       if (response.statusCode == 200) {
         AppointmentList? a = appointmentListFromJson(response.body);
@@ -274,6 +277,7 @@ class APIServices {
       var uri = Uri.parse(
           "${RestAPIs.baseURL}${RestAPIs.servizioSanitario}/ss/$tipo");
       var response = await client.get(uri);
+      client.close();
       log(response.statusCode.toString());
       if (response.statusCode == 200) {
         SSList? s = ssListFromJson(response.body);
@@ -294,6 +298,7 @@ class APIServices {
       var uri =
           Uri.parse("${RestAPIs.baseURL}${RestAPIs.prenotazioneVisita}/delete");
       var response = await client.delete(uri);
+      client.close();
       log(response.statusCode.toString());
       if (response.statusCode == 200 || response.statusCode == 204) {
         print("DELETE APPUNTAMENTO BOT FUNZIONA");
@@ -309,11 +314,61 @@ class APIServices {
       var uri = Uri.parse(
           "${RestAPIs.baseURL}${RestAPIs.ricettaMedica}/$impegnativa");
       var response = await client.delete(uri);
+      client.close();
       log(response.statusCode.toString());
       if (response.statusCode == 200 || response.statusCode == 204) {
         print("DELETE FUNZIONA");
       }
     } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  static Future<void> updateUtente(String password, String cf) async{
+    try{
+      var client= http.Client();
+      var uri = Uri.parse(RestAPIs.baseURL+RestAPIs.utenteAccount);
+      Utente u = Utente(codiceFiscale: cf, password: password);
+      var response = await client.put(uri, body: json.encode(u.toJson()) , headers: headers);
+      client.close();
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        print(response.statusCode);
+        print("UPDATE FUNZIONA");
+      }
+    } catch(e){
+      log(e.toString());
+    }
+  }
+
+  static Future<Centro?> getCentrofromId(int id) async{
+    try{
+      var client = http.Client();
+      var uri = Uri.parse("${RestAPIs.baseURL}${RestAPIs.centroMedico}/id/$id");
+      var response = await client.get(uri);
+      client.close();
+      log(response.statusCode.toString());
+      if(response.statusCode == 200){
+        return centroListFromJson(utf8.decode(response.bodyBytes)).items![0];
+      }
+
+    } catch(e){
+      log(e.toString());
+    }
+
+    return null;
+  }
+
+  static Future<void> deleteAppointment(int id) async{
+    try{
+      var client = http.Client();
+      var uri = Uri.parse("${RestAPIs.baseURL}${RestAPIs.prenotazioneVisita}/delete/$id");
+      var response = await client.delete(uri);
+      client.close();
+      log(response.statusCode.toString());
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        print("DELETE FUNZIONA");
+      }
+    } catch (e){
       log(e.toString());
     }
   }

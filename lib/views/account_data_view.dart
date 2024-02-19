@@ -3,7 +3,7 @@ import 'package:medicall/constants/colors.dart';
 import 'package:medicall/utilities/extensions.dart';
 
 class AccountDataView extends StatefulWidget {
-  final String cf, nome, cognome, genere, dataNascita;
+  final String cf, nome, cognome, genere, dataNascita, email;
 
   const AccountDataView(
       {Key? key,
@@ -11,7 +11,8 @@ class AccountDataView extends StatefulWidget {
       required this.nome,
       required this.cognome,
       required this.genere,
-      required this.dataNascita})
+      required this.dataNascita,
+      required this.email})
       : super(key: key);
 
   @override
@@ -24,6 +25,7 @@ class _AccountDataViewState extends State<AccountDataView> {
   TextEditingController CFController = TextEditingController();
   TextEditingController dataController = TextEditingController();
   TextEditingController genereController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   Icon genereIcon = const Icon(Icons.transgender);
 
   @override
@@ -34,6 +36,7 @@ class _AccountDataViewState extends State<AccountDataView> {
     CFController.text = widget.cf;
     dataController.text = widget.dataNascita;
     genereController.text = widget.genere;
+    emailController.text = widget.email;
     if (widget.genere == "Maschio") {
       genereIcon = const Icon(Icons.male_rounded);
     } else if (widget.genere == "Femmina") {
@@ -48,6 +51,7 @@ class _AccountDataViewState extends State<AccountDataView> {
     CFController.dispose();
     dataController.dispose();
     genereController.dispose();
+    emailController.dispose();
     super.dispose();
   }
 
@@ -90,7 +94,7 @@ class _AccountDataViewState extends State<AccountDataView> {
                     )
                   ],
                 ),
-                SizedBox(height: size.height * 0.05),
+                SizedBox(height: size.height * 0.035),
                 TextField(
                   controller: CFController,
                   textInputAction: TextInputAction.none,
@@ -101,6 +105,14 @@ class _AccountDataViewState extends State<AccountDataView> {
                       prefixIcon: Icon(Icons.verified_user),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       filled: true),
+                ),
+                SizedBox(height: size.height * 0.03),
+                TextField(
+                  controller: emailController ,
+                  textInputAction: TextInputAction.none,
+                  readOnly: true,
+                  canRequestFocus: false,
+                  decoration: const InputDecoration(label: Text("Email"), prefixIcon: Icon(Icons.mark_email_read_rounded), floatingLabelBehavior: FloatingLabelBehavior.always, filled: true),
                 ),
                 SizedBox(height: size.height * 0.03),
                 TextField(

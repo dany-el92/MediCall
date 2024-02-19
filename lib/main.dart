@@ -98,10 +98,11 @@ class _HomePageState extends State<HomePage> {
           switch (snapshot.connectionState) {
             //Quando la future è andata a buon fine, restituisco un widget
             case ConnectionState.done:
+              CloudMessaging().initNotification();
               final user = AuthService.firebase().currentUser;
               if (user != null) {
                 if (user.isEmailVerified && u != null) {
-                  CloudMessaging().initNotification();
+                //  CloudMessaging().initNotification();
                   return MainView(utente: u!);
                 } else {
                   return const VerifyEmailView();

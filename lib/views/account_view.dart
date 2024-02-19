@@ -9,7 +9,7 @@ import 'package:medicall/utilities/extensions.dart';
 import 'package:medicall/utilities/show_dialogs.dart';
 import 'package:medicall/views/account_password_data_view.dart';
 import 'package:medicall/views/account_data_view.dart';
-import 'package:medicall/views/account_email_data_view.dart';
+//import 'package:medicall/views/account_email_data_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountView extends StatelessWidget {
@@ -102,7 +102,8 @@ class AccountView extends StatelessWidget {
                         nome: utente.nome!,
                         cognome: utente.cognome!,
                         genere: utente.genere!,
-                        dataNascita: utente.dataNascita!)));
+                        dataNascita: utente.dataNascita!,
+                        email: utente.email!,)));
               },
               label: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -161,7 +162,7 @@ class AccountView extends StatelessWidget {
             const Text("Connessione",
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18)),
             SizedBox(height: size.height * 0.03),
-            ElevatedButton.icon(
+   /*         ElevatedButton.icon(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => AccountEmailDataView(
@@ -195,41 +196,43 @@ class AccountView extends StatelessWidget {
                 ),
               ),
             ),
-            // SizedBox(height: size.height * 0.02),
-            // ElevatedButton.icon(
-            //   onPressed: () {
-            //     Navigator.of(context).push(MaterialPageRoute(
-            //         builder: (context) => AccountPasswordDataView(
-            //             cognome: utente.cognome!,
-            //             nome: utente.nome!,
-            //             password: utente.password!)));
-            //   },
-            //   icon: const Icon(Icons.key, color: AppColors.oro, size: 25),
-            //   label: const Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: [
-            //       Text(
-            //         "Password",
-            //         style: TextStyle(
-            //             color: AppColors.oro,
-            //             fontSize: 15,
-            //             letterSpacing: 1.0,
-            //             fontWeight: FontWeight.bold),
-            //       ),
-            //       Icon(Icons.arrow_forward_ios, color: AppColors.oro, size: 25)
-            //     ],
-            //   ),
-            //   style: ElevatedButton.styleFrom(
-            //     alignment: Alignment.centerLeft,
-            //     backgroundColor: AppColors.bluChiaro,
-            //     foregroundColor: Colors.black,
-            //     fixedSize: Size(size.width * 0.95, size.height * 0.06),
-            //     elevation: 4,
-            //     shape: RoundedRectangleBorder(
-            //       borderRadius: BorderRadius.circular(15),
-            //     ),
-            //   ),
-            // ),
+             SizedBox(height: size.height * 0.02),
+   */          ElevatedButton.icon(
+               onPressed: () {
+                 Navigator.of(context).push(MaterialPageRoute(
+                     builder: (context) => AccountPasswordDataView(
+                         cognome: utente.cognome!,
+                         nome: utente.nome!,
+                         password: utente.password!,
+                         cf: utente.codiceFiscale!,
+                         email: utente.email!)));
+               },
+               icon: const Icon(Icons.key, color: AppColors.oro, size: 25),
+               label: const Row(
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 children: [
+                   Text(
+                     "Modifica Password",
+                     style: TextStyle(
+                         color: AppColors.oro,
+                         fontSize: 15,
+                         letterSpacing: 1.0,
+                         fontWeight: FontWeight.bold),
+                   ),
+                   Icon(Icons.arrow_forward_ios, color: AppColors.oro, size: 25)
+                 ],
+               ),
+               style: ElevatedButton.styleFrom(
+                 alignment: Alignment.centerLeft,
+                 backgroundColor: AppColors.bluChiaro,
+                 foregroundColor: Colors.black,
+                 fixedSize: Size(size.width * 0.95, size.height * 0.06),
+                 elevation: 4,
+                 shape: RoundedRectangleBorder(
+                   borderRadius: BorderRadius.circular(15),
+                 ),
+               ),
+             ),
             SizedBox(height: size.height * 0.05),
             const Text("Riservatezza",
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18)),
@@ -252,19 +255,19 @@ class AccountView extends StatelessWidget {
                       .pushNamedAndRemoveUntil(Routes.loginView, (_) => false);
                 }
               },
-              icon: const Icon(Icons.delete, color: AppColors.oro, size: 25),
+              icon: const Icon(Icons.delete, color: Colors.red, size: 25),
               label: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     "Elimina Account",
                     style: TextStyle(
-                        color: AppColors.oro,
+                        color: Colors.red,
                         fontSize: 15,
                         letterSpacing: 1.0,
                         fontWeight: FontWeight.bold),
                   ),
-                  Icon(Icons.warning, color: AppColors.oro, size: 25)
+                  Icon(Icons.warning, color: Colors.red, size: 25)
                 ],
               ),
               style: ElevatedButton.styleFrom(

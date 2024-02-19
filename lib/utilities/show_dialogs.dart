@@ -191,3 +191,63 @@ Future<bool> showDeletePrescriptionDialog(BuildContext context) {
         );
       }).then((value) => value ?? false);
 }
+
+Future<void> showMissingPasswordDetailsDialog(BuildContext context) {
+  return showDialog(
+    context: context, 
+    builder: (context){
+      return AlertDialog(
+        title: const Text("Dati Mancanti"),
+        content: const Text("I campi risultano vuoti o la nuova password non risulta confermata"),
+        actions: [
+          TextButton(
+            onPressed: (){
+              Navigator.of(context).pop();
+            }, 
+            child: const Text("OK"))
+        ],
+      );
+    });
+}
+
+Future<bool> showNewPasswordConfirmedDialog(BuildContext context){
+   return showDialog<bool>(
+    context: context, 
+    builder: (context){
+      return AlertDialog(
+        title: const Text("Operazione Riuscita"),
+        content: const Text("La password è stata modificata con successo.\nRieffettua il login"),
+        actions: [
+          TextButton(
+            onPressed: (){
+              Navigator.of(context).pop();
+            }, 
+            child: const Text("OK"))
+        ],
+      );
+    }).then((_) => true);
+}
+
+Future<bool> showDeleteAppointmentDialog(BuildContext context){
+  return showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("ATTENZIONE!"),
+          content: const Text(
+              "Sei sicuro di voler disdire questo appuntamento?"),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: const Text("Sì")),
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: const Text("Annulla"))
+          ],
+        );
+      }).then((value) => value ?? false);
+}

@@ -22,6 +22,8 @@ class AppointmentList {
 }
 
 class Appointment {
+    int? idVisita;
+    int? idCm;
     String? centroNome;
     String? prescrizione;
     DateTime? dataPrenotazione;
@@ -32,9 +34,13 @@ class Appointment {
         this.prescrizione,
         this.dataPrenotazione,
         this.orario,
+        this.idVisita,
+        this.idCm
     });
 
     factory Appointment.fromJson(Map<String, dynamic> json) => Appointment(
+        idVisita: json["id_visita"],
+        idCm: json["id_cm"],
         centroNome: json["centro_nome"],
         prescrizione: json["prescrizione"],
         dataPrenotazione: json["data_prenotazione"] == null ? null : DateTime.parse(json["data_prenotazione"]),
@@ -42,6 +48,8 @@ class Appointment {
     );
 
     Map<String, dynamic> toJson() => {
+        "id_cm": idCm,
+        "id_visita": idVisita,
         "centro_nome": centroNome,
         "prescrizione": prescrizione,
         "data_prenotazione": dataPrenotazione?.toIso8601String(),
