@@ -40,29 +40,6 @@ class _CalendarViewState extends State<CalendarView>
     Tab(text: 'Passate'),
   ];
 
-  // Lista di appList sia futuri che passati
-  /* static final List<Appointment> appointments = [
-    Appointment(
-      centroNome: 'Dr. Daniele Gregori',
-      prescrizione: 'Ortopedia',
-      dataPrenotazione: DateTime(2024, 06, 1),
-      orario: const TimeOfDay(hour: 10, minute: 30),
-    ),
-    Appointment(
-      centroNome: 'Dr. Samuele Antonio Cesaro',
-      prescrizione: 'Cardiologo',
-      dataPrenotazione: DateTime(2024, 11, 20),
-      orario: const TimeOfDay(hour: 12, minute: 30),
-    ),
-    Appointment(
-      centroNome: 'Dr.ssa Daniela Amendola',
-      prescrizione: 'Cardiologa',
-      dataPrenotazione: DateTime(2023, 11, 20),
-      orario: const TimeOfDay(hour: 12, minute: 30),
-    ),
-  ];
-
-*/
   @override
   void initState() {
     super.initState();
@@ -200,13 +177,16 @@ class Tab1 extends StatelessWidget {
 
     return futureAppointments.isNotEmpty
         ? ListView.builder(
+            padding: const EdgeInsets.only(bottom: 80),
             itemCount: futureAppointments.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.all(15),
                 child: AppointmentCard(
                   appointment: futureAppointments[index],
-                  onTap: () {},
+                  onTap: () {
+
+                  },
                 ),
               );
             },

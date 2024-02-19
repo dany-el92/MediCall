@@ -112,7 +112,7 @@ class OpenAIService {
         String? password = prefs.getString("password");
         CentroList? centro = await APIServices.getCentriFromSearchBar(luogo);
         if(centro == null || centro.items!.isEmpty){
-          return "La struttura sanitaria da lei inserita, non esiste. Per favore riprovi";
+          return "La struttura sanitaria da lei inserita non esiste. Per favore riprovi.";
         }
 
         SSList? listSS = await APIServices.getSSFromCentro(centro.items![0]);
@@ -120,7 +120,7 @@ class OpenAIService {
         if(ssList.length == 2){
           servizio = await APIServices.getSS(ssList[1]);
            if(servizio == null){
-            return "Il servizio sanitario da lei inserito, non esiste. Per favore riprovi";
+            return "Il servizio sanitario da lei inserito non esiste. Per favore riprovi.";
           } else{
             bool exists = listSS!.items!.any((element) => element.idServizio == servizio!.idServizio);
             if(!exists){
